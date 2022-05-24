@@ -1,3 +1,37 @@
+#gradle
+/.gradle
+/build
+
+#vscode
+/.vscode
+
+# ForgeGradle
+/run
+
+# gradle generated eclipse runs
+/*.launch
+
+## Jars
+*.jar
+!/gradle/wrapper/gradle-wrapper.jar
+
+## intellij
+/out
+/.idea
+/atlassian-ide-plugin.xml
+/*.ipr
+/*.iws
+/*.iml
+/classes
+
+#eclipse
+/.settings
+/.metadata
+/.classpath
+/.project
+/eclipse
+/bin
+
 # Compiled class file
 *.class
 
