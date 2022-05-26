@@ -16,13 +16,33 @@ public class MRTimeDot {
     private MRSolarTerm nowSolarTerm; //记录当前节气
     private long allDays; //记录总天数
 
+    private boolean needUpdate; //记录是否需要更新
+
     /**
      * 初始化
      * @param world
      */
     public MRTimeDot(World world){
         this.nowTick = world.getGameTime();
-        this.allDays = nowTick/24000+1;
+        this.allDays = setAllDays();
+        this.needUpdate = true;
+    }
+
+    /**
+     * 更新
+     * @param world
+     * @return
+     */
+    public MRTimeDot update(World world){
+        this.nowTick = world.getGameTime();
+        long teAllDays = setAllDays();
+        if(this.allDays!=teAllDays){
+            this.allDays = teAllDays;
+            needUpdate = true;
+        }else{
+            needUpdate = false;
+        }
+        return this;
     }
 
     /**
@@ -30,7 +50,7 @@ public class MRTimeDot {
      * @return
      */
     public MRSeason getSeason(){
-        return nowSeason!=null?nowSeason:setSeason();
+        return nowSeason!=null&&needUpdate?nowSeason:setSeason();
     }
 
     /**
@@ -49,7 +69,7 @@ public class MRTimeDot {
      * @return
      */
     public MRMonth getMonth(){
-        return this.nowMonth!=null?this.nowMonth:setMonth();
+        return this.nowMonth!=null&&needUpdate?this.nowMonth:setMonth();
     }
 
     /**
@@ -68,6 +88,44 @@ public class MRTimeDot {
      */
     public long getAllDays(){
         return this.allDays;
+    }
+
+    /**
+     * 计算总天
+     */
+    private long setAllDays(){
+        return this.nowTick/24000+1;
+    }
+
+    /**
+     * 返回当前为当月的第几天
+     * @return
+     */
+    public int getMonthDay(){
+        //设alldays=1,每月=30天，首月的第一天=(1-1)%30+1=第一天
+        return (int)((getAllDays()-1)%daysPerMonth)+1;
+    }
+
+    /**
+     * 获取当前节气
+     * @return
+     */
+    public MRSolarTerm getSolarTerm(){
+        return this.nowSolarTerm!=null&&needUpdate?this.nowSolarTerm:setSolarTerm();
+    }
+
+    /**
+     * 更新节气
+     * @return
+     */
+    private MRSolarTerm setSolarTerm(){
+        //设首月为2月，设天数为30天中的第4天，则节气=(22+1*2+0)%24=0
+        //设首月为1月，设天数为30天中的第29天，则节气=(22+0*2+2)%24=0
+        int monthIndex = getMonth().ordinal();
+        float dayPercent = getMonthDay()/(float)daysPerMonth;
+        int extractIndex = dayPercent<5/30F?0:(dayPercent<20F/30F)?1:2; //偏移值，用于计算对应节气的下标
+        this.nowSolarTerm = MRSolarTerm.values()[(22+monthIndex*2+extractIndex)%24];
+        return this.nowSolarTerm;
     }
 
 }
