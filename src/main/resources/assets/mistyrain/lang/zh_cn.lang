@@ -40,3 +40,5 @@ mrsolarterm.20.name=大雪
 mrsolarterm.21.name=冬至
 mrsolarterm.22.name=小寒
 mrsolarterm.23.name=大寒
+
+argument.time.invalid_season=不正确的季节参数

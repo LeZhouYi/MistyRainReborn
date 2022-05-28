@@ -48,8 +48,12 @@ public class MistyRain {
     public static class RegistryEvents {
         @SubscribeEvent
         public static void onBlocksRegistry(final RegistryEvent.Register<Block> blockRegistryEvent) {
-            LOGGER.info("[MistyRain]:Start registying block");
+            LOGGER.info("[MistyRain]:Start registying blocks");
         }
+    }
+
+    public static Logger getLogger(){
+        return LOGGER;
     }
 
 }

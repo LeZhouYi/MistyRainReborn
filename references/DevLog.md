@@ -28,3 +28,4 @@
     - 注册命令: 参考mcforge doc事件相关
     - 命令功能实现: 参考net.minecraft.command.impl.TimeCommand
       - 获取命令参数: 参考net.minecraft.command.arguments.TimeArgument
+      - 命令推荐输入: 参考net.minecraft.command.arguments.TimeArgument::listSuggestions

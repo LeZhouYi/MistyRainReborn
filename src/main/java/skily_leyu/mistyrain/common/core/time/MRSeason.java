@@ -4,10 +4,20 @@ import net.minecraft.client.resources.I18n;
 
 public enum MRSeason{
 
-    SPRING,
-    SUMMER,
-    AUTUMN,
-    WINTER;
+    SPRING("spring"),
+    SUMMER("summer"),
+    AUTUMN("autumn"),
+    WINTER("winter");
+
+    private String name;
+
+    private MRSeason(String name){
+        this.name = name;
+    }
+
+    public String getName(){
+        return this.name;
+    }
 
     public String getI18nString(){
         return I18n.get(String.format("mrseason.%d.name",this.ordinal()));
