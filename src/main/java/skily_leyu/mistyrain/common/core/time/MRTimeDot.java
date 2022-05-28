@@ -1,5 +1,6 @@
 package skily_leyu.mistyrain.common.core.time;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.world.World;
 
 /**
@@ -7,8 +8,8 @@ import net.minecraft.world.World;
  * 记录当前时间点并计算季节，节气，月分，天数等
  */
 public class MRTimeDot {
-    private int daysPerMonth; //Config:设置一个月多少天
-    private int monthStart; //Config:设置游戏开始的初始月份，取值0-11
+    private int daysPerMonth=30; //Config:设置一个月多少天
+    private int monthStart=2; //Config:设置游戏开始的初始月份，取值0-11
 
     private long nowTick; //记录当前时间点
     private MRSeason nowSeason; //记录当前季节
@@ -23,7 +24,7 @@ public class MRTimeDot {
      * @param world
      */
     public MRTimeDot(World world){
-        this.nowTick = world.getGameTime();
+        this.nowTick = world.getDayTime();
         this.allDays = setAllDays();
         this.needUpdate = true;
     }
@@ -115,6 +116,41 @@ public class MRTimeDot {
     }
 
     /**
+     * 返回时间的整体信息
+     * @return
+     */
+    public String getTimeInfo(){
+        String season = getSeason().getI18nString();
+        String month = getMonth().getI18nString();
+        String day = getDayString(getMonthDay());
+        String solarterm = getSolarTerm().getI18nString();
+        return I18n.get("mrtime.info", season,month,day,solarterm);
+    }
+
+    /**
+     * 返回天数的本地化字串
+     * @return
+     */
+    public static String getDayString(int day){
+        if(day>0&&day<=10){
+            return getDayBase(day);
+        }else if(day>10&&day<20){
+            return String.format("%s%s", getDayBase(10),getDayBase(day-10));
+        }else{
+            return String.format("%s%s", getDayBase(day/10),getDayBase(10),getDayBase(day%10));
+        }
+    }
+
+    /**
+     * 返回基础的天数
+     * @param day
+     * @return
+     */
+    public static String getDayBase(int day){
+        return I18n.get(String.format("day.%d", day));
+    }
+
+    /**
      * 更新节气
      * @return
      */
@@ -126,6 +162,45 @@ public class MRTimeDot {
         int extractIndex = dayPercent<5/30F?0:(dayPercent<20F/30F)?1:2; //偏移值，用于计算对应节气的下标
         this.nowSolarTerm = MRSolarTerm.values()[(22+monthIndex*2+extractIndex)%24];
         return this.nowSolarTerm;
+    }
+
+    /**
+     * 获取当前节气与目标节气相差的天数
+     * @param solarTerm
+     * @return
+     */
+    public int diffDays(MRSolarTerm solarTerm) {
+        //节气所占天数=daysPerMonth/2
+        //设当前节气为3，设置节气为4，diff=(4-3+24)%24=1
+        //设当前节气为5，设置节气为4，diff=(4-5+24)%24=23
+        int nowSolarDays = (int) getAllDays()%(daysPerMonth/2);
+        int diffSolarIndex = (solarTerm.ordinal()-getSolarTerm().ordinal()+24)%24;
+        return (diffSolarIndex!=0)?(daysPerMonth/2*diffSolarIndex-nowSolarDays):0;
+    }
+
+    /**
+     * 获取当前月份与目标月份相差的天数
+     * @param month
+     * @return
+     */
+    public int diffDays(MRMonth month) {
+        //设当前月份为2月，目标月份为3月,当月23天，总月共30, diff=(3-2)*30-23=7
+        //设当前月份为2月，目标月份为2月,当月23天，总月共30, diff=0
+        //设当前月份为2月，目标月份为5月,当月23天，总月共30, diff=(5-2)*30-23=77
+        int nowMonthDays = (int) getAllDays()%(daysPerMonth);
+        int diffMonthIndex = (month.ordinal()-getMonth().ordinal()+12)%12;
+        return (diffMonthIndex!=0)?(daysPerMonth*diffMonthIndex-nowMonthDays):0;
+    }
+
+    /**
+     * 获取当前季节与目标季节相差的天数
+     * @param season
+     * @return
+     */
+    public int diffDays(MRSeason season) {
+        int nowSeasonDays = (int) getAllDays()%(daysPerMonth*3);
+        int diffSeasonIndex = (season.ordinal()-getSeason().ordinal()+4)%4;
+        return (diffSeasonIndex!=0)?(daysPerMonth*diffSeasonIndex*3-nowSeasonDays):0;
     }
 
 }

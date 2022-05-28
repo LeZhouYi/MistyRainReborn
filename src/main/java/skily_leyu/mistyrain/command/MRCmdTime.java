@@ -5,10 +5,12 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
-import net.minecraft.world.World;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.world.server.ServerWorld;
 import skily_leyu.mistyrain.common.core.time.MRMonth;
 import skily_leyu.mistyrain.common.core.time.MRSeason;
 import skily_leyu.mistyrain.common.core.time.MRSolarTerm;
+import skily_leyu.mistyrain.common.core.time.MRTimeDot;
 
 public class MRCmdTime{
 
@@ -18,51 +20,112 @@ public class MRCmdTime{
         for(MRSeason season:MRSeason.values()){
             seasonSet.then(Commands.literal(season.getName())
                 .executes((commandSource)->{
-                    return setSeason(commandSource.getSource().getLevel(),season);
+                    setSeason(commandSource.getSource().getLevel(),season);
+                    return showTimeInfo(commandSource.getSource(),commandSource.getSource().getLevel());
                 }));
         }
 
         //月份设置相关
         LiteralArgumentBuilder<CommandSource> monthSet = Commands.literal("month");
         for(MRMonth month:MRMonth.values()){
-            monthSet.then(Commands.literal(month.getName()))
+            monthSet.then(Commands.literal(month.getName())
                 .executes((commandSource)->{
-                    return setMonth(commandSource.getSource().getLevel(),month);
-                });
+                    setMonth(commandSource.getSource().getLevel(),month);
+                    return showTimeInfo(commandSource.getSource(),commandSource.getSource().getLevel());
+                }));
         }
 
         //节气设置相关
         LiteralArgumentBuilder<CommandSource> solarTermSet = Commands.literal("solarterm");
         for(MRSolarTerm solarTerm:MRSolarTerm.values()){
-            solarTermSet.then(Commands.literal(solarTerm.getName()))
+            solarTermSet.then(Commands.literal(solarTerm.getName())
                 .executes((commandSource)->{
-                    return setSolarTerm(commandSource.getSource().getLevel(),solarTerm);
-                });
+                    setSolarTerm(commandSource.getSource().getLevel(),solarTerm);
+                    return showTimeInfo(commandSource.getSource(),commandSource.getSource().getLevel());
+                }));
         }
 
 
         dispatcher.register(
-            Commands.literal("mrtime").then(
-                Commands.literal("set")
-                    .requires((commandSource)->{
-                        return commandSource.hasPermission(2);
-                    })
-                    .then(seasonSet)
-                    .then(monthSet)
-                    .then(solarTermSet)
-            )
+            Commands.literal("mrtime")
+                .then(
+                    Commands.literal("set")
+                        .requires((commandSource)->{
+                            return commandSource.hasPermission(2);
+                        })
+                        .then(seasonSet)
+                        .then(monthSet)
+                        .then(solarTermSet)
+                )
+                .then(
+                    Commands.literal("info")
+                        .requires((commandSource)->{
+                            return commandSource.hasPermission(0);
+                        })
+                        .executes((commandSource)->{
+                            return showTimeInfo(commandSource.getSource(),commandSource.getSource().getLevel());
+                        })
+                )
         );
     }
 
-    public static int setSolarTerm(World world,MRSolarTerm season){
+    /**
+     * 显示当前时间信息
+     * @param commandSource
+     * @param world
+     * @return
+     */
+    public static int showTimeInfo(CommandSource commandSource,ServerWorld world){
+        MRTimeDot timeDot = new MRTimeDot(world);
+        commandSource.sendSuccess(new StringTextComponent(timeDot.getTimeInfo()), true);
         return 0;
     }
 
-    public static int setMonth(World world,MRMonth season){
+    /**
+     * 设置节气
+     * @param world
+     * @param solarTerm
+     * @return
+     */
+    public static int setSolarTerm(ServerWorld world,MRSolarTerm solarTerm){
+        MRTimeDot timeDot = new MRTimeDot(world);
+        int diffdays = timeDot.update(world).diffDays(solarTerm);
+        System.out.println(("didffffdays"+diffdays));
+        if(diffdays!=0){
+            world.setDayTime(world.getDayTime()+diffdays*24000);
+        }
         return 0;
     }
 
-    public static int setSeason(World world,MRSeason season){
+    /**
+     * 设置月份
+     * @param world
+     * @param month
+     * @return
+     */
+    public static int setMonth(ServerWorld world,MRMonth month){
+        MRTimeDot timeDot = new MRTimeDot(world);
+        int diffdays = timeDot.update(world).diffDays(month);
+        System.out.println(("didffffdays"+diffdays));
+        if(diffdays!=0){
+            world.setDayTime(world.getDayTime()+diffdays*24000);
+        }
+        return 0;
+    }
+
+    /**
+     * 设置节气
+     * @param world
+     * @param season
+     * @return
+     */
+    public static int setSeason(ServerWorld world,MRSeason season){
+        MRTimeDot timeDot = new MRTimeDot(world);
+        int diffdays = timeDot.update(world).diffDays(season);
+        System.out.println(("didffffdays"+diffdays));
+        if(diffdays!=0){
+            world.setDayTime(world.getDayTime()+diffdays*24000);
+        }
         return 0;
     }
 
