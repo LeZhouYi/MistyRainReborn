@@ -20,8 +20,9 @@ public class MRCmdTime{
         for(MRSeason season:MRSeason.values()){
             seasonSet.then(Commands.literal(season.getName())
                 .executes((commandSource)->{
-                    setSeason(commandSource.getSource().getLevel(),season);
-                    return showTimeInfo(commandSource.getSource(),commandSource.getSource().getLevel());
+                    ServerWorld world = commandSource.getSource().getLevel();
+                    setSeason(world,season);
+                    return showTimeInfo(commandSource.getSource(),world);
                 }));
         }
 
@@ -30,8 +31,9 @@ public class MRCmdTime{
         for(MRMonth month:MRMonth.values()){
             monthSet.then(Commands.literal(month.getName())
                 .executes((commandSource)->{
-                    setMonth(commandSource.getSource().getLevel(),month);
-                    return showTimeInfo(commandSource.getSource(),commandSource.getSource().getLevel());
+                    ServerWorld world = commandSource.getSource().getLevel();
+                    setMonth(world,month);
+                    return showTimeInfo(commandSource.getSource(),world);
                 }));
         }
 
@@ -40,8 +42,9 @@ public class MRCmdTime{
         for(MRSolarTerm solarTerm:MRSolarTerm.values()){
             solarTermSet.then(Commands.literal(solarTerm.getName())
                 .executes((commandSource)->{
-                    setSolarTerm(commandSource.getSource().getLevel(),solarTerm);
-                    return showTimeInfo(commandSource.getSource(),commandSource.getSource().getLevel());
+                    ServerWorld world = commandSource.getSource().getLevel();
+                    setSolarTerm(world,solarTerm);
+                    return showTimeInfo(commandSource.getSource(),world);
                 }));
         }
 
@@ -65,6 +68,43 @@ public class MRCmdTime{
                         .executes((commandSource)->{
                             return showTimeInfo(commandSource.getSource(),commandSource.getSource().getLevel());
                         })
+                )
+                .then(
+                    Commands.literal("next")
+                        .requires((commandSource)->{
+                            return commandSource.hasPermission(2);
+                        })
+                        .then(
+                            Commands.literal("month").executes((commandSource)->{
+                                ServerWorld world = commandSource.getSource().getLevel();
+                                MRTimeDot timeDot = new MRTimeDot(world);
+                                setMonth(world, timeDot.getMonth().getNext());
+                                return showTimeInfo(commandSource.getSource(),world);
+                            })
+                        )
+                        .then(
+                            Commands.literal("season").executes((commandSource)->{
+                                ServerWorld world = commandSource.getSource().getLevel();
+                                MRTimeDot timeDot = new MRTimeDot(world);
+                                setSeason(world, timeDot.getSeason().getNext());
+                                return showTimeInfo(commandSource.getSource(),world);
+                            })
+                        )
+                        .then(
+                            Commands.literal("solarterm").executes((commandSource)->{
+                                ServerWorld world = commandSource.getSource().getLevel();
+                                MRTimeDot timeDot = new MRTimeDot(world);
+                                setSolarTerm(world,timeDot.getSolarTerm().getNext());
+                                return showTimeInfo(commandSource.getSource(),world);
+                            })
+                        )
+                        .then(
+                            Commands.literal("day").executes((commandSource->{
+                                ServerWorld world = commandSource.getSource().getLevel();
+                                world.setDayTime(world.getDayTime()+24000);
+                                return showTimeInfo(commandSource.getSource(),world);
+                            }))
+                        )
                 )
         );
     }
@@ -90,7 +130,6 @@ public class MRCmdTime{
     public static int setSolarTerm(ServerWorld world,MRSolarTerm solarTerm){
         MRTimeDot timeDot = new MRTimeDot(world);
         int diffdays = timeDot.update(world).diffDays(solarTerm);
-        System.out.println(("didffffdays"+diffdays));
         if(diffdays!=0){
             world.setDayTime(world.getDayTime()+diffdays*24000);
         }
@@ -106,7 +145,6 @@ public class MRCmdTime{
     public static int setMonth(ServerWorld world,MRMonth month){
         MRTimeDot timeDot = new MRTimeDot(world);
         int diffdays = timeDot.update(world).diffDays(month);
-        System.out.println(("didffffdays"+diffdays));
         if(diffdays!=0){
             world.setDayTime(world.getDayTime()+diffdays*24000);
         }
@@ -114,7 +152,7 @@ public class MRCmdTime{
     }
 
     /**
-     * 设置节气
+     * 设置季节
      * @param world
      * @param season
      * @return
@@ -122,7 +160,6 @@ public class MRCmdTime{
     public static int setSeason(ServerWorld world,MRSeason season){
         MRTimeDot timeDot = new MRTimeDot(world);
         int diffdays = timeDot.update(world).diffDays(season);
-        System.out.println(("didffffdays"+diffdays));
         if(diffdays!=0){
             world.setDayTime(world.getDayTime()+diffdays*24000);
         }

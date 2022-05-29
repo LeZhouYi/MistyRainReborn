@@ -30,4 +30,8 @@ public enum MRMonth {
         return name;
     }
 
+    public MRMonth getNext() {
+        return values()[(this.ordinal()+1)%12];
+    }
+
 }

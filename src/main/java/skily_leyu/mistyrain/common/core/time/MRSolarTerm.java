@@ -41,4 +41,8 @@ public enum MRSolarTerm {
     public String getI18nString(){
         return I18n.get(String.format("mrsolarterm.%d.name",this.ordinal()));
     }
+
+    public MRSolarTerm getNext() {
+        return values()[(this.ordinal()+1)%24];
+    }
 }
