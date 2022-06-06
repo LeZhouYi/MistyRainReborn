@@ -31,6 +31,18 @@ public class MRTimeDot {
 
     /**
      * 更新
+     * @param monthStart
+     * @param daysPerMonth
+     * @return
+     */
+    public MRTimeDot update(int monthStart, int daysPerMonth){
+        this.daysPerMonth = daysPerMonth;
+        this.monthStart = monthStart;
+        return this;
+    }
+
+    /**
+     * 更新
      * @param world
      * @return
      */
