@@ -47,7 +47,7 @@ public class MRTimeDot {
      * @return
      */
     public MRTimeDot update(World world){
-        this.nowTick = world.getGameTime();
+        this.nowTick = world.getDayTime();
         long teAllDays = setAllDays();
         if(this.allDays!=teAllDays){
             this.allDays = teAllDays;
@@ -63,7 +63,7 @@ public class MRTimeDot {
      * @return
      */
     public MRSeason getSeason(){
-        return nowSeason!=null&&needUpdate?nowSeason:setSeason();
+        return nowSeason!=null&&!needUpdate?nowSeason:setSeason();
     }
 
     /**
@@ -82,7 +82,7 @@ public class MRTimeDot {
      * @return
      */
     public MRMonth getMonth(){
-        return this.nowMonth!=null&&needUpdate?this.nowMonth:setMonth();
+        return this.nowMonth!=null&&!needUpdate?this.nowMonth:setMonth();
     }
 
     /**
@@ -124,7 +124,7 @@ public class MRTimeDot {
      * @return
      */
     public MRSolarTerm getSolarTerm(){
-        return this.nowSolarTerm!=null&&needUpdate?this.nowSolarTerm:setSolarTerm();
+        return this.nowSolarTerm!=null&&!needUpdate?this.nowSolarTerm:setSolarTerm();
     }
 
     /**
@@ -185,9 +185,9 @@ public class MRTimeDot {
         //节气所占天数=daysPerMonth/2
         //设当前节气为3，设置节气为4，diff=(4-3+24)%24=1
         //设当前节气为5，设置节气为4，diff=(4-5+24)%24=23
-        int nowSolarDays = (int) getAllDays()%(daysPerMonth/2);
+        int nowSolarDays = ((getMonthDay()+(int)(daysPerMonth/2-daysPerMonth*5/30F))-1)%(daysPerMonth/2)+1;
         int diffSolarIndex = (solarTerm.ordinal()-getSolarTerm().ordinal()+24)%24;
-        return (diffSolarIndex!=0)?(daysPerMonth/2*diffSolarIndex-nowSolarDays):0;
+        return (diffSolarIndex!=0)?(daysPerMonth/2*diffSolarIndex-nowSolarDays+1):0;
     }
 
     /**
@@ -199,9 +199,9 @@ public class MRTimeDot {
         //设当前月份为2月，目标月份为3月,当月23天，总月共30, diff=(3-2)*30-23=7
         //设当前月份为2月，目标月份为2月,当月23天，总月共30, diff=0
         //设当前月份为2月，目标月份为5月,当月23天，总月共30, diff=(5-2)*30-23=77
-        int nowMonthDays = (int) getAllDays()%(daysPerMonth);
+        int nowMonthDays = getMonthDay();
         int diffMonthIndex = (month.ordinal()-getMonth().ordinal()+12)%12;
-        return (diffMonthIndex!=0)?(daysPerMonth*diffMonthIndex-nowMonthDays):0;
+        return (diffMonthIndex!=0)?(daysPerMonth*diffMonthIndex-nowMonthDays+1):0;
     }
 
     /**
@@ -210,9 +210,9 @@ public class MRTimeDot {
      * @return
      */
     public int diffDays(MRSeason season) {
-        int nowSeasonDays = (int) getAllDays()%(daysPerMonth*3);
+        int nowSeasonDays = (int)((getAllDays()-1)%(daysPerMonth*3)+1);
         int diffSeasonIndex = (season.ordinal()-getSeason().ordinal()+4)%4;
-        return (diffSeasonIndex!=0)?(daysPerMonth*diffSeasonIndex*3-nowSeasonDays):0;
+        return (diffSeasonIndex!=0)?(daysPerMonth*diffSeasonIndex*3-nowSeasonDays+1):0;
     }
 
 }

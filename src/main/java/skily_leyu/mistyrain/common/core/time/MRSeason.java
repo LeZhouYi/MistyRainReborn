@@ -23,4 +23,8 @@ public enum MRSeason{
         return I18n.get(String.format("mrseason.%d.name",this.ordinal()));
     }
 
+    public MRSeason getNext() {
+        return values()[(this.ordinal()+1)%4];
+    }
+
 }
