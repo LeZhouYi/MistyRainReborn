@@ -1,0 +1,14 @@
+{
+    "DIRT":[
+        "minecraft:dirt",
+        "minecraft:farmland",
+        "minecraft:podzol"
+    ],
+    "WATER":[
+        "minecraft:water"
+    ],
+    "SAND":[
+        "minecraft:sand",
+        "minecraft:red_sand"
+    ]
+}

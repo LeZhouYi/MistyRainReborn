@@ -11,6 +11,8 @@ import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import skily_leyu.mistyrain.config.MRSetting;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,6 +20,7 @@ import org.apache.logging.log4j.Logger;
 @Mod("mistyrain")
 public class MistyRain {
 
+    public static final String MOD_ID = "mistyrain";
     private static final Logger LOGGER = LogManager.getLogger();
 
     public MistyRain() {
@@ -29,6 +32,7 @@ public class MistyRain {
     }
 
     private void setup(final FMLCommonSetupEvent event){
+        new MRSetting(event);
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {

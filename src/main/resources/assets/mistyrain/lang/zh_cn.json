@@ -42,7 +42,7 @@
     "mrsolarterm.22.name":"小寒",
     "mrsolarterm.23.name":"大寒",
 
-    "argument.time.invalid_season":"不正确的季节参数",
+    "argument.time.invalid_season":"参数错误",
 
     "mrtime.info":"%s季:%s%s日 %s",
 

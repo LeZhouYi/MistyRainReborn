@@ -1,0 +1,31 @@
+[
+    {
+        "name":"snow_velvet",
+        "seed":"mistyrain:snow_velvet_seed",
+        "stages":[
+            {
+                "nowStage":"SEED_DROP",
+                "nextStages":{
+                    "SPROUT": 1
+                },
+                "timeSpan":{
+                    "start": "WINTER_BEGINS",
+                    "end": "GREAT_COLD"
+                },
+                "harvests":{}
+            }
+        ],
+        "needAnimas": [],
+        "genAnima":{
+            "type": "BLANK",
+            "level": "THIN"
+        },
+        "likeSoil": "minecraft:farmland",
+        "suitSoilType": "DIRT",
+        "suitWater": "minecraft:water",
+        "needWater": 10,
+        "needFertilizer": 10,
+        "needTemper": [0,10],
+        "needLight": [8,15]
+    }
+]
