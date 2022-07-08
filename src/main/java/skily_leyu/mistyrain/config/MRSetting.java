@@ -7,12 +7,15 @@ import java.io.Reader;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import net.minecraft.state.IntegerProperty;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import skily_leyu.mistyrain.MistyRain;
 import skily_leyu.mistyrain.common.core.potplant.PotPlantList;
 import skily_leyu.mistyrain.common.core.potplant.SoilMap;
 
 public class MRSetting {
+
+    public static IntegerProperty PLANT_STAGE_HEX = IntegerProperty.create("plant_stage", 0, 15);
 
     public static SoilMap soilMap;
     public static PotPlantList potPlants;
