@@ -21,8 +21,8 @@ public class MRSetting {
     public static PotPlantList potPlants;
 
     public MRSetting(final FMLCommonSetupEvent event){
-        soilMap = loadJson(SoilMap.class, "mr_soil_map");
-        potPlants = loadJson(PotPlantList.class, "mr_pot_plants");
+        // soilMap = loadJson(SoilMap.class, "mr_soil_map");
+        // potPlants = loadJson(PotPlantList.class, "mr_pot_plants");
     }
 
     private <T> T loadJson(Class<T> jsonClass, String registryName){

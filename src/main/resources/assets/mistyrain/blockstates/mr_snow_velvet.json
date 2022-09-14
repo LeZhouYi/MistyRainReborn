@@ -1,9 +1,9 @@
 {
     "forge_marker":1,
     "defaults":{
-        "model":"cross",
+        "model":"block/cross",
         "textures":{
-            "cross": "mistyrain:blocks/plant/mountain_hydrangea_leaves_full"
+            "cross": "mistyrain:block/plants/snow_velvet_full_flower"
         }
     },
     "variants":{
