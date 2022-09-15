@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "mistyrain:block/plants/snow_velvet_full_flower"
+        "layer0": "mistyrain:item/snow_velvet"
     }
 }

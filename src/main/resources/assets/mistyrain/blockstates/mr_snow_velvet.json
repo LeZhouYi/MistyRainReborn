@@ -1,10 +1,7 @@
 {
     "variants":{
         "":{
-            "model":"minecraft:block/cross",
-            "textures":{
-                "cross": "mistyrain:block/plants/snow_velvet_full_flower"
-            }
+            "model":"mistyrain:block/snow_velvet/snow_velvet_full_flower"
         }
     }
 }
