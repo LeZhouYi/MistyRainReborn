@@ -1,6 +1,0 @@
-{
-    "parent":"minecraft:block/cross",
-    "textures":{
-        "cross":"mistyrain:block/snow_velvet/snow_velvet_full_flower"
-    }
-}

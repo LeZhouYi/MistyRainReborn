@@ -1,7 +1,23 @@
 {
     "variants":{
         "":{
-            "model":"mistyrain:block/snow_velvet/snow_velvet_full_flower"
+            "model":"mistyrain:block/snow_velvet/snow_velvet_full_blown"
+        },
+        "1":{
+            "model":"mistyrain:block/snow_velvet/snow_velvet_sprout"
+        },
+        "2":{
+            "model":"mistyrain:block/snow_velvet/snow_velvet_root_depth"
+        },
+        "3":{
+            "model":"mistyrain:block/snow_velvet/snow_velvet_verdant"
+        },
+        "4":{
+            "model":"mistyrain:block/snow_velvet/snow_velvet_in_bud"
+        },
+        "5":{
+            "model":"mistyrain:block/snow_velvet/snow_velvet_full_blown"
         }
+
     }
 }

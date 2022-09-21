@@ -10,7 +10,63 @@
                         "SPROUT": 1
                     },
                     "timeSpan":{
-                        "start": "WINTER_BEGINS",
+                        "start": "SPRING_BEGIN",
+                        "end": "HOAR_FROST_FALLS"
+                    },
+                    "harvests":{}
+                },
+                {
+                    "nowStage":"SPROUT",
+                    "nextStages":{
+                        "ROOT_DEPTH":1
+                    },
+                    "timeSpan":{
+                        "start": "SPRING_BEGIN",
+                        "end": "HOAR_FROST_FALLS"
+                    },
+                    "harvests":{}
+                },
+                {
+                    "nowStage":"ROOT_DEPTH",
+                    "nextStages":{
+                        "VERDANT":1
+                    },
+                    "timeSpan":{
+                        "start": "SPRING_BEGIN",
+                        "end": "HOAR_FROST_FALLS"
+                    },
+                    "harvests":{}
+                },
+                {
+                    "nowStage":"VERDANT",
+                    "nextStages":{
+                        "IN_BUD":1,
+                        "VERDANT":4
+                    },
+                    "timeSpan":{
+                        "start": "SUMMER_BEGINS",
+                        "end": "GREAT_HEAT"
+                    },
+                    "harvests":{}
+                },
+                {
+                    "nowStage":"IN_BUD",
+                    "nextStages":{
+                        "FULL_BLOWN":1
+                    },
+                    "timeSpan":{
+                        "start": "SUMMER_BEGINS",
+                        "end": "GREAT_HEAT"
+                    },
+                    "harvests":{}
+                },
+                {
+                    "nowStage":"FULL_BLOWN",
+                    "nextStages":{
+                        "VERDANT":1
+                    },
+                    "timeSpan":{
+                        "start": "SPRING_BEGIN",
                         "end": "GREAT_COLD"
                     },
                     "harvests":{}

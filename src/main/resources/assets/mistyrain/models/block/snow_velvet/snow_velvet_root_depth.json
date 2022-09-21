@@ -1,0 +1,6 @@
+{
+    "parent":"minecraft:block/cross",
+    "textures":{
+        "cross":"mistyrain:block/snow_velvet/snow_velvet_root_depth"
+    }
+}
