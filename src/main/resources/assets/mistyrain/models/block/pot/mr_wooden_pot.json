@@ -1,0 +1,7 @@
+{
+    "parent":"mistyrain:block/pot/medium_pot",
+    "textures":{
+        "pot_side":"mistyrain:block/pot/wooden_pot_side",
+        "pot_bottom":"mistyrain:block/pot/wooden_pot_bottom"
+    }
+}

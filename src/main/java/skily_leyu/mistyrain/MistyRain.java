@@ -14,6 +14,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import skily_leyu.mistyrain.block.MRBlock;
 import skily_leyu.mistyrain.config.MRSetting;
 import skily_leyu.mistyrain.item.MRItem;
+import skily_leyu.mistyrain.tileentity.MRTileEntity;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,6 +34,7 @@ public class MistyRain {
         MinecraftForge.EVENT_BUS.register(this);
         MRBlock.BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
         MRItem.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        MRTileEntity.TILEENTITY_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 
     private void setup(final FMLCommonSetupEvent event){

@@ -1,23 +1,22 @@
 {
     "variants":{
-        "":{
+        "plant_stage=0":{
             "model":"mistyrain:block/snow_velvet/snow_velvet_full_blown"
         },
-        "1":{
+        "plant_stage=1":{
             "model":"mistyrain:block/snow_velvet/snow_velvet_sprout"
         },
-        "2":{
+        "plant_stage=2":{
             "model":"mistyrain:block/snow_velvet/snow_velvet_root_depth"
         },
-        "3":{
+        "plant_stage=3":{
             "model":"mistyrain:block/snow_velvet/snow_velvet_verdant"
         },
-        "4":{
+        "plant_stage=4":{
             "model":"mistyrain:block/snow_velvet/snow_velvet_in_bud"
         },
-        "5":{
+        "plant_stage=5":{
             "model":"mistyrain:block/snow_velvet/snow_velvet_full_blown"
         }
-
     }
 }

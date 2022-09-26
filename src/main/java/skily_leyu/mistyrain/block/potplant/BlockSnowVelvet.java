@@ -6,18 +6,16 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer.Builder;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
-import skily_leyu.mistyrain.config.MRSetting;
 
 public class BlockSnowVelvet extends Block{
 
-    private static IntegerProperty STAGE = MRSetting.PLANT_STAGE_HEX;
-    private static VoxelShape SHAPE = VoxelShapes.create(new AxisAlignedBB(0, 0, 0, 1.0, 1.0, 1.0));
+    private static IntegerProperty STAGE = IntegerProperty.create("plant_stage", 0, 5);
+    private static VoxelShape SHAPE = VoxelShapes.box(0.09375D, 0.0D, 0.09375D, 0.90625D, 0.9375D, 0.90625D);
 
     public BlockSnowVelvet() {
         super(AbstractBlock.Properties.of(Material.PLANT).noCollission());
@@ -36,5 +34,4 @@ public class BlockSnowVelvet extends Block{
             ISelectionContext p_220053_4_) {
         return SHAPE;
     }
-
 }
