@@ -10,6 +10,7 @@ import com.google.gson.GsonBuilder;
 import net.minecraft.state.IntegerProperty;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import skily_leyu.mistyrain.MistyRain;
+import skily_leyu.mistyrain.common.core.potplant.PotMap;
 import skily_leyu.mistyrain.common.core.potplant.PotPlantList;
 import skily_leyu.mistyrain.common.core.potplant.SoilMap;
 
@@ -19,10 +20,12 @@ public class MRSetting {
 
     public static SoilMap soilMap;
     public static PotPlantList potPlants;
+    public static PotMap potMap;
 
     public MRSetting(final FMLCommonSetupEvent event){
         soilMap = loadJson(SoilMap.class, "mr_soil_map");
         potPlants = loadJson(PotPlantList.class, "mr_pot_plants");
+        potMap = loadJson(PotMap.class, "mr_pots");
     }
 
     private <T> T loadJson(Class<T> jsonClass, String registryName){

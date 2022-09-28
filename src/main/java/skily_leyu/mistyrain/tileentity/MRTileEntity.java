@@ -10,9 +10,9 @@ import skily_leyu.mistyrain.block.MRBlock;
 public class MRTileEntity {
     public static final DeferredRegister<TileEntityType<?>> TILEENTITY_REGISTER = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, MistyRain.MOD_ID);
 
-    public static RegistryObject<TileEntityType<PotTileEntity>> potTileEntity = TILEENTITY_REGISTER.register("mr_pot_tileentity", ()->{
+    public static RegistryObject<TileEntityType<WoodenPotTileEntity>> potTileEntity = TILEENTITY_REGISTER.register("mr_pot_tileentity", ()->{
         return TileEntityType.Builder.of(()->{
-            return new PotTileEntity();
+            return new WoodenPotTileEntity();
         }, MRBlock.blockWoodenPot.get()).build(null);
     });
 }

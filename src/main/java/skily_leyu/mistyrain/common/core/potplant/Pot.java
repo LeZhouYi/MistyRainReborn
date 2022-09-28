@@ -2,6 +2,10 @@ package skily_leyu.mistyrain.common.core.potplant;
 
 import java.util.List;
 
+import net.minecraft.item.ItemStack;
+import skily_leyu.mistyrain.common.utility.ItemUtils;
+import skily_leyu.mistyrain.config.MRSetting;
+
 public class Pot {
 
     private String name; //花盆名
@@ -11,5 +15,19 @@ public class Pot {
     private SoilType suitSoilType; //适合的土壤类型
     private List<String> suitFluids; //适合的水份
     private int fertilizer; //肥料值
+
+    public int getSlotSize(){
+        return this.slotSize;
+    }
+
+    public boolean isSuitSoil(ItemStack itemStack){
+        if(this.suitSoils.contains(ItemUtils.getRegistryName(itemStack))){
+            return true;
+        }
+        if(MRSetting.soilMap.contains(this.suitSoilType, itemStack)){
+            return true;
+        }
+        return false;
+    }
 
 }
