@@ -1,5 +1,6 @@
 package skily_leyu.mistyrain.common.utility;
 
+
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
@@ -66,6 +67,7 @@ public class ItemUtils {
                 inputCount = (itemNowConut>slotLimit)?slotLimit:itemNowConut;
             }else if(ItemStack.isSame(itemStack, slotStack)){
                 int limit = (slotLimit>itemStack.getMaxStackSize())?itemStack.getMaxStackSize():slotLimit;
+                limit-= slotStack.getCount();
                 inputCount = (itemNowConut>limit)?limit:itemNowConut;
             }
             //输入物品

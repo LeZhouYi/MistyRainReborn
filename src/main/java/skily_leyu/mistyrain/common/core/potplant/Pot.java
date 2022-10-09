@@ -12,7 +12,7 @@ public class Pot {
     private int slotSize; //对应泥土可放格子数，可种植物数量
     private int tankSize; //储水量
     private List<String> suitSoils; //适合的土壤
-    private SoilType suitSoilType; //适合的土壤类型
+    private List<SoilType> suitSoilType; //适合的土壤类型
     private List<String> suitFluids; //适合的水份
     private int fertilizer; //肥料值
 
@@ -24,8 +24,10 @@ public class Pot {
         if(this.suitSoils.contains(ItemUtils.getRegistryName(itemStack))){
             return true;
         }
-        if(MRSetting.soilMap.contains(this.suitSoilType, itemStack)){
-            return true;
+        for(SoilType soilType:this.suitSoilType){
+            if(MRSetting.soilMap.contains(soilType, itemStack)){
+                return true;
+            }
         }
         return false;
     }

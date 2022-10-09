@@ -1,12 +1,12 @@
 {
-    "potList":{
+    "potMap":{
         "mr_wooden_pot":{
             "name": "mr_wooden_pot",
             "slotSize":1,
             "tankSize":1,
             "suitSoils":[],
-            "suitSoilType":"DIRT",
-            "suitFluids":"minecraft:water",
+            "suitSoilType":["DIRT"],
+            "suitFluids":["minecraft:water"],
             "fertilizer":1000
         }
     }

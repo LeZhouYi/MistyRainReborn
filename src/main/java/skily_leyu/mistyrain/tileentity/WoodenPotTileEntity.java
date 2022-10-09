@@ -1,7 +1,12 @@
 package skily_leyu.mistyrain.tileentity;
 
+import javax.annotation.Nullable;
+
+import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.items.ItemStackHandler;
@@ -21,7 +26,7 @@ public class WoodenPotTileEntity extends TileEntity implements ITickableTileEnti
     private PotPlantHandler potHandler; //植物状态记录器
 
     public WoodenPotTileEntity() {
-        super(MRTileEntity.potTileEntity.get());
+        super(MRTileEntity.woodenPotTileEntity.get());
         this.dirtInv = new ItemStackHandler(this.getPot().getSlotSize()){
             @Override
             public int getSlotLimit(int slot){
@@ -52,8 +57,8 @@ public class WoodenPotTileEntity extends TileEntity implements ITickableTileEnti
     }
 
     @Override
-    public void deserializeNBT(CompoundNBT nbt) {
-        super.deserializeNBT(nbt);
+    public void deserializeNBT(BlockState blockState,CompoundNBT nbt) {
+        super.deserializeNBT(blockState,nbt);
         this.dirtInv.deserializeNBT(nbt.getCompound("DirtInv"));
         this.plantInv.deserializeNBT(nbt.getCompound("PlantInv"));
         this.potHandler.deserializeNBT(nbt.getCompound("PlantStage"));
@@ -83,6 +88,34 @@ public class WoodenPotTileEntity extends TileEntity implements ITickableTileEnti
             }
         }
         return 0;
+    }
+
+    public ItemStack getDirtStack(int slot){
+        if(slot>=0 && slot<this.dirtInv.getSlots()){
+            return this.dirtInv.getStackInSlot(slot);
+        }
+        return ItemStack.EMPTY;
+    }
+
+    @Override
+    @Nullable
+    public SUpdateTileEntityPacket getUpdatePacket() {
+        return new SUpdateTileEntityPacket(getBlockPos(),1,getUpdateTag());
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
+        handleUpdateTag(getBlockState(), pkt.getTag());
+    }
+
+    @Override
+    public CompoundNBT getUpdateTag() {
+        return serializeNBT();
+    }
+
+    @Override
+    public void handleUpdateTag(BlockState state, CompoundNBT tag) {
+        deserializeNBT(state, tag);
     }
 
     /**

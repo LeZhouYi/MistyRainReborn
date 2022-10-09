@@ -51,10 +51,13 @@ public class BlockWoodenPot extends Block{
             ItemStack itemStack = playerEntity.getMainHandItem();
             if(!itemStack.isEmpty()&&tileEntity!=null){
                 int amount = tileEntity.onItemAdd(itemStack);
-                ItemUtils.shrinkItem(playerEntity, itemStack, amount);
+                if(amount>0){
+                    world.markAndNotifyBlock(blockPos, world.getChunkAt(blockPos), blockState, blockState, 2, 0);
+                    ItemUtils.shrinkItem(playerEntity, itemStack, amount);
+                }
             }
         }
-        return ActionResultType.PASS;
+        return ActionResultType.SUCCESS;
     }
 
 }
