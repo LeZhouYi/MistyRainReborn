@@ -1,8 +1,8 @@
 {
-    "potPlants":[
-        {
+    "potPlants":{
+        "snow_velvet":{
             "name":"snow_velvet",
-            "seed":"mistyrain:snow_velvet_seed",
+            "seeds":["mistyrain:snow_velvet_seed"],
             "stages":[
                 {
                     "nowStage":"SEED_DROP",
@@ -77,13 +77,13 @@
                 "type": "BLANK",
                 "level": "THIN"
             },
-            "likeSoil": "minecraft:farmland",
-            "suitSoilType": "DIRT",
+            "likeSoils": ["minecraft:farmland"],
+            "suitSoilTypes": ["DIRT"],
             "suitWater": "minecraft:water",
             "needWater": 10,
             "needFertilizer": 10,
             "needTemper": [5,10],
             "needLight": [8,15]
         }
-    ]
+    }
 }
