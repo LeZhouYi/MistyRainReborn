@@ -3,15 +3,15 @@ package skily_leyu.mistyrain.tileentity;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.PlayerGenerationTracker;
+import net.minecraft.world.server.ServerChunkProvider;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.items.ItemStackHandler;
 import skily_leyu.mistyrain.common.core.potplant.Pot;
@@ -52,20 +52,19 @@ public class WoodenPotTileEntity extends TileEntity implements ITickableTileEnti
     }
 
     @Override
-    public CompoundNBT serializeNBT() {
-        CompoundNBT nbt =  super.serializeNBT();
+    public CompoundNBT save(CompoundNBT nbt) {
         nbt.put("DirtInv",this.dirtInv.serializeNBT());
         nbt.put("PlantInv",this.plantInv.serializeNBT());
         nbt.put("PlantStage", this.potHandler.serializeNBT());
-        return nbt;
+        return super.save(nbt);
     }
 
     @Override
-    public void deserializeNBT(BlockState blockState,CompoundNBT nbt) {
+    public void load(BlockState blockState,CompoundNBT nbt) {
+        super.load(blockState,nbt);
         this.dirtInv.deserializeNBT(nbt.getCompound("DirtInv"));
         this.plantInv.deserializeNBT(nbt.getCompound("PlantInv"));
         this.potHandler.deserializeNBT(nbt.getCompound("PlantStage"));
-        super.deserializeNBT(blockState,nbt);
     }
 
     /**
@@ -92,6 +91,10 @@ public class WoodenPotTileEntity extends TileEntity implements ITickableTileEnti
                     }
                 }
             }
+        }
+        if(amount>0){
+            syncToTrackingClients();
+            setChanged();
         }
         return amount;
     }
@@ -140,19 +143,34 @@ public class WoodenPotTileEntity extends TileEntity implements ITickableTileEnti
     @Override
     @Nullable
     public SUpdateTileEntityPacket getUpdatePacket() {
-        return new SUpdateTileEntityPacket(this.worldPosition,-1,serializeNBT());
+        return new SUpdateTileEntityPacket(worldPosition,-1,getUpdateTag());
     }
 
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-        super.onDataPacket(net, pkt);
-        deserializeNBT(getBlockState(), pkt.getTag());
+        System.out.println("test2");
+        handleUpdateTag(getBlockState(),pkt.getTag());
     }
 
-    public void syncToTrackingClients() {
-        World world = this.getLevel();
-		if (world!=null&&!world.isClientSide) {
+    @Override
+    public void handleUpdateTag(BlockState state, CompoundNBT tag) {
+        load(state, tag);
+    }
+
+    @Override
+    public CompoundNBT getUpdateTag() {
+        return save(new CompoundNBT());
+    }
+
+    public void syncToTrackingClients(){
+        World world = this.level;
+        if(world!=null&&!world.isClientSide()){
             SUpdateTileEntityPacket packet = this.getUpdatePacket();
+            if(packet!=null){
+                ServerChunkProvider chunkProvider = ((ServerWorld)world).getChunkSource();
+                System.out.println("test");
+                chunkProvider.chunkMap.getPlayers(new ChunkPos(worldPosition), false).forEach(e->e.connection.send(packet));
+            }
         }
     }
 
