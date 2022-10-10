@@ -4,10 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraftforge.common.util.Constants;
+import skily_leyu.mistyrain.config.MRSetting;
 
 public class PotPlantHandler {
 
@@ -27,6 +30,24 @@ public class PotPlantHandler {
     public void addPlant(int i, @Nonnull PotPlant potPlant) {
         this.stageMap.put(i, 0);//设置状态为0(一般为SeedDrop)
         this.plantMap.put(i, potPlant.getName());
+    }
+
+    /**
+     * 获取特定格子中植物的BlockState，若不存在植物或该植物Stage=0，即SeedDrop，则返回null
+     * @param slot 指定格子
+     * @return
+     */
+    @Nullable
+    public BlockState getBlockStage(int slot){
+        if(!this.stageMap.containsKey(slot)||!this.plantMap.containsKey(slot)){
+            return null;
+        }
+        String name = this.plantMap.get(slot);
+        PotPlant potPlant = MRSetting.potPlants.getPotPlant(name);
+        if(potPlant!=null){
+            return potPlant.getBlockState(stageMap.get(slot));
+        }
+        return null;
     }
 
     public CompoundNBT serializeNBT(){

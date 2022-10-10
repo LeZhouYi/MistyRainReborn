@@ -90,6 +90,11 @@ public class WoodenPotTileEntity extends TileEntity implements ITickableTileEnti
         return 0;
     }
 
+    /**
+     * 获取指定格子的土壤
+     * @param slot
+     * @return
+     */
     public ItemStack getDirtStack(int slot){
         if(slot>=0 && slot<this.dirtInv.getSlots()){
             return this.dirtInv.getStackInSlot(slot);
@@ -132,6 +137,19 @@ public class WoodenPotTileEntity extends TileEntity implements ITickableTileEnti
      */
     public Pot getPot(){
         return WOODEN_POT;
+    }
+
+    /**
+     * 获取指定格子植物的BlockState
+     * @param slot
+     * @return
+     */
+    @Nullable
+    public BlockState getPlantStage(int slot){
+        if(slot<0|slot>=this.plantInv.getSlots()){
+            return this.potHandler.getBlockStage(slot);
+        }
+        return null;
     }
 
 }

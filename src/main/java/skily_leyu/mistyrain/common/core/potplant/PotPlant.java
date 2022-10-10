@@ -2,7 +2,11 @@ package skily_leyu.mistyrain.common.core.potplant;
 
 import java.util.List;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.registries.ForgeRegistries;
 import skily_leyu.mistyrain.common.utility.ItemUtils;
 import skily_leyu.mistyrain.config.MRSetting;
 
@@ -20,6 +24,25 @@ public class PotPlant {
     private int needFertilizer; //消耗的肥料值
     private int[] needTemper; //适宜的生长温度
     private int[] needLight; //适宜的光照
+
+    /**
+     * 获取该植物的BlockState,其中meta=0时，若状态为SeedDrop则为null，默认不渲染模型
+     * @param meta
+     * @return
+     */
+    public BlockState getBlockState(int meta){
+        if(stages.size()<1){
+            return null;
+        }
+        if(meta==0&&stages.get(0).isStage(PlantStageType.SEED_DROP)){
+            return null;
+        }
+        Block plantBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(getName()));
+        if(plantBlock!=null){
+            return plantBlock.getStateDefinition().getPossibleStates().get(meta);
+        }
+        return null;
+    }
 
     /**
      * 判断当前物品是否为该植物的种子

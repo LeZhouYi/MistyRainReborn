@@ -21,6 +21,7 @@ public class WoodenPotTER extends TileEntityRenderer<WoodenPotTileEntity>{
 
     @Override
     public void render(WoodenPotTileEntity tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
+        //渲染土壤
         ItemStack dirtStack = tileEntityIn.getDirtStack(0);
         if(!dirtStack.isEmpty() && dirtStack.getItem() instanceof BlockItem){
             matrixStackIn.pushPose();
@@ -29,6 +30,16 @@ public class WoodenPotTER extends TileEntityRenderer<WoodenPotTileEntity>{
             BlockRendererDispatcher blockRendererDispatcher = Minecraft.getInstance().getBlockRenderer();
             BlockState state = ((BlockItem)dirtStack.getItem()).getBlock().defaultBlockState();
             blockRendererDispatcher.renderBlock(state, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn, EmptyModelData.INSTANCE);
+            matrixStackIn.popPose();
+        }
+        //渲染植物
+        BlockState plantState = tileEntityIn.getBlockState();
+        if(plantState!=null){
+            matrixStackIn.pushPose();
+            matrixStackIn.translate(0.625, 0.3126, 0.625);
+            matrixStackIn.scale(0.875F,0.875F,0.875F);
+            BlockRendererDispatcher blockRendererDispatcher = Minecraft.getInstance().getBlockRenderer();
+            blockRendererDispatcher.renderBlock(plantState, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn, EmptyModelData.INSTANCE);
             matrixStackIn.popPose();
         }
     }

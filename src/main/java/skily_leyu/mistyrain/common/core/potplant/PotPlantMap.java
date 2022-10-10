@@ -25,4 +25,12 @@ public class PotPlantMap {
         return null;
     }
 
+    @Nullable
+    public PotPlant getPotPlant(String name){
+        if(potPlants.containsKey(name)){
+            return potPlants.get(name);
+        }
+        return null;
+    }
+
 }

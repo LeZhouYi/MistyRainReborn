@@ -52,6 +52,7 @@ public class BlockWoodenPot extends Block{
             if(!itemStack.isEmpty()&&tileEntity!=null){
                 int amount = tileEntity.onItemAdd(itemStack);
                 if(amount>0){
+                    tileEntity.setChanged();
                     world.markAndNotifyBlock(blockPos, world.getChunkAt(blockPos), blockState, blockState, 2, 0);
                     ItemUtils.shrinkItem(playerEntity, itemStack, amount);
                 }
