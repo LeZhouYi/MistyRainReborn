@@ -11,6 +11,9 @@
         "SAND":[
             "minecraft:sand",
             "minecraft:red_sand"
+        ],
+        "HUMUS":[
+            "minecraft:podzol"
         ]
     }
 }

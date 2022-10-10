@@ -3,12 +3,16 @@ package skily_leyu.mistyrain.tileentity;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.PlayerGenerationTracker;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.items.ItemStackHandler;
 import skily_leyu.mistyrain.common.core.potplant.Pot;
 import skily_leyu.mistyrain.common.core.potplant.PotPlant;
@@ -58,10 +62,10 @@ public class WoodenPotTileEntity extends TileEntity implements ITickableTileEnti
 
     @Override
     public void deserializeNBT(BlockState blockState,CompoundNBT nbt) {
-        super.deserializeNBT(blockState,nbt);
         this.dirtInv.deserializeNBT(nbt.getCompound("DirtInv"));
         this.plantInv.deserializeNBT(nbt.getCompound("PlantInv"));
         this.potHandler.deserializeNBT(nbt.getCompound("PlantStage"));
+        super.deserializeNBT(blockState,nbt);
     }
 
     /**
@@ -72,8 +76,9 @@ public class WoodenPotTileEntity extends TileEntity implements ITickableTileEnti
      * @return
      */
     public int onItemAdd(ItemStack itemStack){
+        int amount = 0;
         if(this.getPot().isSuitSoil(itemStack)){
-            return ItemUtils.addItemInHandler(this.dirtInv, itemStack, true);
+            amount = ItemUtils.addItemInHandler(this.dirtInv, itemStack, true);
         }else{
             PotPlant potPlant = this.getPlantList().isPlantSeed(itemStack);
             if(potPlant!=null){
@@ -82,12 +87,13 @@ public class WoodenPotTileEntity extends TileEntity implements ITickableTileEnti
                     if(!dirtStack.isEmpty()&&potPlant.isSuitSoil(dirtStack)){
                         ItemUtils.setStackInHandler(dirtInv, itemStack, i, 1);
                         potHandler.addPlant(i,potPlant);
-                        return 1;
+                        amount = 1;
+                        break;
                     }
                 }
             }
         }
-        return 0;
+        return amount;
     }
 
     /**
@@ -100,27 +106,6 @@ public class WoodenPotTileEntity extends TileEntity implements ITickableTileEnti
             return this.dirtInv.getStackInSlot(slot);
         }
         return ItemStack.EMPTY;
-    }
-
-    @Override
-    @Nullable
-    public SUpdateTileEntityPacket getUpdatePacket() {
-        return new SUpdateTileEntityPacket(getBlockPos(),1,getUpdateTag());
-    }
-
-    @Override
-    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-        handleUpdateTag(getBlockState(), pkt.getTag());
-    }
-
-    @Override
-    public CompoundNBT getUpdateTag() {
-        return serializeNBT();
-    }
-
-    @Override
-    public void handleUpdateTag(BlockState state, CompoundNBT tag) {
-        deserializeNBT(state, tag);
     }
 
     /**
@@ -150,6 +135,25 @@ public class WoodenPotTileEntity extends TileEntity implements ITickableTileEnti
             return this.potHandler.getBlockStage(slot);
         }
         return null;
+    }
+
+    @Override
+    @Nullable
+    public SUpdateTileEntityPacket getUpdatePacket() {
+        return new SUpdateTileEntityPacket(this.worldPosition,-1,serializeNBT());
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
+        super.onDataPacket(net, pkt);
+        deserializeNBT(getBlockState(), pkt.getTag());
+    }
+
+    public void syncToTrackingClients() {
+        World world = this.getLevel();
+		if (world!=null&&!world.isClientSide) {
+            SUpdateTileEntityPacket packet = this.getUpdatePacket();
+        }
     }
 
 }

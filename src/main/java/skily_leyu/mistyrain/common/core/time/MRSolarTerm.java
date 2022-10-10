@@ -3,7 +3,7 @@ package skily_leyu.mistyrain.common.core.time;
 import net.minecraft.client.resources.I18n;
 
 public enum MRSolarTerm {
-    SPRING_BEGIN("spring_begins"),
+    SPRING_BEGINS("spring_begins"),
     THE_RAINS("the_rains"),
     INSECTS_AWAKEN("insets_awaken"),
     VERNAL_EQUINOX("vernal_equinox"),

@@ -2,7 +2,7 @@
     "potPlants":{
         "snow_velvet":{
             "name":"snow_velvet",
-            "seeds":["mistyrain:snow_velvet_seed"],
+            "seeds":["mistyrain:mr_snow_velvet"],
             "stages":[
                 {
                     "nowStage":"SEED_DROP",
@@ -10,7 +10,7 @@
                         "SPROUT": 1
                     },
                     "timeSpan":{
-                        "start": "SPRING_BEGIN",
+                        "start": "SPRING_BEGINS",
                         "end": "HOAR_FROST_FALLS"
                     },
                     "harvests":{}
@@ -21,7 +21,7 @@
                         "ROOT_DEPTH":1
                     },
                     "timeSpan":{
-                        "start": "SPRING_BEGIN",
+                        "start": "SPRING_BEGINS",
                         "end": "HOAR_FROST_FALLS"
                     },
                     "harvests":{}
@@ -32,7 +32,7 @@
                         "VERDANT":1
                     },
                     "timeSpan":{
-                        "start": "SPRING_BEGIN",
+                        "start": "SPRING_BEGINS",
                         "end": "HOAR_FROST_FALLS"
                     },
                     "harvests":{}
@@ -66,7 +66,7 @@
                         "VERDANT":1
                     },
                     "timeSpan":{
-                        "start": "SPRING_BEGIN",
+                        "start": "SPRING_BEGINS",
                         "end": "GREAT_COLD"
                     },
                     "harvests":{}
@@ -85,5 +85,58 @@
             "needTemper": [5,10],
             "needLight": [8,15]
         }
+    },
+    "green_wisteria":{
+        "name":"green_wisteria",
+        "seeds":["mistyrain:mr_green_wisteria"],
+        "stages":[
+            {
+                "nowStage":"SPROUT",
+                "nextStages":{
+                    "ROOT_DEPTH":1
+                },
+                "timeSpan":{
+                    "start": "SPRING_BEGINS",
+                    "end": "GREAT_COLD"
+                },
+                "harvests":{}
+            },
+            {
+                "nowStage":"ROOT_DEPTH",
+                "nextStages":{
+                    "VERDANT":1
+                },
+                "timeSpan":{
+                    "start": "SPRING_BEGINS",
+                    "end": "GREAT_COLD"
+                },
+                "harvests":{}
+            },
+            {
+                "nowStage":"VERDANT",
+                "nextStages":{},
+                "timeSpan":{
+                    "start": "SPRING_BEGINS",
+                    "end": "GREAT_COLD"
+                },
+                "harvests":{}
+            }
+        ],
+        "needAnimas":[
+            {
+                "type":"BLANK",
+                "level":"FULL"
+            }
+        ],
+        "genAnima":{
+            "type":"WOOD",
+            "level":"THIN"
+        },
+        "likeSoils":["minecraft:podzol"],
+        "suitSoilTypes":["HUMUS"],
+        "needWater": 15,
+        "needFertilizer": 20,
+        "needTemper": [7,15],
+        "needLight": [4,12]
     }
 }

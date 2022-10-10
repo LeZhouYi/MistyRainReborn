@@ -16,6 +16,7 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 import skily_leyu.mistyrain.common.utility.ItemUtils;
 import skily_leyu.mistyrain.tileentity.WoodenPotTileEntity;
 
@@ -46,14 +47,12 @@ public class BlockWoodenPot extends Block{
     @Override
     public ActionResultType use(BlockState blockState, World world, BlockPos blockPos,
             PlayerEntity playerEntity, Hand hand, BlockRayTraceResult rayTraceResult) {
-        if(!world.isClientSide()&& hand == Hand.MAIN_HAND){
+        if(!world.isClientSide() && hand == Hand.MAIN_HAND){
             WoodenPotTileEntity tileEntity = (WoodenPotTileEntity)world.getBlockEntity(blockPos);
             ItemStack itemStack = playerEntity.getMainHandItem();
             if(!itemStack.isEmpty()&&tileEntity!=null){
                 int amount = tileEntity.onItemAdd(itemStack);
                 if(amount>0){
-                    tileEntity.setChanged();
-                    world.markAndNotifyBlock(blockPos, world.getChunkAt(blockPos), blockState, blockState, 2, 0);
                     ItemUtils.shrinkItem(playerEntity, itemStack, amount);
                 }
             }
