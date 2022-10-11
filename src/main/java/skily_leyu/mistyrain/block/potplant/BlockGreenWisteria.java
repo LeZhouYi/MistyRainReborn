@@ -9,7 +9,7 @@ import net.minecraft.state.StateContainer.Builder;
 
 public class BlockGreenWisteria extends Block{
 
-    private static IntegerProperty STAGE = IntegerProperty.create("plant_stage", 0, 5);
+    private static IntegerProperty STAGE = IntegerProperty.create("plant_stage", 0, 2);
 
     public BlockGreenWisteria() {
         super(AbstractBlock.Properties.of(Material.PLANT).noCollission());

@@ -11,6 +11,6 @@ public class MRConfigUtils {
      * @return
      */
     public static MRTimeDot getTimeDot(World world){
-        return new MRTimeDot(world).update(MRConfig.MONTH_START.get(),MRConfig.DAYS_PER_MONTH.get());
+        return new MRTimeDot(world).update(MRConfig.TimeConfig.MONTH_START.get(),MRConfig.TimeConfig.DAYS_PER_MONTH.get());
     }
 }

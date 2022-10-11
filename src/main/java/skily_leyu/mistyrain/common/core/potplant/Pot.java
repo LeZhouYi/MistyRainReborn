@@ -25,7 +25,7 @@ public class Pot {
             return true;
         }
         for(SoilType soilType:this.suitSoilType){
-            if(MRSetting.soilMap.contains(soilType, itemStack)){
+            if(MRSetting.getSoilMap().contains(soilType, itemStack)){
                 return true;
             }
         }

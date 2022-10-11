@@ -5,25 +5,15 @@ import javax.annotation.Nullable;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerChunkProvider;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.items.ItemStackHandler;
 import skily_leyu.mistyrain.common.core.potplant.Pot;
 import skily_leyu.mistyrain.common.core.potplant.PotPlant;
 import skily_leyu.mistyrain.common.core.potplant.PotPlantHandler;
-import skily_leyu.mistyrain.common.core.potplant.PotPlantMap;
 import skily_leyu.mistyrain.common.utility.ItemUtils;
 import skily_leyu.mistyrain.config.MRSetting;
 
-public class WoodenPotTileEntity extends TileEntity implements ITickableTileEntity{
-
-    private static final Pot WOODEN_POT = MRSetting.potMap.getPot("mr_wooden_pot");
+public class WoodenPotTileEntity extends ModTileEntity implements ITickableTileEntity{
 
     protected ItemStackHandler dirtInv; //土壤
     protected ItemStackHandler plantInv; //植物
@@ -79,7 +69,7 @@ public class WoodenPotTileEntity extends TileEntity implements ITickableTileEnti
         if(this.getPot().isSuitSoil(itemStack)){
             amount = ItemUtils.addItemInHandler(this.dirtInv, itemStack, true);
         }else{
-            PotPlant potPlant = this.getPlantList().isPlantSeed(itemStack);
+            PotPlant potPlant = MRSetting.getPlantMap().isPlantSeed(itemStack);
             if(potPlant!=null){
                 for(int i = 0;i<this.getPot().getSlotSize();i++){
                     ItemStack dirtStack = this.dirtInv.getStackInSlot(i);
@@ -115,16 +105,8 @@ public class WoodenPotTileEntity extends TileEntity implements ITickableTileEnti
      * 指向配置文件获取的数据
      * @return
      */
-    public PotPlantMap getPlantList(){
-        return MRSetting.potPlants;
-    }
-
-    /**
-     * 指向配置文件获取的数据
-     * @return
-     */
     public Pot getPot(){
-        return WOODEN_POT;
+        return MRSetting.getPotMap().getPot("mr_wooden_pot");
     }
 
     /**
@@ -138,40 +120,6 @@ public class WoodenPotTileEntity extends TileEntity implements ITickableTileEnti
             return this.potHandler.getBlockStage(slot);
         }
         return null;
-    }
-
-    @Override
-    @Nullable
-    public SUpdateTileEntityPacket getUpdatePacket() {
-        return new SUpdateTileEntityPacket(worldPosition,-1,getUpdateTag());
-    }
-
-    @Override
-    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-        System.out.println("test2");
-        handleUpdateTag(getBlockState(),pkt.getTag());
-    }
-
-    @Override
-    public void handleUpdateTag(BlockState state, CompoundNBT tag) {
-        load(state, tag);
-    }
-
-    @Override
-    public CompoundNBT getUpdateTag() {
-        return save(new CompoundNBT());
-    }
-
-    public void syncToTrackingClients(){
-        World world = this.level;
-        if(world!=null&&!world.isClientSide()){
-            SUpdateTileEntityPacket packet = this.getUpdatePacket();
-            if(packet!=null){
-                ServerChunkProvider chunkProvider = ((ServerWorld)world).getChunkSource();
-                System.out.println("test");
-                chunkProvider.chunkMap.getPlayers(new ChunkPos(worldPosition), false).forEach(e->e.connection.send(packet));
-            }
-        }
     }
 
 }

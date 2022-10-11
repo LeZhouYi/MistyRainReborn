@@ -33,10 +33,10 @@ public class WoodenPotTER extends TileEntityRenderer<WoodenPotTileEntity>{
             matrixStackIn.popPose();
         }
         //渲染植物
-        BlockState plantState = tileEntityIn.getBlockState();
+        BlockState plantState = tileEntityIn.getPlantStage(0);
         if(plantState!=null){
             matrixStackIn.pushPose();
-            matrixStackIn.translate(0.625, 0.3126, 0.625);
+            matrixStackIn.translate(0.0625, 0.3126, 0.0625);
             matrixStackIn.scale(0.875F,0.875F,0.875F);
             BlockRendererDispatcher blockRendererDispatcher = Minecraft.getInstance().getBlockRenderer();
             blockRendererDispatcher.renderBlock(plantState, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn, EmptyModelData.INSTANCE);

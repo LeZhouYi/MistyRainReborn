@@ -43,7 +43,7 @@ public class PotPlantHandler {
             return null;
         }
         String name = this.plantMap.get(slot);
-        PotPlant potPlant = MRSetting.potPlants.getPotPlant(name);
+        PotPlant potPlant = MRSetting.getPlantMap().getPotPlant(name);
         if(potPlant!=null){
             return potPlant.getBlockState(stageMap.get(slot));
         }

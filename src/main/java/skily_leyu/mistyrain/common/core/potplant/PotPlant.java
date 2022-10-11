@@ -16,7 +16,7 @@ public class PotPlant {
     private List<String> seeds; //种子或类种子物品名
     private List<PlantStage> stages; //植物的状态转换表
     private List<Anima> needAnimas; //所需灵气
-    private Anima genAnima; //产生的灵气
+    private List<Anima> genAnimas; //产生的灵气
     private List<String> likeSoils; //喜欢的土壤
     private List<SoilType> suitSoilTypes; //适合的土壤类型
     private String suitWater; //适合的水分
@@ -64,20 +64,12 @@ public class PotPlant {
             return true;
         }else{
             for(SoilType soilType:suitSoilTypes){
-                if(getSoilMap().contains(soilType, dirtStack)){
+                if(MRSetting.getSoilMap().contains(soilType, dirtStack)){
                     return true;
                 }
             }
         }
         return false;
-    }
-
-    /**
-     * 指向配置文件获取的数据
-     * @return
-     */
-    public SoilMap getSoilMap(){
-        return MRSetting.soilMap;
     }
 
     /**

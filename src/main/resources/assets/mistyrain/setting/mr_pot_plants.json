@@ -73,10 +73,12 @@
                 }
             ],
             "needAnimas": [],
-            "genAnima":{
-                "type": "BLANK",
-                "level": "THIN"
-            },
+            "genAnimas":[
+                {
+                    "type": "BLANK",
+                    "level": "THIN"
+                }
+            ],
             "likeSoils": ["minecraft:farmland"],
             "suitSoilTypes": ["DIRT"],
             "suitWater": "minecraft:water",
@@ -128,10 +130,12 @@
                 "level":"FULL"
             }
         ],
-        "genAnima":{
-            "type":"WOOD",
-            "level":"THIN"
-        },
+        "genAnima":[
+            {
+                "type":"WOOD",
+                "level":"THIN"
+            }
+        ],
         "likeSoils":["minecraft:podzol"],
         "suitSoilTypes":["HUMUS"],
         "needWater": 15,
