@@ -45,7 +45,7 @@ public class ModTileEntity extends TileEntity{
      */
     public final void syncToTrackingClients(){
         World world = this.level;
-        if(world!=null&&!world.isClientSide()){
+        if(world!=null&&!world.isClientSide()&&world.isAreaLoaded(worldPosition, 1)){
             SUpdateTileEntityPacket packet = this.getUpdatePacket();
             if(packet!=null){
                 ServerChunkProvider chunkProvider = ((ServerWorld)world).getChunkSource();

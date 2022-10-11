@@ -22,6 +22,10 @@ public class PotPlantHandler {
         this.plantMap = new HashMap<>();
     }
 
+    public void tick(){
+
+    }
+
     /**
      * 新增种植
      * @param i

@@ -1,0 +1,7 @@
+{
+    "parent":"mistyrain:block/green_wisteria/green_wisteria_0",
+    "textures":{
+        "bracket":"mistyrain:block/pot/wooden_pot_side",
+        "plant":"mistyrain:block/green_wisteria/green_wisteria_sprout"
+    }
+}

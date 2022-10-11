@@ -1,0 +1,13 @@
+{
+    "variants":{
+        "plant_stage=0":{
+            "model":"mistyrain:block/green_wisteria/green_wisteria_sprout"
+        },
+        "plant_stage=1":{
+            "model":"mistyrain:block/green_wisteria/green_wisteria_root_depth"
+        },
+        "plant_stage=2":{
+            "model":"mistyrain:block/green_wisteria/green_wisteria_verdant"
+        }
+    }
+}
