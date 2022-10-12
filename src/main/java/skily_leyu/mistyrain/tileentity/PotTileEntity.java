@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.items.ItemStackHandler;
 import skily_leyu.mistyrain.common.core.plant.Plant;
 import skily_leyu.mistyrain.common.core.pot.Pot;
-import skily_leyu.mistyrain.common.core.pot.PotPlantHandler;
+import skily_leyu.mistyrain.common.core.pot.PotHandler;
 import skily_leyu.mistyrain.common.utility.ItemUtils;
 import skily_leyu.mistyrain.config.MRConfig;
 import skily_leyu.mistyrain.config.MRSetting;
@@ -20,7 +20,7 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
 
     protected ItemStackHandler dirtInv; //土壤
     protected ItemStackHandler plantInv; //植物
-    protected PotPlantHandler potHandler; //植物状态记录器
+    protected PotHandler potHandler; //植物状态记录器
     private int tickCount; //计时
     private String potKey; //配置文件KeyName
 
@@ -28,7 +28,7 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
         super(tileEntityType);
         this.potKey = potKey;
         this.tickCount = getTickRate();
-        this.potHandler = new PotPlantHandler();
+        this.potHandler = new PotHandler();
         this.dirtInv = new ItemStackHandler(this.getPot().getSlotSize()){
             @Override
             public int getSlotLimit(int slot){

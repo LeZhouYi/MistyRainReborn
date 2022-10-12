@@ -11,21 +11,17 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraftforge.common.util.Constants;
 import skily_leyu.mistyrain.common.core.plant.Plant;
-import skily_leyu.mistyrain.config.MRSetting;
 import skily_leyu.mistyrain.tileentity.PotTileEntity;
 
-public class PotPlantHandler {
+public class PotHandler {
 
-    private Map<Integer,Integer> stageMap; //植物对应的格子数及当前的生长状态
-    private Map<Integer,String> plantMap; //植物对应的格子对应的植物
+    private Map<Integer,PotPlantStage> stageMap; //植物对应的格子数及当前的生长状态
 
-    public PotPlantHandler(){
+    public PotHandler(){
         this.stageMap = new HashMap<>();
-        this.plantMap = new HashMap<>();
     }
 
     public void tick(PotTileEntity tileEntity){
-
     }
 
     /**
@@ -34,8 +30,7 @@ public class PotPlantHandler {
      * @param potPlant
      */
     public void addPlant(int i, @Nonnull Plant potPlant) {
-        this.stageMap.put(i, 0);//设置状态为0(一般为SeedDrop)
-        this.plantMap.put(i, potPlant.getName());
+        this.stageMap.put(i, new PotPlantStage(0, potPlant.getName()));
     }
 
     /**
@@ -45,24 +40,21 @@ public class PotPlantHandler {
      */
     @Nullable
     public BlockState getBlockStage(int slot){
-        if(!this.stageMap.containsKey(slot)||!this.plantMap.containsKey(slot)){
-            return null;
-        }
-        String name = this.plantMap.get(slot);
-        Plant potPlant = MRSetting.getPlantMap().getPotPlant(name);
-        if(potPlant!=null){
-            return potPlant.getBlockState(stageMap.get(slot));
+        if(this.stageMap.containsKey(slot)){
+            PotPlantStage plantStage = this.stageMap.get(slot);
+            Plant plant = plantStage.getPlant();
+            if(plant!=null){
+                return plant.getBlockState(plantStage.getState());
+            }
         }
         return null;
     }
 
     public CompoundNBT serializeNBT(){
         ListNBT nbtTagList = new ListNBT();
-        for(Integer i:plantMap.keySet()){
-            CompoundNBT plantTag = new CompoundNBT();
-            plantTag.putInt("Slot", i);
-            plantTag.putInt("Stage", stageMap.get(i));
-            plantTag.putString("Plant", plantMap.get(i));
+        for(Map.Entry<Integer,PotPlantStage> entry:this.stageMap.entrySet()){
+            CompoundNBT plantTag = entry.getValue().save();
+            plantTag.putInt("Slot", entry.getKey());
             nbtTagList.add(plantTag);
         }
         CompoundNBT nbt = new CompoundNBT();
@@ -76,8 +68,8 @@ public class PotPlantHandler {
         for(int i = 0;i<nbtTagList.size();i++){
             CompoundNBT plantTag = nbtTagList.getCompound(i);
             int slot = plantTag.getInt("Slot");
-            this.stageMap.put(slot, plantTag.getInt("Stage"));
-            this.plantMap.put(slot,plantTag.getString("Plant"));
+            PotPlantStage plantStage = PotPlantStage.load(plantTag);
+            this.stageMap.put(slot, plantStage);
         }
     }
 

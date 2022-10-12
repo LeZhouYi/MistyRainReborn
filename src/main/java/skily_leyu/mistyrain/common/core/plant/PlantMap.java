@@ -25,7 +25,7 @@ public class PlantMap {
     }
 
     @Nullable
-    public Plant getPotPlant(String name){
+    public Plant getPlant(String name){
         if(plantMap.containsKey(name)){
             return plantMap.get(name);
         }
