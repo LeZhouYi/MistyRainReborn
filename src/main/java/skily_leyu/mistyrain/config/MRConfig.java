@@ -1,5 +1,7 @@
 package skily_leyu.mistyrain.config;
 
+import java.util.Random;
+
 import net.minecraftforge.common.ForgeConfigSpec;
 
 public class MRConfig {
@@ -12,7 +14,8 @@ public class MRConfig {
     }
 
     public static class GameRule{
-        public static ForgeConfigSpec.IntValue POT_PLANT_TICK_RATE; //盆栽的Tick Rate
+        public static ForgeConfigSpec.IntValue POT_PLANT_TICK; //盆栽的Tick
+        public static ForgeConfigSpec.IntValue PLANT_GROW_CHANCE; //植物判定成功时的生长概率(0-1000)
     }
 
     static{
@@ -22,10 +25,15 @@ public class MRConfig {
         TimeConfig.MONTH_START = COMMON_BUILDER.comment("Month start when first start game").defineInRange("month_start", 2, 0, 11);
         TimeConfig.DAYS_PER_MONTH = COMMON_BUILDER.comment("Days per month").defineInRange("days_per_month", 30, 10, 60);
 
-        GameRule.POT_PLANT_TICK_RATE = COMMON_BUILDER.comment("Tick Rate of Pot Plant TileEntity").defineInRange("pot_plant_tick_rate", 120, 20, 600);
+        GameRule.POT_PLANT_TICK = COMMON_BUILDER.comment("The tick of pot plant tileEntity").defineInRange("pot_plant_tick", 120, 20, 600);
+        GameRule.PLANT_GROW_CHANCE = COMMON_BUILDER.comment("The chance of plant growing when passed sucessfully").defineInRange("plant_grow_chance", 100, 0, 1000);
 
         COMMON_BUILDER.pop();
         COMMON_CONFIG = COMMON_BUILDER.build();
+    }
+
+    public static boolean canGrow(Random random){
+        return random.nextInt(1000)<GameRule.PLANT_GROW_CHANCE.get();
     }
 
 }

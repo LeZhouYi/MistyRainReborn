@@ -55,6 +55,12 @@ public class BlockWoodenPot extends Block{
                     ItemUtils.shrinkItem(playerEntity, itemStack, amount);
                 }
             }
+            else if(itemStack.isEmpty()&&tileEntity!=null){
+                ItemStack returnStack = tileEntity.onItemRemove();
+                if(!returnStack.isEmpty()){
+                    playerEntity.inventory.placeItemBackInInventory(world,returnStack);
+                }
+            }
         }
         return ActionResultType.SUCCESS;
     }

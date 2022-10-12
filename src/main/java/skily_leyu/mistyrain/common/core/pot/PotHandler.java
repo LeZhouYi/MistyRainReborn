@@ -22,6 +22,9 @@ public class PotHandler {
     }
 
     public void tick(PotTileEntity tileEntity){
+        for(PotPlantStage plantStage:stageMap.values()){
+            plantStage.tick(tileEntity);
+        }
     }
 
     /**
@@ -71,6 +74,22 @@ public class PotHandler {
             PotPlantStage plantStage = PotPlantStage.load(plantTag);
             this.stageMap.put(slot, plantStage);
         }
+    }
+
+    /**
+     * 移除植物并返回标志，若True，则表示需返还种子，若False，则表示种子已被消耗
+     * @param i
+     * @return
+     */
+    public boolean removePlant(int i) {
+        boolean willReturn = false;
+        if(this.stageMap.containsKey(i)){
+            if(this.stageMap.get(i).getState()==0){
+                willReturn=true;
+            }
+            this.stageMap.remove(i);
+        }
+        return willReturn;
     }
 
 }

@@ -58,16 +58,9 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
             tickCount--;
             if(!world.isClientSide&&tickCount<0){
                 tickCount=getTickRate();
-                plantTick();
+                potHandler.tick(this);
             }
         }
-    }
-
-    /**
-     * 执行植物生长的方法
-     */
-    protected void plantTick(){
-
     }
 
     @Override
@@ -107,7 +100,6 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
                     if(!dirtStack.isEmpty()&&potPlant.isSuitSoil(dirtStack)){
                         ItemUtils.setStackInHandler(dirtInv, itemStack, i, 1);
                         potHandler.addPlant(i,potPlant);
-                        System.out.println("test");
                         amount = 1;
                         break;
                     }
@@ -116,9 +108,42 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
         }
         if(amount>0){
             syncToTrackingClients();
-            setChanged();
         }
         return amount;
+    }
+
+    /**
+     * 回退物品:1、存在植物时清空植物状态，仅当Stage=0时返还物品(即未被消耗)
+     * 2、不存在植物时清空土壤，返回该物品
+     * @return
+     */
+    public ItemStack onItemRemove(){
+        boolean removePlant = false;
+        ItemStack returnStack = ItemStack.EMPTY;
+        for(int i = this.plantInv.getSlots()-1;i>=0;i--){
+            ItemStack plantStack = this.plantInv.getStackInSlot(i).copy();
+            if(!plantStack.isEmpty()&&returnStack!=null){
+                this.plantInv.setStackInSlot(i, returnStack);
+                if(this.potHandler.removePlant(i)){
+                    returnStack = plantStack;
+                }
+                syncToTrackingClients();
+                removePlant=true;
+                break;
+            }
+        }
+        if(!removePlant){
+            for(int i = this.dirtInv.getSlots()-1;i>=0;i--){
+                ItemStack dirtStack = this.plantInv.getStackInSlot(i).copy();
+                if(!dirtStack.isEmpty()&&returnStack!=null){
+                    this.dirtInv.setStackInSlot(i, returnStack);
+                    returnStack = dirtStack;
+                    syncToTrackingClients();
+                    break;
+                }
+            }
+        }
+        return returnStack;
     }
 
     /**
@@ -151,7 +176,7 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
      * @return
      */
     public final int getTickRate(){
-        return MRConfig.GameRule.POT_PLANT_TICK_RATE.get();
+        return MRConfig.GameRule.POT_PLANT_TICK.get();
     }
 
 }

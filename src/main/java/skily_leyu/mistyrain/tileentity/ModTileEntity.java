@@ -51,6 +51,7 @@ public class ModTileEntity extends TileEntity{
                 ServerChunkProvider chunkProvider = ((ServerWorld)world).getChunkSource();
                 chunkProvider.chunkMap.getPlayers(new ChunkPos(worldPosition), false).forEach(e->e.connection.send(packet));
             }
+            this.setChanged();
         }
     }
 

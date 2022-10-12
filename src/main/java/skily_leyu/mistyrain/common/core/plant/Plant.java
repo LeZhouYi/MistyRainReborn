@@ -1,6 +1,7 @@
 package skily_leyu.mistyrain.common.core.plant;
 
 import java.util.List;
+import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -9,6 +10,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 import skily_leyu.mistyrain.common.core.anima.Anima;
 import skily_leyu.mistyrain.common.core.soil.SoilType;
+import skily_leyu.mistyrain.common.core.time.MRTimeDot;
 import skily_leyu.mistyrain.common.utility.ItemUtils;
 import skily_leyu.mistyrain.config.MRSetting;
 
@@ -47,6 +49,25 @@ public class Plant {
     }
 
     /**
+     * 获取下一生长阶段
+     * @param nowStage
+     * @param random
+     * @return
+     */
+    public int getNextStage(int nowStage,Random random){
+        if(this.stages!=null&&nowStage<this.stages.size()){
+            PlantStage nowPlantStage = this.stages.get(nowStage);
+            PlantStageType nextStageType = nowPlantStage.getNextStageType(random);
+            for(int i = 0;i<this.stages.size();i++){
+                if(this.stages.get(i).isNowStage(nextStageType)){
+                    return i;
+                }
+            }
+        }
+        return nowStage;
+    }
+
+    /**
      * 判断当前物品是否为该植物的种子
      * @param itemStack
      * @return
@@ -80,6 +101,20 @@ public class Plant {
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     * 判断当前的生长状态是否在合适的生长时间范围内
+     * @param stage
+     * @param timeDot
+     * @return
+     */
+    public boolean isInSpan(int stage,MRTimeDot timeDot) {
+        if(this.stages!=null&&stage<this.stages.size()){
+            PlantStage plantStage = this.stages.get(stage);
+            return plantStage.isInSpan(timeDot);
+        }
+        return false;
     }
 
 }
