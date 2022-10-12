@@ -1,4 +1,4 @@
-package skily_leyu.mistyrain.common.core.potplant;
+package skily_leyu.mistyrain.common.core.soil;
 
 public enum SoilType {
 

@@ -9,9 +9,9 @@ import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.world.World;
 import net.minecraftforge.items.ItemStackHandler;
-import skily_leyu.mistyrain.common.core.potplant.Pot;
-import skily_leyu.mistyrain.common.core.potplant.PotPlant;
-import skily_leyu.mistyrain.common.core.potplant.PotPlantHandler;
+import skily_leyu.mistyrain.common.core.plant.Plant;
+import skily_leyu.mistyrain.common.core.pot.Pot;
+import skily_leyu.mistyrain.common.core.pot.PotPlantHandler;
 import skily_leyu.mistyrain.common.utility.ItemUtils;
 import skily_leyu.mistyrain.config.MRConfig;
 import skily_leyu.mistyrain.config.MRSetting;
@@ -100,7 +100,7 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
         if(this.getPot().isSuitSoil(itemStack)){
             amount = ItemUtils.addItemInHandler(this.dirtInv, itemStack, true);
         }else{
-            PotPlant potPlant = MRSetting.getPlantMap().isPlantSeed(itemStack);
+            Plant potPlant = MRSetting.getPlantMap().isPlantSeed(itemStack);
             if(potPlant!=null){
                 for(int i = 0;i<this.getPot().getSlotSize();i++){
                     ItemStack dirtStack = this.dirtInv.getStackInSlot(i);

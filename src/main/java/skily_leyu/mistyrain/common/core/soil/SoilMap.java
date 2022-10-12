@@ -1,4 +1,4 @@
-package skily_leyu.mistyrain.common.core.potplant;
+package skily_leyu.mistyrain.common.core.soil;
 
 import java.util.List;
 import java.util.Map;

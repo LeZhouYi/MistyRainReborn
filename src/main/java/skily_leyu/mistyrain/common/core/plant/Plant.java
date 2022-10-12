@@ -1,4 +1,4 @@
-package skily_leyu.mistyrain.common.core.potplant;
+package skily_leyu.mistyrain.common.core.plant;
 
 import java.util.List;
 
@@ -7,10 +7,12 @@ import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
+import skily_leyu.mistyrain.common.core.anima.Anima;
+import skily_leyu.mistyrain.common.core.soil.SoilType;
 import skily_leyu.mistyrain.common.utility.ItemUtils;
 import skily_leyu.mistyrain.config.MRSetting;
 
-public class PotPlant {
+public class Plant {
 
     private String name; //植物名
     private List<String> seeds; //种子或类种子物品名

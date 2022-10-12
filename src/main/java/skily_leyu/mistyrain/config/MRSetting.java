@@ -9,19 +9,19 @@ import com.google.gson.GsonBuilder;
 
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import skily_leyu.mistyrain.MistyRain;
-import skily_leyu.mistyrain.common.core.potplant.PotMap;
-import skily_leyu.mistyrain.common.core.potplant.PotPlantMap;
-import skily_leyu.mistyrain.common.core.potplant.SoilMap;
+import skily_leyu.mistyrain.common.core.plant.PlantMap;
+import skily_leyu.mistyrain.common.core.pot.PotMap;
+import skily_leyu.mistyrain.common.core.soil.SoilMap;
 
 public class MRSetting {
 
     private static SoilMap soilMap;
-    private static PotPlantMap potPlants;
+    private static PlantMap potPlants;
     private static PotMap potMap;
 
     public MRSetting(final FMLCommonSetupEvent event){
         soilMap = loadJson(SoilMap.class, "mr_soil_map");
-        potPlants = loadJson(PotPlantMap.class, "mr_pot_plants");
+        potPlants = loadJson(PlantMap.class, "mr_pot_plants");
         potMap = loadJson(PotMap.class, "mr_pots");
     }
 
@@ -45,7 +45,7 @@ public class MRSetting {
         return soilMap;
     }
 
-    public static PotPlantMap getPlantMap(){
+    public static PlantMap getPlantMap(){
         return potPlants;
     }
 

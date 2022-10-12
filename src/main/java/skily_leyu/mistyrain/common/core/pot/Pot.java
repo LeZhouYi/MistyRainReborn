@@ -1,8 +1,9 @@
-package skily_leyu.mistyrain.common.core.potplant;
+package skily_leyu.mistyrain.common.core.pot;
 
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import skily_leyu.mistyrain.common.core.soil.SoilType;
 import skily_leyu.mistyrain.common.utility.ItemUtils;
 import skily_leyu.mistyrain.config.MRSetting;
 

@@ -1,4 +1,4 @@
-package skily_leyu.mistyrain.common.core.potplant;
+package skily_leyu.mistyrain.common.core.pot;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +10,9 @@ import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraftforge.common.util.Constants;
+import skily_leyu.mistyrain.common.core.plant.Plant;
 import skily_leyu.mistyrain.config.MRSetting;
+import skily_leyu.mistyrain.tileentity.PotTileEntity;
 
 public class PotPlantHandler {
 
@@ -22,7 +24,7 @@ public class PotPlantHandler {
         this.plantMap = new HashMap<>();
     }
 
-    public void tick(){
+    public void tick(PotTileEntity tileEntity){
 
     }
 
@@ -31,7 +33,7 @@ public class PotPlantHandler {
      * @param i
      * @param potPlant
      */
-    public void addPlant(int i, @Nonnull PotPlant potPlant) {
+    public void addPlant(int i, @Nonnull Plant potPlant) {
         this.stageMap.put(i, 0);//设置状态为0(一般为SeedDrop)
         this.plantMap.put(i, potPlant.getName());
     }
@@ -47,7 +49,7 @@ public class PotPlantHandler {
             return null;
         }
         String name = this.plantMap.get(slot);
-        PotPlant potPlant = MRSetting.getPlantMap().getPotPlant(name);
+        Plant potPlant = MRSetting.getPlantMap().getPotPlant(name);
         if(potPlant!=null){
             return potPlant.getBlockState(stageMap.get(slot));
         }
