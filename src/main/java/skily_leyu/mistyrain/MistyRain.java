@@ -1,8 +1,6 @@
 package skily_leyu.mistyrain;
 
-import net.minecraft.block.Block;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -12,6 +10,7 @@ import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import skily_leyu.mistyrain.block.MRBlock;
+import skily_leyu.mistyrain.config.MRConfig;
 import skily_leyu.mistyrain.config.MRSetting;
 import skily_leyu.mistyrain.item.MRItem;
 import skily_leyu.mistyrain.tileentity.MRTileEntity;
@@ -38,6 +37,7 @@ public class MistyRain {
     }
 
     private void setup(final FMLCommonSetupEvent event){
+        new MRConfig();
         new MRSetting(event);
     }
 
@@ -52,14 +52,6 @@ public class MistyRain {
 
     @SubscribeEvent
     public void onServerStarting(FMLServerStartingEvent event) {
-    }
-
-    @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
-    public static class RegistryEvents {
-        @SubscribeEvent
-        public static void onBlocksRegistry(final RegistryEvent.Register<Block> blockRegistryEvent) {
-            LOGGER.info("[MistyRain]:Start registying blocks");
-        }
     }
 
     public static Logger getLogger(){

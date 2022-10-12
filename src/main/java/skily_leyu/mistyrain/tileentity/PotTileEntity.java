@@ -54,11 +54,12 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
     @Override
     public void tick() {
         World world = this.level;
-        if(world!=null&&world.isAreaLoaded(worldPosition, tickCount)){
+        if(world!=null&&world.isAreaLoaded(worldPosition, tickCount)&&!world.isClientSide){
             tickCount--;
-            if(!world.isClientSide&&tickCount<0){
+            if(tickCount<0){
                 tickCount=getTickRate();
                 potHandler.tick(this);
+                syncToTrackingClients();
             }
         }
     }
@@ -101,6 +102,7 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
                         ItemUtils.setStackInHandler(dirtInv, itemStack, i, 1);
                         potHandler.addPlant(i,potPlant);
                         amount = 1;
+                        System.out.println("addTEST");
                         break;
                     }
                 }

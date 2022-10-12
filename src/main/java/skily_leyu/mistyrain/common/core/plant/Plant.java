@@ -35,6 +35,7 @@ public class Plant {
      * @return
      */
     public BlockState getBlockState(int meta){
+        System.out.println(String.valueOf(meta));
         if(stages.size()<1){
             return null;
         }
