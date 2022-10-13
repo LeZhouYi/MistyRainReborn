@@ -49,12 +49,14 @@ public class BlockWoodenPot extends Block{
         if(!world.isClientSide() && hand == Hand.MAIN_HAND){
             WoodenPotTileEntity tileEntity = (WoodenPotTileEntity)world.getBlockEntity(blockPos);
             ItemStack itemStack = playerEntity.getMainHandItem();
+            //添加物品
             if(!itemStack.isEmpty()&&tileEntity!=null){
                 int amount = tileEntity.onItemAdd(itemStack);
                 if(amount>0){
                     ItemUtils.shrinkItem(playerEntity, itemStack, amount);
                 }
             }
+            //撤回物品/清空植物
             else if(itemStack.isEmpty()&&tileEntity!=null){
                 ItemStack returnStack = tileEntity.onItemRemove();
                 if(!returnStack.isEmpty()){

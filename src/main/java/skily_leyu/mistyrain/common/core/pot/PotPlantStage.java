@@ -21,12 +21,9 @@ public class PotPlantStage {
     public void tick(PotTileEntity tileEntity){
         Plant plant = MRSetting.getPlantMap().getPlant(plantKey);
         World world = tileEntity.getLevel();
-        System.out.println("Test1");
         if(plant!=null&&world!=null){
-            System.out.println("Test2");
             MRTimeDot timeDot = new MRTimeDot(world);
             if(plant.isInSpan(nowStage,timeDot)&&MRConfig.canGrow(world.getRandom())){
-                System.out.println("Test3");
                 this.nowStage = plant.getNextStage(nowStage, world.getRandom());
             }
         }

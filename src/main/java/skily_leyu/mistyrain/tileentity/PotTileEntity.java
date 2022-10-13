@@ -56,7 +56,7 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
         World world = this.level;
         if(world!=null&&world.isAreaLoaded(worldPosition, tickCount)&&!world.isClientSide){
             tickCount--;
-            if(tickCount<0){
+            if(tickCount<1){
                 tickCount=getTickRate();
                 potHandler.tick(this);
                 syncToTrackingClients();
@@ -82,27 +82,27 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
         this.tickCount = nbt.getInt("TickCount");
     }
 
-        /**
+    /**
      * 添加物品:
      * 1.若为泥土，则在泥土栏放置一次泥土
      * 2.若为植物，则在植物栏放置一次植物并设置该植物状态为0(一般为SeepDrop)
      * @param itemStack
      * @return
      */
-    public int onItemAdd(ItemStack itemStack){
+    public int onItemAdd(ItemStack itemStackIn){
         int amount = 0;
-        if(this.getPot().isSuitSoil(itemStack)){
-            amount = ItemUtils.addItemInHandler(this.dirtInv, itemStack, true);
+        if(this.getPot().isSuitSoil(itemStackIn)){
+            amount = ItemUtils.addItemInHandler(this.dirtInv, itemStackIn, true);
         }else{
-            Plant potPlant = MRSetting.getPlantMap().isPlantSeed(itemStack);
+            Plant potPlant = MRSetting.getPlantMap().isPlantSeed(itemStackIn);
             if(potPlant!=null){
-                for(int i = 0;i<this.getPot().getSlotSize();i++){
+                for(int i = 0;i<this.dirtInv.getSlots();i++){
                     ItemStack dirtStack = this.dirtInv.getStackInSlot(i);
-                    if(!dirtStack.isEmpty()&&potPlant.isSuitSoil(dirtStack)){
-                        ItemUtils.setStackInHandler(dirtInv, itemStack, i, 1);
+                    ItemStack plantStack = this.plantInv.getStackInSlot(i);
+                    if(!dirtStack.isEmpty()&&plantStack.isEmpty()&&potPlant.isSuitSoil(dirtStack)){
+                        ItemUtils.setStackInHandler(plantInv, itemStackIn, i, 1);
                         potHandler.addPlant(i,potPlant);
                         amount = 1;
-                        System.out.println("addTEST");
                         break;
                     }
                 }
@@ -120,31 +120,29 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
      * @return
      */
     public ItemStack onItemRemove(){
-        boolean removePlant = false;
+        // boolean removePlant = false;
         ItemStack returnStack = ItemStack.EMPTY;
-        for(int i = this.plantInv.getSlots()-1;i>=0;i--){
-            ItemStack plantStack = this.plantInv.getStackInSlot(i).copy();
-            if(!plantStack.isEmpty()&&returnStack!=null){
-                this.plantInv.setStackInSlot(i, returnStack);
-                if(this.potHandler.removePlant(i)){
-                    returnStack = plantStack;
-                }
-                syncToTrackingClients();
-                removePlant=true;
-                break;
-            }
-        }
-        if(!removePlant){
-            for(int i = this.dirtInv.getSlots()-1;i>=0;i--){
-                ItemStack dirtStack = this.plantInv.getStackInSlot(i).copy();
-                if(!dirtStack.isEmpty()&&returnStack!=null){
-                    this.dirtInv.setStackInSlot(i, returnStack);
-                    returnStack = dirtStack;
-                    syncToTrackingClients();
-                    break;
-                }
-            }
-        }
+        // for(int i = this.plantInv.getSlots()-1;i>=0;i--){
+        //     ItemStack plantStack = ItemUtils.clearStackInHandler(plantInv, i);
+        //     if(!plantStack.isEmpty()){
+        //         if(this.potHandler.removePlant(i)){
+        //             returnStack = plantStack;
+        //         }
+        //         syncToTrackingClients();
+        //         removePlant=true;
+        //         break;
+        //     }
+        // }
+        // if(!removePlant){
+        //     for(int i = this.dirtInv.getSlots()-1;i>=0;i--){
+        //         ItemStack dirtStack = ItemUtils.clearStackInHandler(dirtInv, i);
+        //         if(!dirtStack.isEmpty()){
+        //             returnStack = dirtStack;
+        //             syncToTrackingClients();
+        //             break;
+        //         }
+        //     }
+        // }
         return returnStack;
     }
 
@@ -155,7 +153,7 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
      */
     @Nullable
     public BlockState getPlantStage(int slot){
-        if(slot<0|slot>=this.plantInv.getSlots()){
+        if(slot>=0&&slot<this.plantInv.getSlots()){
             return this.potHandler.getBlockStage(slot);
         }
         return null;

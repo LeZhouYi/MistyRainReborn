@@ -21,14 +21,15 @@ public class MRConfig {
     static{
         ForgeConfigSpec.Builder COMMON_BUILDER = new ForgeConfigSpec.Builder();
         COMMON_BUILDER.comment("Time settings").push("time");
-
         TimeConfig.MONTH_START = COMMON_BUILDER.comment("Month start when first start game").defineInRange("month_start", 2, 0, 11);
         TimeConfig.DAYS_PER_MONTH = COMMON_BUILDER.comment("Days per month").defineInRange("days_per_month", 30, 10, 60);
+        COMMON_BUILDER.pop();
 
+        COMMON_BUILDER.comment("Pot plant settings").push("pot plant");
         GameRule.POT_PLANT_TICK = COMMON_BUILDER.comment("The tick of pot plant tileEntity").defineInRange("pot_plant_tick", 120, 20, 600);
         GameRule.PLANT_GROW_CHANCE = COMMON_BUILDER.comment("The chance of plant growing when passed sucessfully").defineInRange("plant_grow_chance", 100, 0, 1000);
-
         COMMON_BUILDER.pop();
+
         COMMON_CONFIG = COMMON_BUILDER.build();
     }
 

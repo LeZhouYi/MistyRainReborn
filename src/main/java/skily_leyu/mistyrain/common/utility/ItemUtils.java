@@ -14,7 +14,8 @@ public class ItemUtils {
      * @param amount
      */
     public static void shrinkItem(PlayerEntity playerEntity,ItemStack itemStack,int amount){
-        if(!playerEntity.isCreative()&&amount>0){
+        // if(!playerEntity.isCreative()&&amount>0){
+        if(amount>0){
             itemStack.shrink(amount);
         }
     }
@@ -29,6 +30,24 @@ public class ItemUtils {
     }
 
     /**
+     * 移除特定格子的物品并返回
+     * @param handler
+     * @param slot
+     * @return
+     */
+    public static ItemStack clearStackInHandler(ItemStackHandler handler,int slot){
+        if(handler!=null&&handler.getSlots()>=slot){
+            ItemStack backStack = handler.getStackInSlot(slot);
+            ItemStack emptyStack = ItemStack.EMPTY;
+            if(emptyStack!=null){
+                handler.setStackInSlot(slot, emptyStack);
+            }
+            return backStack;
+        }
+        return ItemStack.EMPTY;
+    }
+
+    /**
      * 将物品设置进ItemStackHandler中，不影响原物品数量
      * @param handler
      * @param itemStack
@@ -36,7 +55,7 @@ public class ItemUtils {
      * @param amount 要放置的数量
      */
     public static void setStackInHandler(ItemStackHandler handler,ItemStack itemStack,int slot,int amount){
-        if(itemStack.isEmpty()||handler.getSlots()<=slot||amount>0){
+        if(itemStack.isEmpty()||handler.getSlots()<=slot||amount<1){
             return;
         }
         ItemStack splitStack = itemStack.copy().split(amount);

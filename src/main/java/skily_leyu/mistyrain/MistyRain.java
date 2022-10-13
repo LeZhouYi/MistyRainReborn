@@ -2,7 +2,9 @@ package skily_leyu.mistyrain;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
@@ -34,10 +36,10 @@ public class MistyRain {
         MRBlock.BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
         MRItem.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
         MRTileEntity.TILEENTITY_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, MRConfig.COMMON_CONFIG);
     }
 
     private void setup(final FMLCommonSetupEvent event){
-        new MRConfig();
         new MRSetting(event);
     }
 

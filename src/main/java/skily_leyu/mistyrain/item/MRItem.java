@@ -18,6 +18,10 @@ public class MRItem {
     public static RegistryObject<Item> itemGreenWisteria = ITEMS.register("mr_green_wisteria", ()->{
         return new BlockItem(MRBlock.blockGreenWisteria.get(), new Item.Properties().tab(MRGroup.potPlantGroup));
     });
+    public static RegistryObject<Item> itemCandleRush = ITEMS.register("mr_candle_rush", ()->{
+        return new BlockItem(MRBlock.blockCandleRush.get(), new Item.Properties().tab(MRGroup.potPlantGroup));
+    });
+
     public static RegistryObject<Item> itemWoodenPot = ITEMS.register("mr_wooden_pot", ()->{
         return new BlockItem(MRBlock.blockWoodenPot.get(), new Item.Properties().tab(MRGroup.potPlantGroup));
     });

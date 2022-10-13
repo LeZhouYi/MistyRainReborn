@@ -6,6 +6,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import skily_leyu.mistyrain.MistyRain;
 import skily_leyu.mistyrain.block.pot.BlockWoodenPot;
+import skily_leyu.mistyrain.block.potplant.BlockCandleRush;
 import skily_leyu.mistyrain.block.potplant.BlockGreenWisteria;
 import skily_leyu.mistyrain.block.potplant.BlockSnowVelvet;
 
@@ -15,6 +16,7 @@ public class MRBlock {
     //植物
     public static RegistryObject<Block> blockSnowVelvet = BLOCKS.register("mr_snow_velvet", ()->{return new BlockSnowVelvet();});
     public static RegistryObject<Block> blockGreenWisteria = BLOCKS.register("mr_green_wisteria", ()->{return new BlockGreenWisteria();});
+    public static RegistryObject<Block> blockCandleRush = BLOCKS.register("mr_candle_rush", ()->{return new BlockCandleRush();});
 
     //花盆
     public static RegistryObject<Block> blockWoodenPot = BLOCKS.register("mr_wooden_pot", ()->{return new BlockWoodenPot();});
