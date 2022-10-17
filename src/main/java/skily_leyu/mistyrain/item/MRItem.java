@@ -21,6 +21,15 @@ public class MRItem {
     public static RegistryObject<Item> itemCandleRush = ITEMS.register("mr_candle_rush", ()->{
         return new BlockItem(MRBlock.blockCandleRush.get(), new Item.Properties().tab(MRGroup.potPlantGroup));
     });
+    public static RegistryObject<Item> itemHomingPlum = ITEMS.register("mr_homing_plum", ()->{
+        return new BlockItem(MRBlock.blockHomingPlum.get(), new Item.Properties().tab(MRGroup.potPlantGroup));
+    });
+    public static RegistryObject<Item> itemBreezeRattan = ITEMS.register("mr_breeze_rattan", ()->{
+        return new BlockItem(MRBlock.blockBreezeRattan.get(), new Item.Properties().tab(MRGroup.potPlantGroup));
+    });
+    public static RegistryObject<Item> itemNarcissus = ITEMS.register("mr_narcissus", ()->{
+        return new BlockItem(MRBlock.blockNarcissus.get(), new Item.Properties().tab(MRGroup.potPlantGroup));
+    });
 
     public static RegistryObject<Item> itemWoodenPot = ITEMS.register("mr_wooden_pot", ()->{
         return new BlockItem(MRBlock.blockWoodenPot.get(), new Item.Properties().tab(MRGroup.potPlantGroup));

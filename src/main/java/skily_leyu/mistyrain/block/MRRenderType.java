@@ -14,7 +14,10 @@ public class MRRenderType {
     public static void onRenderTypeSetup(FMLClientSetupEvent event){
         RenderTypeLookup.setRenderLayer(MRBlock.blockSnowVelvet.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(MRBlock.blockGreenWisteria.get(), RenderType.cutout());
-        RenderTypeLookup.setRenderLayer(MRBlock.blockGreenWisteria.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(MRBlock.blockCandleRush.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(MRBlock.blockHomingPlum.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(MRBlock.blockBreezeRattan.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(MRBlock.blockNarcissus.get(), RenderType.cutout());
 
         RenderTypeLookup.setRenderLayer(MRBlock.blockWoodenPot.get(), RenderType.cutout());
     }
