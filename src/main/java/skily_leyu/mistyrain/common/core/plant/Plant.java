@@ -10,7 +10,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 import skily_leyu.mistyrain.common.core.anima.Anima;
 import skily_leyu.mistyrain.common.core.soil.SoilType;
-import skily_leyu.mistyrain.common.core.time.MRTimeDot;
 import skily_leyu.mistyrain.common.utility.ItemUtils;
 import skily_leyu.mistyrain.config.MRSetting;
 
@@ -101,20 +100,6 @@ public class Plant {
      */
     public String getName() {
         return name;
-    }
-
-    /**
-     * 判断当前的生长状态是否在合适的生长时间范围内
-     * @param stage
-     * @param timeDot
-     * @return
-     */
-    public boolean isInSpan(int stage,MRTimeDot timeDot) {
-        if(this.stages!=null&&stage<this.stages.size()){
-            PlantStage plantStage = this.stages.get(stage);
-            return plantStage.isInSpan(timeDot);
-        }
-        return false;
     }
 
 }

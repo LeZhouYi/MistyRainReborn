@@ -78,3 +78,13 @@
     - 命令功能实现: 参考net.minecraft.command.impl.TimeCommand
       - 获取命令参数: 参考net.minecraft.command.arguments.TimeArgument
       - 命令推荐输入: 参考net.minecraft.command.arguments.TimeArgument::listSuggestions
+
+## 功能实现记录
+- 修改:
+    - [已完成]删去节气对盆栽生长的影响
+    - [未完成]对盆栽植物增加调试状态的功能
+    - [未完成]重绘植物贴图中不和谐的地方
+    - [未完成]完成剩余植物的贴图和模型等一系列数据
+    - [未完成]完成植物的生长要素判定
+    - [未完成]完成植物的健康值机制
+    - [未完成]完成植物的灵气机制

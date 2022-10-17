@@ -3,7 +3,6 @@ package skily_leyu.mistyrain.common.core.pot;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.world.World;
 import skily_leyu.mistyrain.common.core.plant.Plant;
-import skily_leyu.mistyrain.common.core.time.MRTimeDot;
 import skily_leyu.mistyrain.config.MRConfig;
 import skily_leyu.mistyrain.config.MRSetting;
 import skily_leyu.mistyrain.tileentity.PotTileEntity;
@@ -22,8 +21,7 @@ public class PotPlantStage {
         Plant plant = MRSetting.getPlantMap().getPlant(plantKey);
         World world = tileEntity.getLevel();
         if(plant!=null&&world!=null){
-            MRTimeDot timeDot = new MRTimeDot(world);
-            if(plant.isInSpan(nowStage,timeDot)&&MRConfig.canGrow(world.getRandom())){
+            if(MRConfig.canGrow(world.getRandom())){
                 this.nowStage = plant.getNextStage(nowStage, world.getRandom());
             }
         }

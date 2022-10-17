@@ -9,10 +9,6 @@
                     "nextStages":{
                         "SPROUT": 1
                     },
-                    "timeSpan":{
-                        "start": "SPRING_BEGINS",
-                        "end": "HOAR_FROST_FALLS"
-                    },
                     "harvests":{}
                 },
                 {
@@ -20,20 +16,12 @@
                     "nextStages":{
                         "ROOT_DEPTH":1
                     },
-                    "timeSpan":{
-                        "start": "SPRING_BEGINS",
-                        "end": "HOAR_FROST_FALLS"
-                    },
                     "harvests":{}
                 },
                 {
                     "nowStage":"ROOT_DEPTH",
                     "nextStages":{
                         "VERDANT":1
-                    },
-                    "timeSpan":{
-                        "start": "SPRING_BEGINS",
-                        "end": "HOAR_FROST_FALLS"
                     },
                     "harvests":{}
                 },
@@ -43,10 +31,6 @@
                         "IN_BUD":1,
                         "VERDANT":4
                     },
-                    "timeSpan":{
-                        "start": "SUMMER_BEGINS",
-                        "end": "GREAT_HEAT"
-                    },
                     "harvests":{}
                 },
                 {
@@ -54,20 +38,12 @@
                     "nextStages":{
                         "FULL_BLOWN":1
                     },
-                    "timeSpan":{
-                        "start": "SUMMER_BEGINS",
-                        "end": "GREAT_HEAT"
-                    },
                     "harvests":{}
                 },
                 {
                     "nowStage":"FULL_BLOWN",
                     "nextStages":{
                         "VERDANT":1
-                    },
-                    "timeSpan":{
-                        "start": "SPRING_BEGINS",
-                        "end": "GREAT_COLD"
                     },
                     "harvests":{}
                 }
@@ -96,10 +72,6 @@
                     "nextStages":{
                         "ROOT_DEPTH":1
                     },
-                    "timeSpan":{
-                        "start": "SPRING_BEGINS",
-                        "end": "GREAT_COLD"
-                    },
                     "harvests":{}
                 },
                 {
@@ -107,19 +79,11 @@
                     "nextStages":{
                         "VERDANT":1
                     },
-                    "timeSpan":{
-                        "start": "SPRING_BEGINS",
-                        "end": "GREAT_COLD"
-                    },
                     "harvests":{}
                 },
                 {
                     "nowStage":"VERDANT",
                     "nextStages":{},
-                    "timeSpan":{
-                        "start": "SPRING_BEGINS",
-                        "end": "GREAT_COLD"
-                    },
                     "harvests":{}
                 }
             ],
