@@ -14,6 +14,9 @@
         ],
         "HUMUS":[
             "minecraft:podzol"
+        ],
+        "COBBLE":[
+            "minecraft:cobble_stone"
         ]
     }
 }

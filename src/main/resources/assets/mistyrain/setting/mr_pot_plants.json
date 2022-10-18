@@ -91,20 +91,308 @@
                 {
                     "type":"BLANK",
                     "level":"FULL"
+                },
+                {
+                    "type":"WATER",
+                    "level":"THIN"
                 }
             ],
             "genAnima":[
                 {
                     "type":"WOOD",
                     "level":"THIN"
+                },
+                {
+                    "type":"BLANK",
+                    "level":"NULL"
                 }
             ],
             "likeSoils":["minecraft:podzol"],
             "suitSoilTypes":["HUMUS"],
             "needWater": 15,
             "needFertilizer": 20,
-            "needTemper": [7,15],
-            "needLight": [4,12]
+            "needTemper": [8,13],
+            "needLight": [5,12]
+        },
+        "mistyrain:mr_candle_rush":{
+            "name":"mistyrain:mr_candle_rush",
+            "seeds":["mistyrain:mr_candle_rush"],
+            "stages":[
+                {
+                    "nowStage":"SPROUT",
+                    "nextStages":{
+                        "ROOT_DEPTH":1
+                    },
+                    "harvests":{}
+                },
+                {
+                    "nowStage":"ROOT_DEPTH",
+                    "nextStages":{
+                        "VERDANT":1
+                    },
+                    "harvests":{}
+                },
+                {
+                    "nowStage":"VERDANT",
+                    "nextStages":{
+                        "IN_BUD":1,
+                        "VERDANT":4
+                    },
+                    "harvests":{}
+                },
+                {
+                    "nowStage":"IN_BUD",
+                    "nextStages":{
+                        "FULL_BLOWN":1
+                    },
+                    "harvests":{}
+                },
+                {
+                    "nowStage":"FULL_BLOWN",
+                    "nextStages":{
+                        "VERDANT":1
+                    },
+                    "harvests":{}
+                }
+            ],
+            "needAnimas":[
+                {
+                    "type":"BLANK",
+                    "level":"FULL"
+                },
+                {
+                    "type":"WOOD",
+                    "level":"THIN"
+                }
+            ],
+            "genAnima":[
+                {
+                    "type":"FIRE",
+                    "level":"THIN"
+                },
+                {
+                    "type":"BLANK",
+                    "level":"NULL"
+                }
+            ],
+            "likeSoils":["minecraft:sand"],
+            "suitSoilTypes":["SAND"],
+            "needWater": 5,
+            "needFertilizer": 20,
+            "needTemper": [10,15],
+            "needLight": [8,15]
+        },
+        "mistyrain:mr_homing_plum":{
+            "name":"mistyrain:mr_homing_plum",
+            "seeds":["mistyrain:mr_homing_plum"],
+            "stages":[
+                {
+                    "nowStage":"SPROUT",
+                    "nextStages":{
+                        "ROOT_DEPTH":1
+                    },
+                    "harvests":{}
+                },
+                {
+                    "nowStage":"ROOT_DEPTH",
+                    "nextStages":{
+                        "VERDANT":1
+                    },
+                    "harvests":{}
+                },
+                {
+                    "nowStage":"VERDANT",
+                    "nextStages":{
+                        "IN_BUD":1,
+                        "VERDANT":4
+                    },
+                    "harvests":{}
+                },
+                {
+                    "nowStage":"IN_BUD",
+                    "nextStages":{
+                        "FULL_BLOWN":1
+                    },
+                    "harvests":{}
+                },
+                {
+                    "nowStage":"FULL_BLOWN",
+                    "nextStages":{
+                        "VERDANT":1
+                    },
+                    "harvests":{}
+                }
+            ],
+            "needAnimas":[
+                {
+                    "type":"BLANK",
+                    "level":"FULL"
+                },
+                {
+                    "type":"FIRE",
+                    "level":"THIN"
+                }
+            ],
+            "genAnima":[
+                {
+                    "type":"SOIL",
+                    "level":"THIN"
+                },
+                {
+                    "type":"BLANK",
+                    "level":"NULL"
+                }
+            ],
+            "likeSoils":["minecraft:farmland"],
+            "suitSoilTypes":["DIRT"],
+            "needWater": 10,
+            "needFertilizer": 20,
+            "needTemper": [3,8],
+            "needLight": [5,12]
+        },
+        "mistyrain:mr_breeze_rattan":{
+            "name":"mistyrain:mr_breeze_rattan",
+            "seeds":["mistyrain:mr_breeze_rattan"],
+            "stages":[
+                {
+                    "nowStage":"SPROUT",
+                    "nextStages":{
+                        "ROOT_DEPTH":1
+                    },
+                    "harvests":{}
+                },
+                {
+                    "nowStage":"ROOT_DEPTH",
+                    "nextStages":{
+                        "VERDANT":1
+                    },
+                    "harvests":{}
+                },
+                {
+                    "nowStage":"VERDANT",
+                    "nextStages":{
+                        "IN_BUD":1,
+                        "VERDANT":4
+                    },
+                    "harvests":{}
+                },
+                {
+                    "nowStage":"IN_BUD",
+                    "nextStages":{
+                        "FULL_BLOWN":1
+                    },
+                    "harvests":{}
+                },
+                {
+                    "nowStage":"FULL_BLOWN",
+                    "nextStages":{
+                        "VERDANT":1
+                    },
+                    "harvests":{}
+                }
+            ],
+            "needAnimas":[
+                {
+                    "type":"BLANK",
+                    "level":"FULL"
+                },
+                {
+                    "type":"SOIL",
+                    "level":"THIN"
+                }
+            ],
+            "genAnima":[
+                {
+                    "type":"GOLD",
+                    "level":"THIN"
+                },
+                {
+                    "type":"BLANK",
+                    "level":"NULL"
+                }
+            ],
+            "likeSoils":["minecraft:cobble_stone"],
+            "suitSoilTypes":["COBBLE"],
+            "needWater": 5,
+            "needFertilizer": 25,
+            "needTemper": [1,6],
+            "needLight": [5,12]
+        },
+        "mistyrain.mr_narcissus":{
+            "name":"mistyrain.mr_narcissus",
+            "seeds":["mistyrain.mr_narcissus"],
+            "stages":[
+                {
+                    "nowStage":"SEED_DROP",
+                    "nextStages":{
+                        "SPROUT": 1
+                    },
+                    "harvests":{}
+                },
+                {
+                    "nowStage":"SPROUT",
+                    "nextStages":{
+                        "ROOT_DEPTH":1
+                    },
+                    "harvests":{}
+                },
+                {
+                    "nowStage":"ROOT_DEPTH",
+                    "nextStages":{
+                        "VERDANT":1
+                    },
+                    "harvests":{}
+                },
+                {
+                    "nowStage":"VERDANT",
+                    "nextStages":{
+                        "IN_BUD":1,
+                        "VERDANT":4
+                    },
+                    "harvests":{}
+                },
+                {
+                    "nowStage":"IN_BUD",
+                    "nextStages":{
+                        "FULL_BLOWN":1
+                    },
+                    "harvests":{}
+                },
+                {
+                    "nowStage":"FULL_BLOWN",
+                    "nextStages":{
+                        "VERDANT":1
+                    },
+                    "harvests":{}
+                }
+            ],
+            "needAnimas": [
+                {
+                    "type":"BLANK",
+                    "level":"FULL"
+                },
+                {
+                    "type":"GOLD",
+                    "level":"THIN"
+                }
+            ],
+            "genAnimas":[
+                {
+                    "type": "WATER",
+                    "level": "THIN"
+                },
+                {
+                    "type": "BLANK",
+                    "level": "NULL"
+                }
+            ],
+            "likeSoils": ["minecraft:water"],
+            "suitSoilTypes": ["WATER"],
+            "suitWater": "minecraft:water",
+            "needWater": 25,
+            "needFertilizer": 5,
+            "needTemper": [5,10],
+            "needLight": [3,10]
         }
     }
 }

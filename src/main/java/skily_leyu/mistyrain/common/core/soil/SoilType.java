@@ -5,5 +5,6 @@ public enum SoilType {
     DIRT,//泥土
     WATER,
     SAND,
-    HUMUS//腐殖土;
+    HUMUS,//腐殖土
+    COBBLE;
 }
