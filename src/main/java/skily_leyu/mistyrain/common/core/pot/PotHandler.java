@@ -92,4 +92,12 @@ public class PotHandler {
         return willReturn;
     }
 
+    /**
+     * 判断是否为空
+     * @return
+     */
+    public boolean isEmpty() {
+        return this.stageMap.size()<1;
+    }
+
 }

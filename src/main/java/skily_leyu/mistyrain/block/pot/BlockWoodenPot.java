@@ -59,9 +59,12 @@ public class BlockWoodenPot extends Block{
             //撤回物品/清空植物
             else if(itemStack.isEmpty()&&tileEntity!=null){
                 ItemStack returnStack = tileEntity.onItemRemove();
-                if(!returnStack.isEmpty()){
-                    playerEntity.inventory.placeItemBackInInventory(world,returnStack);
+                if(returnStack!=null){
+                    if(!returnStack.isEmpty()){
+                        playerEntity.inventory.placeItemBackInInventory(world,returnStack);
+                    }
                 }
+
             }
         }
         return ActionResultType.SUCCESS;

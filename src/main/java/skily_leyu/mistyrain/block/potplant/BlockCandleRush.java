@@ -16,7 +16,7 @@ import net.minecraftforge.common.util.Constants;
 
 public class BlockCandleRush extends Block{
 
-    private static IntegerProperty STAGE = IntegerProperty.create("plant_stage", 0, 2);
+    private static IntegerProperty STAGE = IntegerProperty.create("plant_stage", 0, 4);
 
     public BlockCandleRush() {
         super(AbstractBlock.Properties.of(Material.PLANT).noCollission());

@@ -17,6 +17,7 @@ public enum PlantStageType {
     LEAVES_FALL,
     FADE,
     GATHER_1,
-    GATHER_2;
+    GATHER_2,
+    PLANT_DROP;
 
 }

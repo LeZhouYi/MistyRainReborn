@@ -58,8 +58,10 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
             tickCount--;
             if(tickCount<1){
                 tickCount=getTickRate();
-                potHandler.tick(this);
-                syncToTrackingClients();
+                if(!potHandler.isEmpty()){
+                    potHandler.tick(this);
+                    syncToTrackingClients();
+                }
             }
         }
     }
@@ -117,32 +119,31 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
     /**
      * 回退物品:1、存在植物时清空植物状态，仅当Stage=0时返还物品(即未被消耗)
      * 2、不存在植物时清空土壤，返回该物品
-     * @return
+     * @return null=无任何变化,Itemstack.EMPTY=有变化但无物品返还
      */
+    @Nullable
     public ItemStack onItemRemove(){
-        // boolean removePlant = false;
-        ItemStack returnStack = ItemStack.EMPTY;
-        // for(int i = this.plantInv.getSlots()-1;i>=0;i--){
-        //     ItemStack plantStack = ItemUtils.clearStackInHandler(plantInv, i);
-        //     if(!plantStack.isEmpty()){
-        //         if(this.potHandler.removePlant(i)){
-        //             returnStack = plantStack;
-        //         }
-        //         syncToTrackingClients();
-        //         removePlant=true;
-        //         break;
-        //     }
-        // }
-        // if(!removePlant){
-        //     for(int i = this.dirtInv.getSlots()-1;i>=0;i--){
-        //         ItemStack dirtStack = ItemUtils.clearStackInHandler(dirtInv, i);
-        //         if(!dirtStack.isEmpty()){
-        //             returnStack = dirtStack;
-        //             syncToTrackingClients();
-        //             break;
-        //         }
-        //     }
-        // }
+        ItemStack returnStack = null;
+        //清空植物
+        for(int i = this.plantInv.getSlots()-1;i>=0;i--){
+            ItemStack plantStack = ItemUtils.clearStackInHandler(plantInv, i);
+            if(!plantStack.isEmpty()){
+                returnStack = (this.potHandler.removePlant(i))?plantStack:ItemStack.EMPTY;
+                syncToTrackingClients();
+                break;
+            }
+        }
+        //若未清空植物，则清空土壤
+        if(returnStack==null){
+            for(int i = this.dirtInv.getSlots()-1;i>=0;i--){
+                ItemStack dirtStack = ItemUtils.clearStackInHandler(dirtInv, i);
+                if(!dirtStack.isEmpty()){
+                    returnStack = dirtStack;
+                    syncToTrackingClients();
+                    break;
+                }
+            }
+        }
         return returnStack;
     }
 

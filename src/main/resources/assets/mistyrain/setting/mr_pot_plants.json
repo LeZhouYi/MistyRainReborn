@@ -187,6 +187,13 @@
             "seeds":["mistyrain:mr_homing_plum"],
             "stages":[
                 {
+                    "nowStage":"PLANT_DROP",
+                    "nextStages":{
+                        "SPROUT":1
+                    },
+                    "harvests":{}
+                },
+                {
                     "nowStage":"SPROUT",
                     "nextStages":{
                         "ROOT_DEPTH":1
@@ -323,7 +330,7 @@
             "seeds":["mistyrain.mr_narcissus"],
             "stages":[
                 {
-                    "nowStage":"SEED_DROP",
+                    "nowStage":"PLANT_DROP",
                     "nextStages":{
                         "SPROUT": 1
                     },

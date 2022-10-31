@@ -17,6 +17,10 @@ public class PotPlantStage {
         this.plantKey = plantKey;
     }
 
+    /**
+     * 执行植物生长的判定，消耗，状态更新
+     * @param tileEntity
+     */
     public void tick(PotTileEntity tileEntity){
         Plant plant = MRSetting.getPlantMap().getPlant(plantKey);
         World world = tileEntity.getLevel();
