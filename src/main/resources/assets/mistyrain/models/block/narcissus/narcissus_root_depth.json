@@ -1,0 +1,6 @@
+{
+    "parent":"mistyrain:block/full_cross_grass",
+    "textures":{
+        "full_cross":"mistyrain:block/narcissus/narcissus_root_depth"
+    }
+}

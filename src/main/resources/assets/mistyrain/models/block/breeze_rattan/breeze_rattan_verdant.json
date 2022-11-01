@@ -1,0 +1,6 @@
+{
+    "parent":"mistyrain:block/corner_cross_grass",
+    "textures":{
+        "corner_cross":"mistyrain:block/breeze_rattan/breeze_rattan_verdant"
+    }
+}

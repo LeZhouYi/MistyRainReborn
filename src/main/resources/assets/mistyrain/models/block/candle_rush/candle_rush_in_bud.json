@@ -1,0 +1,6 @@
+{
+    "parent":"mistyrain:block/full_cross_grass",
+    "textures":{
+        "full_cross":"mistyrain:block/candle_rush/candle_rush_in_bud"
+    }
+}

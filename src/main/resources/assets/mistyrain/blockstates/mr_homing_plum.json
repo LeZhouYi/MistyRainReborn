@@ -1,0 +1,22 @@
+{
+    "variants":{
+        "plant_stage=0":{
+            "model":"mistyrain:block/homing_plum/homing_plum_seed_drop"
+        },
+        "plant_stage=1":{
+            "model":"mistyrain:block/homing_plum/homing_plum_sprout"
+        },
+        "plant_stage=2":{
+            "model":"mistyrain:block/homing_plum/homing_plum_root_depth"
+        },
+        "plant_stage=3":{
+            "model":"mistyrain:block/homing_plum/homing_plum_verdant"
+        },
+        "plant_stage=4":{
+            "model":"mistyrain:block/homing_plum/homing_plum_in_bud"
+        },
+        "plant_stage=5":{
+            "model":"mistyrain:block/homing_plum/homing_plum_full_blown"
+        }
+    }
+}

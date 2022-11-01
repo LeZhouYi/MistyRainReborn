@@ -1,0 +1,19 @@
+{
+    "variants":{
+        "plant_stage=0":{
+            "model":"mistyrain:block/candle_rush/candle_rush_sprout"
+        },
+        "plant_stage=1":{
+            "model":"mistyrain:block/candle_rush/candle_rush_root_depth"
+        },
+        "plant_stage=2":{
+            "model":"mistyrain:block/candle_rush/candle_rush_verdant"
+        },
+        "plant_stage=3":{
+            "model":"mistyrain:block/candle_rush/candle_rush_in_bud"
+        },
+        "plant_stage=4":{
+            "model":"mistyrain:block/candle_rush/candle_rush_full_blown"
+        }
+    }
+}

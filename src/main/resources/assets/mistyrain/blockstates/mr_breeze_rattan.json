@@ -1,0 +1,19 @@
+{
+    "variants":{
+        "plant_stage=0":{
+            "model":"mistyrain:block/breeze_rattan/breeze_rattan_sprout"
+        },
+        "plant_stage=1":{
+            "model":"mistyrain:block/breeze_rattan/breeze_rattan_root_depth"
+        },
+        "plant_stage=2":{
+            "model":"mistyrain:block/breeze_rattan/breeze_rattan_verdant"
+        },
+        "plant_stage=3":{
+            "model":"mistyrain:block/breeze_rattan/breeze_rattan_in_bud"
+        },
+        "plant_stage=4":{
+            "model":"mistyrain:block/breeze_rattan/breeze_rattan_full_blown"
+        }
+    }
+}
