@@ -5,7 +5,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.HoeItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ShovelItem;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
@@ -49,22 +52,23 @@ public class BlockWoodenPot extends Block{
         if(!world.isClientSide() && hand == Hand.MAIN_HAND){
             WoodenPotTileEntity tileEntity = (WoodenPotTileEntity)world.getBlockEntity(blockPos);
             ItemStack itemStack = playerEntity.getMainHandItem();
-            //添加物品
             if(!itemStack.isEmpty()&&tileEntity!=null){
-                int amount = tileEntity.onItemAdd(itemStack);
-                if(amount>0){
+                //撤回物品/清空植物
+                if(itemStack.getItem() instanceof HoeItem || itemStack.getItem() instanceof ShovelItem){
+                    ItemStack returnStack = tileEntity.onItemRemove();
+                    if(returnStack!=null&&!playerEntity.isCreative()){
+                        //消耗耐久
+                        itemStack.hurt(1, RANDOM, (ServerPlayerEntity) playerEntity);
+                        //获得物品返还
+                        if(!returnStack.isEmpty()){
+                            playerEntity.inventory.placeItemBackInInventory(world,returnStack);
+                        }
+                    }
+                }else{
+                    //添加物品
+                    int amount = tileEntity.onItemAdd(itemStack);
                     ItemUtils.shrinkItem(playerEntity, itemStack, amount);
                 }
-            }
-            //撤回物品/清空植物
-            else if(itemStack.isEmpty()&&tileEntity!=null){
-                ItemStack returnStack = tileEntity.onItemRemove();
-                if(returnStack!=null){
-                    if(!returnStack.isEmpty()){
-                        playerEntity.inventory.placeItemBackInInventory(world,returnStack);
-                    }
-                }
-
             }
         }
         return ActionResultType.SUCCESS;

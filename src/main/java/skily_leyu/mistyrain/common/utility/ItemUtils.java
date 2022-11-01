@@ -14,8 +14,7 @@ public class ItemUtils {
      * @param amount
      */
     public static void shrinkItem(PlayerEntity playerEntity,ItemStack itemStack,int amount){
-        // if(!playerEntity.isCreative()&&amount>0){
-        if(amount>0){
+        if(!playerEntity.isCreative()&&amount>0){
             itemStack.shrink(amount);
         }
     }
