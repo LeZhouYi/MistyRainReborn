@@ -1,4 +1,4 @@
-package skily_leyu.mistyrain.tileentity.Render;
+package skily_leyu.mistyrain.tileentity.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 

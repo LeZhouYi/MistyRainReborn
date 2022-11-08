@@ -11,7 +11,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraftforge.common.util.Constants;
 import skily_leyu.mistyrain.common.core.plant.Plant;
-import skily_leyu.mistyrain.tileentity.PotTileEntity;
+import skily_leyu.mistyrain.tileentity.tileport.PotTileEntity;
 
 public class PotHandler {
 

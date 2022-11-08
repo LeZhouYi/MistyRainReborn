@@ -1,4 +1,4 @@
-package skily_leyu.mistyrain.tileentity.Render;
+package skily_leyu.mistyrain.tileentity.render;
 
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;

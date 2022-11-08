@@ -5,7 +5,7 @@ import net.minecraft.world.World;
 import skily_leyu.mistyrain.common.core.plant.Plant;
 import skily_leyu.mistyrain.config.MRConfig;
 import skily_leyu.mistyrain.config.MRSetting;
-import skily_leyu.mistyrain.tileentity.PotTileEntity;
+import skily_leyu.mistyrain.tileentity.tileport.PotTileEntity;
 
 public class PotPlantStage {
 
