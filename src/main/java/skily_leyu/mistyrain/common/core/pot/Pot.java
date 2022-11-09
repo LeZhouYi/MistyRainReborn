@@ -3,6 +3,8 @@ package skily_leyu.mistyrain.common.core.pot;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.FluidStack;
 import skily_leyu.mistyrain.common.core.soil.SoilType;
 import skily_leyu.mistyrain.common.utility.ItemUtils;
 import skily_leyu.mistyrain.config.MRSetting;
@@ -21,6 +23,26 @@ public class Pot {
         return this.slotSize;
     }
 
+    /**
+     * 判断当前流体是否为合适的水份
+     * @param fluidStack
+     * @return
+     */
+    public boolean isSuitFluid(FluidStack fluidStack){
+        if(fluidStack!=null){
+            ResourceLocation location = fluidStack.getFluid().getRegistryName();
+            if(location!=null){
+                return this.suitFluids.contains(location.toString());
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 判断当前物品是否是合适的土壤
+     * @param itemStack
+     * @return
+     */
     public boolean isSuitSoil(ItemStack itemStack){
         if(this.suitSoils.contains(ItemUtils.getRegistryName(itemStack))){
             return true;
@@ -31,6 +53,14 @@ public class Pot {
             }
         }
         return false;
+    }
+
+    /**
+     * 获取储水量
+     * @return
+     */
+    public int getTankSize(){
+        return this.tankSize;
     }
 
 }

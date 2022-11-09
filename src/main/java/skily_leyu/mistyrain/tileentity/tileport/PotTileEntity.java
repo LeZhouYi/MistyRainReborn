@@ -8,6 +8,12 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.ItemStackHandler;
 import skily_leyu.mistyrain.common.core.plant.Plant;
 import skily_leyu.mistyrain.common.core.pot.Pot;
@@ -20,6 +26,7 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
 
     protected ItemStackHandler dirtInv; //土壤
     protected ItemStackHandler plantInv; //植物
+    protected FluidTank waterTank;//水量
     protected PotHandler potHandler; //植物状态记录器
     private int tickCount; //计时
     private String potKey; //配置文件KeyName
@@ -29,6 +36,7 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
         this.potKey = potKey;
         this.tickCount = getTickRate();
         this.potHandler = new PotHandler();
+        this.waterTank = new FluidTank(this.getPot().getTankSize());
         this.dirtInv = new ItemStackHandler(this.getPot().getSlotSize()){
             @Override
             public int getSlotLimit(int slot){
@@ -72,6 +80,7 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
         nbt.put("PlantInv",this.plantInv.serializeNBT());
         nbt.put("PlantStage", this.potHandler.serializeNBT());
         nbt.putInt("TickCount", tickCount);
+        nbt.put("WaterTank",this.waterTank.writeToNBT(new CompoundNBT()));
         return super.save(nbt);
     }
 
@@ -82,6 +91,7 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
         this.plantInv.deserializeNBT(nbt.getCompound("PlantInv"));
         this.potHandler.deserializeNBT(nbt.getCompound("PlantStage"));
         this.tickCount = nbt.getInt("TickCount");
+        this.waterTank.readFromNBT(nbt.getCompound("WaterTank"));
     }
 
     /**
@@ -145,6 +155,36 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
             }
         }
         return returnStack;
+    }
+
+    @Nullable
+    public ItemStack onHandleFluid(ItemStack itemStack){
+        if(isSoilEmpty()){
+            return null;
+        }
+        LazyOptional<IFluidHandler> optional = ItemUtils.getFluidCaps(itemStack);
+        IFluidHandler fluidHandler = optional!=null?optional.orElse(null):null;
+        if(fluidHandler!=null){
+            for(int i = 0;i<fluidHandler.getTanks();i++){
+                FluidStack fluidStack = fluidHandler.getFluidInTank(i);
+                if(!fluidStack.isEmpty()){
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 判断土壤栏是否为空
+     * @return
+     */
+    public boolean isSoilEmpty(){
+        for(int i = 0;i<this.dirtInv.getSlots();i++){
+            if(!this.dirtInv.getStackInSlot(i).isEmpty()){
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

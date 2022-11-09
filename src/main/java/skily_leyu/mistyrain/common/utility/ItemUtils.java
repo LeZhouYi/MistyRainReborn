@@ -3,9 +3,26 @@ package skily_leyu.mistyrain.common.utility;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 public class ItemUtils {
+
+    /**
+     * 判断物品是否拥有流体Capability并返回
+     * @param itemStack
+     * @return
+     */
+    public static LazyOptional<IFluidHandler> getFluidCaps(ItemStack itemStack){
+        Capability<IFluidHandler> handler = CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+        if(handler!=null){
+            return itemStack.getCapability(handler);
+        }
+        return null;
+    }
 
     /**
      * 减少ItemStack的数量/耐久，若处于创造模式则不处理

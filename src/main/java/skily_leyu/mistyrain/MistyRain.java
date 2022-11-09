@@ -21,7 +21,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 
-@Mod("mistyrain")
+@Mod(MistyRain.MOD_ID)
 public class MistyRain {
 
     public static final String MOD_ID = "mistyrain";

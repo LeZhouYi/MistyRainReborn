@@ -6,8 +6,10 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.item.HoeItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.item.ShovelItem;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
@@ -19,6 +21,8 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import skily_leyu.mistyrain.common.utility.ItemUtils;
 import skily_leyu.mistyrain.tileentity.WoodenPotTileEntity;
 
@@ -50,10 +54,14 @@ public class BlockWoodenPot extends Block{
     public ActionResultType use(BlockState blockState, World world, BlockPos blockPos,
             PlayerEntity playerEntity, Hand hand, BlockRayTraceResult rayTraceResult) {
         if(!world.isClientSide() && hand == Hand.MAIN_HAND){
+            if(playerEntity.isCrouching()){
+                return ActionResultType.PASS;
+            }
             WoodenPotTileEntity tileEntity = (WoodenPotTileEntity)world.getBlockEntity(blockPos);
             ItemStack itemStack = playerEntity.getMainHandItem();
             if(!itemStack.isEmpty()&&tileEntity!=null){
                 //撤回物品/清空植物
+                //清空土壤时，会清空水份
                 if(itemStack.getItem() instanceof HoeItem || itemStack.getItem() instanceof ShovelItem){
                     ItemStack returnStack = tileEntity.onItemRemove();
                     if(returnStack!=null&&!playerEntity.isCreative()){
@@ -64,7 +72,10 @@ public class BlockWoodenPot extends Block{
                             playerEntity.inventory.placeItemBackInInventory(world,returnStack);
                         }
                     }
-                }else{
+                }
+                else{
+                    //流体检查与交互
+
                     //添加物品
                     int amount = tileEntity.onItemAdd(itemStack);
                     ItemUtils.shrinkItem(playerEntity, itemStack, amount);
