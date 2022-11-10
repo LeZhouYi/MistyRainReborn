@@ -29,7 +29,7 @@ public class Pot {
      * @return
      */
     public boolean isSuitFluid(FluidStack fluidStack){
-        if(fluidStack!=null){
+        if(fluidStack!=null&&!fluidStack.isEmpty()){
             ResourceLocation location = fluidStack.getFluid().getRegistryName();
             if(location!=null){
                 return this.suitFluids.contains(location.toString());

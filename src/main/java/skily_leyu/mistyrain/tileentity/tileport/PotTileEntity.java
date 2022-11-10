@@ -3,23 +3,30 @@ package skily_leyu.mistyrain.tileentity.tileport;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.world.World;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 import skily_leyu.mistyrain.common.core.plant.Plant;
 import skily_leyu.mistyrain.common.core.pot.Pot;
 import skily_leyu.mistyrain.common.core.pot.PotHandler;
 import skily_leyu.mistyrain.common.utility.ItemUtils;
 import skily_leyu.mistyrain.config.MRConfig;
+import skily_leyu.mistyrain.config.MRConstants;
 import skily_leyu.mistyrain.config.MRSetting;
 
 public abstract class PotTileEntity extends ModTileEntity implements ITickableTileEntity{
@@ -157,21 +164,19 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
         return returnStack;
     }
 
-    @Nullable
-    public ItemStack onHandleFluid(ItemStack itemStack){
-        if(isSoilEmpty()){
-            return null;
-        }
-        LazyOptional<IFluidHandler> optional = ItemUtils.getFluidCaps(itemStack);
-        IFluidHandler fluidHandler = optional!=null?optional.orElse(null):null;
-        if(fluidHandler!=null){
-            for(int i = 0;i<fluidHandler.getTanks();i++){
-                FluidStack fluidStack = fluidHandler.getFluidInTank(i);
-                if(!fluidStack.isEmpty()){
-                }
+    /**
+     * 执行流体的检查和添加的操作，若返回True则对物品产生操作和更新
+     * @param itemStack
+     * @return
+     */
+    public boolean onHandleFluid(ItemStack itemStack,PlayerEntity playerEntity){
+        if(!isSoilEmpty()&&itemStack.isEmpty()){
+            if(FluidUtil.tryFillContainer(itemStack, waterTank, MRConstants.FLUID_UNIT, playerEntity, true)!=FluidActionResult.FAILURE){
+                syncToTrackingClients();
+                return true;
             }
         }
-        return null;
+        return false;
     }
 
     /**

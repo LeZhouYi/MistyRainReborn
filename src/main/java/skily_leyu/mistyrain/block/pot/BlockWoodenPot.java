@@ -6,14 +6,13 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.fluid.Fluid;
 import net.minecraft.item.HoeItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.item.ShovelItem;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -21,8 +20,7 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.items.ItemHandlerHelper;
 import skily_leyu.mistyrain.common.utility.ItemUtils;
 import skily_leyu.mistyrain.tileentity.WoodenPotTileEntity;
 
@@ -53,32 +51,35 @@ public class BlockWoodenPot extends Block{
     @Override
     public ActionResultType use(BlockState blockState, World world, BlockPos blockPos,
             PlayerEntity playerEntity, Hand hand, BlockRayTraceResult rayTraceResult) {
-        if(!world.isClientSide() && hand == Hand.MAIN_HAND){
+        if(!world.isClientSide()){
             if(playerEntity.isCrouching()){
                 return ActionResultType.PASS;
-            }
-            WoodenPotTileEntity tileEntity = (WoodenPotTileEntity)world.getBlockEntity(blockPos);
-            ItemStack itemStack = playerEntity.getMainHandItem();
-            if(!itemStack.isEmpty()&&tileEntity!=null){
-                //撤回物品/清空植物
-                //清空土壤时，会清空水份
-                if(itemStack.getItem() instanceof HoeItem || itemStack.getItem() instanceof ShovelItem){
-                    ItemStack returnStack = tileEntity.onItemRemove();
-                    if(returnStack!=null&&!playerEntity.isCreative()){
-                        //消耗耐久
-                        itemStack.hurt(1, RANDOM, (ServerPlayerEntity) playerEntity);
-                        //获得物品返还
-                        if(!returnStack.isEmpty()){
-                            playerEntity.inventory.placeItemBackInInventory(world,returnStack);
+            }else{
+                WoodenPotTileEntity tileEntity = (WoodenPotTileEntity)world.getBlockEntity(blockPos);
+                ItemStack itemStack = playerEntity.getMainHandItem();
+                if(!itemStack.isEmpty()&&tileEntity!=null){
+                    //撤回物品/清空植物
+                    //清空土壤时，会清空水份
+                    if(itemStack.getItem() instanceof HoeItem || itemStack.getItem() instanceof ShovelItem){
+                        ItemStack returnStack = tileEntity.onItemRemove();
+                        if(returnStack!=null){
+                            playerEntity.playSound(SoundEvents.GRASS_PLACE, 1.0F, 1.0F);
+                            if(!playerEntity.isCreative()){
+                                //消耗耐久
+                                itemStack.hurt(1, RANDOM, (ServerPlayerEntity) playerEntity);
+                                //获得物品返还
+                                ItemHandlerHelper.giveItemToPlayer(playerEntity, returnStack);
+                            }
                         }
                     }
-                }
-                else{
-                    //流体检查与交互
-
-                    //添加物品
-                    int amount = tileEntity.onItemAdd(itemStack);
-                    ItemUtils.shrinkItem(playerEntity, itemStack, amount);
+                    else{
+                        //流体检查与交互
+                        if(!tileEntity.onHandleFluid(itemStack,playerEntity)){
+                            //添加物品
+                            int amount = tileEntity.onItemAdd(itemStack);
+                            ItemUtils.shrinkItem(playerEntity, itemStack, amount);
+                        }
+                    }
                 }
             }
         }
