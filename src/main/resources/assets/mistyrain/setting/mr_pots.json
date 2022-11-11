@@ -3,7 +3,7 @@
         "mr_wooden_pot":{
             "name": "mr_wooden_pot",
             "slotSize":1,
-            "tankSize":1,
+            "tankSize":8000,
             "suitSoils":[],
             "suitSoilType":["DIRT"],
             "suitFluids":["minecraft:water"],

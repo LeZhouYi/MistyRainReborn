@@ -1,25 +1,21 @@
 package skily_leyu.mistyrain.tileentity.tileport;
 
+import java.util.Optional;
+
 import javax.annotation.Nullable;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.inventory.ItemStackHelper;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
-import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 import skily_leyu.mistyrain.common.core.plant.Plant;
 import skily_leyu.mistyrain.common.core.pot.Pot;
@@ -165,18 +161,52 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
     }
 
     /**
-     * 执行流体的检查和添加的操作，若返回True则对物品产生操作和更新
+     * 针对原生桶的流体进行操作
      * @param itemStack
      * @return
      */
-    public boolean onHandleFluid(ItemStack itemStack,PlayerEntity playerEntity){
-        if(!isSoilEmpty()&&itemStack.isEmpty()){
-            if(FluidUtil.tryFillContainer(itemStack, waterTank, MRConstants.FLUID_UNIT, playerEntity, true)!=FluidActionResult.FAILURE){
-                syncToTrackingClients();
-                return true;
+    public boolean onHandleBucket(ItemStack itemStack){
+        if(!isSoilEmpty()&&itemStack!=null&&!itemStack.isEmpty()){
+            FluidStack fluidStack = null;
+            if(itemStack.getItem()==Items.WATER_BUCKET){
+                fluidStack = new FluidStack(Fluids.WATER, MRConstants.FLUID_UNIT);
+            }else if(itemStack.getItem()==Items.LAVA_BUCKET){
+                fluidStack = new FluidStack(Fluids.LAVA, MRConstants.FLUID_UNIT);
             }
+            if(fluidStack!=null){
+                int amount = this.waterTank.fill(fluidStack, FluidAction.EXECUTE);
+                if(amount>0){
+                    syncToTrackingClients();
+                    return true;
+                }
+            }
+
         }
         return false;
+    }
+
+    /**
+     * 执行流体容器物品的检查和添加的操作，若返回True则对物品产生操作和更新
+     * @param itemStack
+     * @return
+     */
+    public int onHandleFluid(ItemStack itemStack){
+        if(!isSoilEmpty()&&!itemStack.isEmpty()){
+            Optional<FluidStack> option = FluidUtil.getFluidContained(itemStack);
+            FluidStack fluidStack = (option.isPresent())?FluidUtil.getFluidContained(itemStack).get():FluidStack.EMPTY;
+            if(getPot().isSuitFluid(fluidStack)){
+                FluidStack copyStack = fluidStack.copy();
+                if(copyStack.getAmount()>MRConstants.FLUID_UNIT){
+                    copyStack.setAmount(MRConstants.FLUID_UNIT);
+                }
+                int amount = this.waterTank.fill(copyStack, FluidAction.EXECUTE);
+                if(amount>0){
+                    syncToTrackingClients();
+                    return amount;
+                }
+            }
+        }
+        return 0;
     }
 
     /**

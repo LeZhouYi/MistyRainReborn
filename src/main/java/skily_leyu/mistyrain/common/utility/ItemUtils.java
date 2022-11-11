@@ -3,6 +3,7 @@ package skily_leyu.mistyrain.common.utility;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Hand;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -22,6 +23,17 @@ public class ItemUtils {
             return itemStack.getCapability(handler);
         }
         return null;
+    }
+
+    /**
+     * 替换物品
+     * @param playerEntity
+     * @param itemStack
+     */
+    public static void replaceHandItem(PlayerEntity playerEntity,Hand hand,ItemStack itemStack){
+        if(!playerEntity.isCreative()&&!itemStack.isEmpty()){
+            playerEntity.setItemInHand(hand, itemStack);
+        }
     }
 
     /**
