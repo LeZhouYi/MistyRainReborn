@@ -3,20 +3,26 @@
         "DIRT":[
             "minecraft:dirt",
             "minecraft:farmland",
-            "minecraft:podzol"
+            "minecraft:podzol",
+            "minecraft:grass"
         ],
         "WATER":[
             "minecraft:water"
         ],
         "SAND":[
             "minecraft:sand",
-            "minecraft:red_sand"
+            "minecraft:red_sand",
+            "minecraft:gravel"
         ],
         "HUMUS":[
             "minecraft:podzol"
         ],
         "COBBLE":[
-            "minecraft:cobble_stone"
+            "minecraft:cobble_stone",
+            "minecraft:gravel"
+        ],
+        "LAVA":[
+            "minecraft:lava"
         ]
     }
 }

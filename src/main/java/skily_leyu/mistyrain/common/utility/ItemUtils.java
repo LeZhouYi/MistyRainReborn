@@ -111,7 +111,7 @@ public class ItemUtils {
             //判断可输入数
             if(slotStack.isEmpty()){
                 //物品栏为空的情况，直接执行放入物品操作
-                inputCount = (itemNowConut>slotLimit)?slotLimit:itemNowConut;
+                inputCount = Math.min(slotLimit, itemNowConut);
             }else if(ItemStack.isSame(itemStack, slotStack)){
                 int limit = (slotLimit>itemStack.getMaxStackSize())?itemStack.getMaxStackSize():slotLimit;
                 limit-= slotStack.getCount();

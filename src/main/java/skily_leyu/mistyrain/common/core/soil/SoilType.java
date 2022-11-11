@@ -6,5 +6,6 @@ public enum SoilType {
     WATER,
     SAND,
     HUMUS,//腐殖土
-    COBBLE;
+    COBBLE,
+    LAVA;//岩浆
 }

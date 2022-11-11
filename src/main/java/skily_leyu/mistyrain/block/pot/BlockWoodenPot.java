@@ -90,6 +90,7 @@ public class BlockWoodenPot extends Block{
                             }else{
                                 //添加物品
                                 int shrinkAmount = tileEntity.onItemAdd(itemStack);
+                                playerEntity.playSound(SoundEvents.GRASS_PLACE, 1.0F, 1.0F);
                                 ItemUtils.shrinkItem(playerEntity, itemStack, shrinkAmount);
                             }
                         }

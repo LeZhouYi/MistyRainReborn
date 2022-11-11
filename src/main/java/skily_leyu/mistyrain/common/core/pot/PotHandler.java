@@ -21,6 +21,10 @@ public class PotHandler {
         this.stageMap = new HashMap<>();
     }
 
+    /**
+     * 对每个植物执行检查更新
+     * @param tileEntity
+     */
     public void tick(PotTileEntity tileEntity){
         for(PotPlantStage plantStage:stageMap.values()){
             plantStage.tick(tileEntity);

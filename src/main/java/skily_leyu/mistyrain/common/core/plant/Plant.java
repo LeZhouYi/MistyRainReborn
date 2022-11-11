@@ -29,6 +29,14 @@ public class Plant {
     private int[] needLight; //适宜的光照
 
     /**
+     * 获取消耗水份的量
+     * @return
+     */
+    public int getNeedWater(){
+        return this.needWater;
+    }
+
+    /**
      * 获取该植物的BlockState,其中meta=0时，若状态为SeedDrop则为null，默认不渲染模型
      * @param meta
      * @return

@@ -255,4 +255,12 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
         return MRConfig.GameRule.POT_PLANT_TICK.get();
     }
 
+    /**
+     * 获取水份槽
+     * @return
+     */
+    public FluidTank getWaterTank() {
+        return this.waterTank;
+    }
+
 }
