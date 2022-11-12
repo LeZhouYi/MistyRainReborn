@@ -5,7 +5,7 @@
             "slotSize":1,
             "tankSize":8000,
             "suitSoils":[],
-            "suitSoilType":["DIRT"],
+            "suitSoilType":["DIRT","COBBLE","SAND"],
             "suitFluids":["minecraft:water"],
             "fertilizer":1000
         }

@@ -11,6 +11,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import skily_leyu.mistyrain.common.core.anima.Anima;
 import skily_leyu.mistyrain.common.core.soil.SoilType;
 import skily_leyu.mistyrain.common.utility.ItemUtils;
+import skily_leyu.mistyrain.common.utility.MathUtils;
 import skily_leyu.mistyrain.config.MRSetting;
 
 public class Plant {
@@ -25,8 +26,17 @@ public class Plant {
     private String suitWater; //适合的水分
     private int needWater; //消耗的水分
     private int needFertilizer; //消耗的肥料值
-    private int[] needTemper; //适宜的生长温度
+    private TemperType[] needTemper; //适宜的生长温度
     private int[] needLight; //适宜的光照
+
+    /**
+     * 判断光照是否合适
+     * @param light
+     * @return
+     */
+    public boolean isSuitLight(int light){
+        return MathUtils.isBetween(needLight, light);
+    }
 
     /**
      * 获取消耗水份的量

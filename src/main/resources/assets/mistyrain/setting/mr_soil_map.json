@@ -4,7 +4,8 @@
             "minecraft:dirt",
             "minecraft:farmland",
             "minecraft:podzol",
-            "minecraft:grass"
+            "minecraft:grass_block",
+            "minecraft:coarse_dirt"
         ],
         "WATER":[
             "minecraft:water"

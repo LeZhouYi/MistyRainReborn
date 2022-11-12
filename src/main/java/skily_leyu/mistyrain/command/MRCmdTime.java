@@ -11,7 +11,7 @@ import skily_leyu.mistyrain.common.core.time.MRMonth;
 import skily_leyu.mistyrain.common.core.time.MRSeason;
 import skily_leyu.mistyrain.common.core.time.MRSolarTerm;
 import skily_leyu.mistyrain.common.core.time.MRTimeDot;
-import skily_leyu.mistyrain.config.MRConfigUtils;
+import skily_leyu.mistyrain.config.MRConfig;
 
 public class MRCmdTime{
 
@@ -117,7 +117,7 @@ public class MRCmdTime{
      * @return
      */
     public static int showTimeInfo(CommandSource commandSource,ServerWorld world){
-        MRTimeDot timeDot = MRConfigUtils.getTimeDot(world);
+        MRTimeDot timeDot = MRConfig.TimeRule.getTimeDot(world);
         commandSource.sendSuccess(new StringTextComponent(timeDot.getTimeInfo()), true);
         return 0;
     }
@@ -129,7 +129,7 @@ public class MRCmdTime{
      * @return
      */
     public static int setSolarTerm(ServerWorld world,MRSolarTerm solarTerm){
-        MRTimeDot timeDot = MRConfigUtils.getTimeDot(world);
+        MRTimeDot timeDot = MRConfig.TimeRule.getTimeDot(world);
         int diffdays = timeDot.update(world).diffDays(solarTerm);
         if(diffdays!=0){
             world.setDayTime(world.getDayTime()+diffdays*24000);
@@ -144,7 +144,7 @@ public class MRCmdTime{
      * @return
      */
     public static int setMonth(ServerWorld world,MRMonth month){
-        MRTimeDot timeDot = MRConfigUtils.getTimeDot(world);
+        MRTimeDot timeDot = MRConfig.TimeRule.getTimeDot(world);
         int diffdays = timeDot.update(world).diffDays(month);
         if(diffdays!=0){
             world.setDayTime(world.getDayTime()+diffdays*24000);
@@ -159,7 +159,7 @@ public class MRCmdTime{
      * @return
      */
     public static int setSeason(ServerWorld world,MRSeason season){
-        MRTimeDot timeDot = MRConfigUtils.getTimeDot(world);
+        MRTimeDot timeDot = MRConfig.TimeRule.getTimeDot(world);
         int diffdays = timeDot.update(world).diffDays(season);
         if(diffdays!=0){
             world.setDayTime(world.getDayTime()+diffdays*24000);

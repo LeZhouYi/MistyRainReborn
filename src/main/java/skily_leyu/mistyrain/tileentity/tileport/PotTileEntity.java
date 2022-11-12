@@ -22,7 +22,6 @@ import skily_leyu.mistyrain.common.core.pot.Pot;
 import skily_leyu.mistyrain.common.core.pot.PotHandler;
 import skily_leyu.mistyrain.common.utility.ItemUtils;
 import skily_leyu.mistyrain.config.MRConfig;
-import skily_leyu.mistyrain.config.MRConstants;
 import skily_leyu.mistyrain.config.MRSetting;
 
 public abstract class PotTileEntity extends ModTileEntity implements ITickableTileEntity{
@@ -169,9 +168,9 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
         if(!isSoilEmpty()&&itemStack!=null&&!itemStack.isEmpty()){
             FluidStack fluidStack = null;
             if(itemStack.getItem()==Items.WATER_BUCKET){
-                fluidStack = new FluidStack(Fluids.WATER, MRConstants.FLUID_UNIT);
+                fluidStack = new FluidStack(Fluids.WATER, MRConfig.PotRule.FLUID_UNIT.get());
             }else if(itemStack.getItem()==Items.LAVA_BUCKET){
-                fluidStack = new FluidStack(Fluids.LAVA, MRConstants.FLUID_UNIT);
+                fluidStack = new FluidStack(Fluids.LAVA, MRConfig.PotRule.FLUID_UNIT.get());
             }
             if(fluidStack!=null){
                 int amount = this.waterTank.fill(fluidStack, FluidAction.EXECUTE);
@@ -196,8 +195,8 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
             FluidStack fluidStack = (option.isPresent())?FluidUtil.getFluidContained(itemStack).get():FluidStack.EMPTY;
             if(getPot().isSuitFluid(fluidStack)){
                 FluidStack copyStack = fluidStack.copy();
-                if(copyStack.getAmount()>MRConstants.FLUID_UNIT){
-                    copyStack.setAmount(MRConstants.FLUID_UNIT);
+                if(copyStack.getAmount()>MRConfig.PotRule.FLUID_UNIT.get()){
+                    copyStack.setAmount(MRConfig.PotRule.FLUID_UNIT.get());
                 }
                 int amount = this.waterTank.fill(copyStack, FluidAction.EXECUTE);
                 if(amount>0){
@@ -252,7 +251,7 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
      * @return
      */
     public final int getTickRate(){
-        return MRConfig.GameRule.POT_PLANT_TICK.get();
+        return MRConfig.PotRule.PLANT_TICK.get();
     }
 
     /**

@@ -5,7 +5,7 @@
             "seeds":["mistyrain:mr_snow_velvet"],
             "stages":[
                 {
-                    "nowStage":"SEED_DROP",
+                    "nowStage":"PLANT_DROP",
                     "nextStages":{
                         "SPROUT": 1
                     },
@@ -111,7 +111,7 @@
             "suitSoilTypes":["HUMUS"],
             "needWater": 15,
             "needFertilizer": 20,
-            "needTemper": [8,13],
+            "needTemper": ["COOL","WARM"],
             "needLight": [5,12]
         },
         "mistyrain:mr_candle_rush":{
@@ -179,7 +179,7 @@
             "suitSoilTypes":["SAND"],
             "needWater": 5,
             "needFertilizer": 20,
-            "needTemper": [10,15],
+            "needTemper": ["COOL","WARM","HOT"],
             "needLight": [8,15]
         },
         "mistyrain:mr_homing_plum":{
@@ -250,11 +250,11 @@
                     "level":"NULL"
                 }
             ],
-            "likeSoils":["minecraft:farmland"],
-            "suitSoilTypes":["DIRT"],
+            "likeSoils":["minecraft:gravel"],
+            "suitSoilTypes":["COBBLE"],
             "needWater": 10,
             "needFertilizer": 20,
-            "needTemper": [3,8],
+            "needTemper": ["COLD","COOL","WARM"],
             "needLight": [5,12]
         },
         "mistyrain:mr_breeze_rattan":{
@@ -322,7 +322,7 @@
             "suitSoilTypes":["COBBLE"],
             "needWater": 5,
             "needFertilizer": 25,
-            "needTemper": [1,6],
+            "needTemper": ["COLD","COOL","WARM"],
             "needLight": [5,12]
         },
         "mistyrain.mr_narcissus":{
@@ -398,7 +398,7 @@
             "suitWater": "minecraft:water",
             "needWater": 25,
             "needFertilizer": 5,
-            "needTemper": [5,10],
+            "needTemper": ["COOL","WARM"],
             "needLight": [3,10]
         }
     }

@@ -1,7 +1,7 @@
 {
     "variants":{
         "plant_stage=0":{
-            "model":"mistyrain:block/snow_velvet/snow_velvet_full_blown"
+            "model":"mistyrain:block/snow_velvet/snow_velvet_sprout"
         },
         "plant_stage=1":{
             "model":"mistyrain:block/snow_velvet/snow_velvet_sprout"

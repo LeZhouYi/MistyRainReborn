@@ -3,13 +3,13 @@ package skily_leyu.mistyrain.common.core.pot;
 import java.util.Random;
 
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.world.LightType;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import skily_leyu.mistyrain.common.core.plant.Plant;
+import skily_leyu.mistyrain.common.core.time.MRTimeDot;
 import skily_leyu.mistyrain.config.MRConfig;
-import skily_leyu.mistyrain.config.MRConstants;
 import skily_leyu.mistyrain.config.MRSetting;
 import skily_leyu.mistyrain.tileentity.tileport.PotTileEntity;
 
@@ -22,7 +22,7 @@ public class PotPlantStage {
     public PotPlantStage(int nowStage,String plantKey){
         this.nowStage = nowStage;
         this.plantKey = plantKey;
-        this.health = MRConstants.POT_PLANT_HEALTH_BASE;
+        this.health = MRConfig.PotRule.BASE_HEALTH.get();
     }
 
     /**
@@ -30,12 +30,12 @@ public class PotPlantStage {
      * @param tileEntity
      * @return
      */
-    public int consumeWater(PotTileEntity tileEntity){
+    public int consumeWater(PotTileEntity tileEntity,Random rand){
         int waterCousume = this.getPlant().getNeedWater();
         FluidTank tank = tileEntity.getWaterTank();
         int consumeResult = tank.getFluidAmount()-waterCousume;
         tank.drain(waterCousume, FluidAction.EXECUTE);
-        return consumeResult>0?MRConstants.POT_PLANT_GROW_HEALTH:0;
+        return consumeResult>0?MRConfig.PotRule.GROW_HEALTH.get():MRConfig.PotRule.nextWaterHealth(rand);
     }
 
     /**
@@ -43,9 +43,19 @@ public class PotPlantStage {
      * @param tileEntity
      * @return
      */
-    public int checkLight(PotTileEntity tileEntity,World worldIn){
+    public int checkLight(PotTileEntity tileEntity,World worldIn,Random rand){
         int light = worldIn.getRawBrightness(tileEntity.getBlockPos(), 0);
-        System.out.println(light);
+        return this.getPlant().isSuitLight(light)?MRConfig.PotRule.GROW_HEALTH.get():MRConfig.PotRule.nextLightHealth(rand);
+    }
+
+    /**
+     * 检查温度
+     * @param tileEntity
+     * @return
+     */
+    public int checkTemper(PotTileEntity tileEntity,World worldIn,Random rand){
+        BlockPos blockpos = tileEntity.getBlockPos();
+        float temper = worldIn.getBiome(blockpos).getTemperature(blockpos)+MRConfig.TimeRule.getTemperChange(worldIn);
         return 0;
     }
 
@@ -57,8 +67,8 @@ public class PotPlantStage {
         Plant plant = MRSetting.getPlantMap().getPlant(plantKey);
         World world = tileEntity.getLevel();
         if(plant!=null&&world!=null){
-            int healthGrow = checkLight(tileEntity, world);
-            if(MRConfig.canGrow(world.getRandom())){
+            checkTemper(tileEntity, world, world.getRandom());
+            if(MRConfig.PotRule.canGrow(world.getRandom())){
                 this.nowStage = plant.getNextStage(nowStage, world.getRandom());
             }
         }

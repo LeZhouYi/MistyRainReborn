@@ -113,9 +113,8 @@ public class ItemUtils {
                 //物品栏为空的情况，直接执行放入物品操作
                 inputCount = Math.min(slotLimit, itemNowConut);
             }else if(ItemStack.isSame(itemStack, slotStack)){
-                int limit = (slotLimit>itemStack.getMaxStackSize())?itemStack.getMaxStackSize():slotLimit;
-                limit-= slotStack.getCount();
-                inputCount = (itemNowConut>limit)?limit:itemNowConut;
+                int limit = Math.min(slotLimit, itemStack.getMaxStackSize());
+                inputCount = Math.min(limit-slotStack.getCount(), itemNowConut);
             }
             //输入物品
             if(inputCount>0&&slotStack!=null){
