@@ -6,8 +6,10 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.item.HoeItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.ShovelItem;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
@@ -20,7 +22,10 @@ import net.minecraftforge.items.ItemStackHandler;
 import skily_leyu.mistyrain.common.core.plant.Plant;
 import skily_leyu.mistyrain.common.core.pot.Pot;
 import skily_leyu.mistyrain.common.core.pot.PotHandler;
+import skily_leyu.mistyrain.common.utility.Action;
+import skily_leyu.mistyrain.common.utility.ActionType;
 import skily_leyu.mistyrain.common.utility.ItemUtils;
+import skily_leyu.mistyrain.common.utility.MRDebug;
 import skily_leyu.mistyrain.config.MRConfig;
 import skily_leyu.mistyrain.config.MRSetting;
 
@@ -30,6 +35,7 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
     protected ItemStackHandler plantInv; //植物
     protected FluidTank waterTank;//水量
     protected PotHandler potHandler; //植物状态记录器
+    protected int fertiTank; //肥料槽
     private int tickCount; //计时
     private String potKey; //配置文件KeyName
 
@@ -83,6 +89,7 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
         nbt.put("PlantStage", this.potHandler.serializeNBT());
         nbt.putInt("TickCount", tickCount);
         nbt.put("WaterTank",this.waterTank.writeToNBT(new CompoundNBT()));
+        nbt.putInt("FertiTank", this.fertiTank);
         return super.save(nbt);
     }
 
@@ -94,6 +101,71 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
         this.potHandler.deserializeNBT(nbt.getCompound("PlantStage"));
         this.tickCount = nbt.getInt("TickCount");
         this.waterTank.readFromNBT(nbt.getCompound("WaterTank"));
+        this.fertiTank = nbt.getInt("FertiTank");
+    }
+
+    /**
+     * 物品与盆栽交互的主入口
+     * @param itemStack
+     * @return
+     */
+    public Action onItemInteract(ItemStack itemStack){
+        Action action = Action.EMPTY;
+        if(itemStack!=null&&!itemStack.isEmpty()){
+            //移除泥土/植物
+            if(isRemoveTools(itemStack)){
+                action = onItemRemove();
+            }
+            //原生流体桶操作
+            else if(isBucket(itemStack)){
+                action = onHandleBucket(itemStack);
+            }
+            //非原生流体容器操作
+            else if(ItemUtils.getFluidCaps(itemStack)!=null){
+                action = onHandleFluid(itemStack);
+            }
+            //添加物品操作
+            else{
+                action = onItemAdd(itemStack);
+            }
+        }
+        MRDebug.printItemHandler(this.plantInv);
+        if(action!=null&&!action.isEmpty()){
+            syncToTrackingClients();
+        }
+        return action;
+    }
+
+    /**
+     * 判断当前物品是否为带流体的桶
+     * @param itemStack
+     * @return
+     */
+    public boolean isBucket(ItemStack itemStack){
+        return itemStack.getItem() == Items.WATER_BUCKET || itemStack.getItem()==Items.LAVA_BUCKET;
+    }
+
+    /**
+     * 判断当前工具是否为移除工具
+     * @param itemStack
+     * @return
+     */
+    public boolean isRemoveTools(ItemStack itemStack){
+        return itemStack.getItem() instanceof ShovelItem|| itemStack.getItem() instanceof HoeItem;
+    }
+
+    /**
+     * 消耗肥料，若consumeValue<0,则为添加肥料
+     * @param consumeValue
+     */
+    public void consumeFerti(int consumeValue){
+        this.fertiTank-=consumeValue;
+        if(this.fertiTank<0){
+            this.fertiTank=0;
+        }
+        if(this.fertiTank>this.getPot().getMaxFerti()){
+            this.fertiTank=this.getPot().getMaxFerti();
+        }
     }
 
     /**
@@ -103,11 +175,22 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
      * @param itemStack
      * @return
      */
-    public int onItemAdd(ItemStack itemStackIn){
-        int amount = 0;
+    public Action onItemAdd(ItemStack itemStackIn){
+        //添加泥土
         if(this.getPot().isSuitSoil(itemStackIn)){
-            amount = ItemUtils.addItemInHandler(this.dirtInv, itemStackIn, true);
-        }else{
+            int amount = ItemUtils.addItemInHandler(this.dirtInv, itemStackIn, true);
+            if(amount>0) {
+                return new Action(ActionType.ADD_SOIL,amount);
+            }
+        }
+        if(!this.isSoilEmpty()){
+            //添加肥料
+            int fertiValue = MRSetting.getFertiMap().isFertilizer(itemStackIn);
+            if(fertiValue!=MRConfig.Constants.EMPTY_FERTI&&this.fertiTank<this.getPot().getMaxFerti()){
+                this.consumeFerti(fertiValue);
+                return new Action(ActionType.ADD_FERTI,1);
+            }
+            //添加植物
             Plant potPlant = MRSetting.getPlantMap().isPlantSeed(itemStackIn);
             if(potPlant!=null){
                 for(int i = 0;i<this.dirtInv.getSlots();i++){
@@ -116,47 +199,36 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
                     if(!dirtStack.isEmpty()&&plantStack.isEmpty()&&potPlant.isSuitSoil(dirtStack)){
                         ItemUtils.setStackInHandler(plantInv, itemStackIn, i, 1);
                         potHandler.addPlant(i,potPlant);
-                        amount = 1;
-                        break;
+                        return new Action(ActionType.ADD_PLANT,1);
                     }
                 }
             }
         }
-        if(amount>0){
-            syncToTrackingClients();
-        }
-        return amount;
+        return Action.EMPTY;
     }
 
     /**
      * 回退物品:1、存在植物时清空植物状态，仅当Stage=0时返还物品(即未被消耗)
      * 2、不存在植物时清空土壤，返回该物品
-     * @return null=无任何变化,Itemstack.EMPTY=有变化但无物品返还
+     * @return
      */
-    @Nullable
-    public ItemStack onItemRemove(){
-        ItemStack returnStack = null;
+    public Action onItemRemove(){
         //清空植物
         for(int i = this.plantInv.getSlots()-1;i>=0;i--){
             ItemStack plantStack = ItemUtils.clearStackInHandler(plantInv, i);
             if(!plantStack.isEmpty()){
-                returnStack = (this.potHandler.removePlant(i))?plantStack:ItemStack.EMPTY;
-                syncToTrackingClients();
-                break;
+                ItemStack returnStack = (this.potHandler.removePlant(i))?plantStack:ItemStack.EMPTY;
+                return new Action(ActionType.REMOVE_PLANT,1,returnStack);
             }
         }
         //若未清空植物，则清空土壤
-        if(returnStack==null){
-            for(int i = this.dirtInv.getSlots()-1;i>=0;i--){
-                ItemStack dirtStack = ItemUtils.clearStackInHandler(dirtInv, i);
-                if(!dirtStack.isEmpty()){
-                    returnStack = dirtStack;
-                    syncToTrackingClients();
-                    break;
-                }
+        for(int i = this.dirtInv.getSlots()-1;i>=0;i--){
+            ItemStack dirtStack = ItemUtils.clearStackInHandler(dirtInv, i);
+            if(!dirtStack.isEmpty()){
+                return new Action(ActionType.REMOVE_SOIL,1,dirtStack);
             }
         }
-        return returnStack;
+        return Action.EMPTY;
     }
 
     /**
@@ -164,8 +236,8 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
      * @param itemStack
      * @return
      */
-    public boolean onHandleBucket(ItemStack itemStack){
-        if(!isSoilEmpty()&&itemStack!=null&&!itemStack.isEmpty()){
+    public Action onHandleBucket(ItemStack itemStack){
+        if(!isSoilEmpty()){
             FluidStack fluidStack = null;
             if(itemStack.getItem()==Items.WATER_BUCKET){
                 fluidStack = new FluidStack(Fluids.WATER, MRConfig.PotRule.FLUID_UNIT.get());
@@ -175,13 +247,12 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
             if(fluidStack!=null){
                 int amount = this.waterTank.fill(fluidStack, FluidAction.EXECUTE);
                 if(amount>0){
-                    syncToTrackingClients();
-                    return true;
+                    return new Action(ActionType.ADD_BUCKET_FLUID, amount);
                 }
             }
 
         }
-        return false;
+        return Action.EMPTY;
     }
 
     /**
@@ -189,8 +260,8 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
      * @param itemStack
      * @return
      */
-    public int onHandleFluid(ItemStack itemStack){
-        if(!isSoilEmpty()&&!itemStack.isEmpty()){
+    public Action onHandleFluid(ItemStack itemStack){
+        if(!isSoilEmpty()&&itemStack!=null){
             Optional<FluidStack> option = FluidUtil.getFluidContained(itemStack);
             FluidStack fluidStack = (option.isPresent())?FluidUtil.getFluidContained(itemStack).get():FluidStack.EMPTY;
             if(getPot().isSuitFluid(fluidStack)){
@@ -200,12 +271,11 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
                 }
                 int amount = this.waterTank.fill(copyStack, FluidAction.EXECUTE);
                 if(amount>0){
-                    syncToTrackingClients();
-                    return amount;
+                    return new Action(ActionType.ADD_FLUID, amount);
                 }
             }
         }
-        return 0;
+        return Action.EMPTY;
     }
 
     /**

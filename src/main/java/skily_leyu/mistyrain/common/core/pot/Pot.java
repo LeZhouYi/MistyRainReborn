@@ -19,6 +19,26 @@ public class Pot {
     private List<String> suitFluids; //适合的水份
     private int fertilizer; //肥料值
 
+    /**
+     * 获取花盆的名字
+     * @return
+     */
+    public String getPotName(){
+        return this.name;
+    }
+
+    /**
+     * 获取最大可储存数
+     * @return
+     */
+    public int getMaxFerti(){
+        return this.fertilizer;
+    }
+
+    /**
+     * 获取格子数
+     * @return
+     */
     public int getSlotSize(){
         return this.slotSize;
     }

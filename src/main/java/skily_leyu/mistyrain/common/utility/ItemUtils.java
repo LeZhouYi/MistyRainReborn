@@ -1,26 +1,26 @@
 package skily_leyu.mistyrain.common.utility;
 
 
+import java.util.Optional;
+
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.items.ItemStackHandler;
 
 public class ItemUtils {
 
     /**
-     * 判断物品是否拥有流体Capability并返回
+     * 判断物品是否拥有流体并返回
      * @param itemStack
      * @return
      */
-    public static LazyOptional<IFluidHandler> getFluidCaps(ItemStack itemStack){
-        Capability<IFluidHandler> handler = CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
-        if(handler!=null){
-            return itemStack.getCapability(handler);
+    public static FluidStack getFluidCaps(ItemStack itemStack){
+        if(itemStack!=null){
+            Optional<FluidStack> fluidStack =FluidUtil.getFluidContained(itemStack);
+            return fluidStack.isPresent()?fluidStack.get():null;
         }
         return null;
     }

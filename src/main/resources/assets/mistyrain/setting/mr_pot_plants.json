@@ -60,7 +60,7 @@
             "suitWater": "minecraft:water",
             "needWater": 10,
             "needFertilizer": 10,
-            "needTemper": [5,10],
+            "needTemper": ["COOL","WARM"],
             "needLight": [8,15]
         },
         "mistyrain:mr_green_wisteria":{

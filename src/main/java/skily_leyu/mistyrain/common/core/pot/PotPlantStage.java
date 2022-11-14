@@ -8,7 +8,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import skily_leyu.mistyrain.common.core.plant.Plant;
-import skily_leyu.mistyrain.common.core.time.MRTimeDot;
 import skily_leyu.mistyrain.config.MRConfig;
 import skily_leyu.mistyrain.config.MRSetting;
 import skily_leyu.mistyrain.tileentity.tileport.PotTileEntity;
@@ -56,7 +55,7 @@ public class PotPlantStage {
     public int checkTemper(PotTileEntity tileEntity,World worldIn,Random rand){
         BlockPos blockpos = tileEntity.getBlockPos();
         float temper = worldIn.getBiome(blockpos).getTemperature(blockpos)+MRConfig.TimeRule.getTemperChange(worldIn);
-        return 0;
+        return this.getPlant().isSuitTemper(temper)?MRConfig.PotRule.GROW_HEALTH.get():MRConfig.PotRule.nextTemperHealth(rand);
     }
 
     /**
@@ -104,6 +103,11 @@ public class PotPlantStage {
         String plantKey = plantTag.getString("PlantKey");
         int health = plantTag.getInt("Health");
         return new PotPlantStage(nowStage, plantKey).setHealth(health);
+    }
+
+    @Override
+    public String toString() {
+        return "%s";
     }
 
 }

@@ -26,8 +26,18 @@ public class Plant {
     private String suitWater; //适合的水分
     private int needWater; //消耗的水分
     private int needFertilizer; //消耗的肥料值
-    private TemperType[] needTemper; //适宜的生长温度
+    private List<TemperType> needTemper; //适宜的生长温度
     private int[] needLight; //适宜的光照
+
+    /**
+     * 检查当前温度是否合适
+     * @param temperType
+     * @return
+     */
+    public boolean isSuitTemper(float temperIn){
+        TemperType temperType = TemperType.getTemperType(temperIn);
+        return this.needTemper.contains(temperType);
+    }
 
     /**
      * 判断光照是否合适

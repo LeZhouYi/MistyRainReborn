@@ -11,6 +11,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import skily_leyu.mistyrain.MistyRain;
 import skily_leyu.mistyrain.common.core.plant.PlantMap;
 import skily_leyu.mistyrain.common.core.pot.PotMap;
+import skily_leyu.mistyrain.common.core.soil.FertiMap;
 import skily_leyu.mistyrain.common.core.soil.SoilMap;
 
 public class MRSetting {
@@ -18,11 +19,13 @@ public class MRSetting {
     private static SoilMap soilMap;
     private static PlantMap potPlants;
     private static PotMap potMap;
+    private static FertiMap fertiMap;
 
     public MRSetting(final FMLCommonSetupEvent event){
-        soilMap = loadJson(SoilMap.class, "mr_soil_map");
+        soilMap = loadJson(SoilMap.class, "mr_soils");
         potPlants = loadJson(PlantMap.class, "mr_pot_plants");
         potMap = loadJson(PotMap.class, "mr_pots");
+        fertiMap = loadJson(FertiMap.class, "mr_fertis");
     }
 
     private <T> T loadJson(Class<T> jsonClass, String registryName){
@@ -51,6 +54,10 @@ public class MRSetting {
 
     public static PotMap getPotMap(){
         return potMap;
+    }
+
+    public static FertiMap getFertiMap(){
+        return fertiMap;
     }
 
 }

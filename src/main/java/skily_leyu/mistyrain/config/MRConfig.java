@@ -35,6 +35,10 @@ public class MRConfig {
 
     }
 
+    public static class Constants{
+        public static int EMPTY_FERTI = -1; //标志当前物品不是肥料
+    }
+
     public static class PotRule{
         public static ForgeConfigSpec.IntValue PLANT_TICK; //盆栽的Tick
         public static ForgeConfigSpec.IntValue PLANT_GROW_CHANCE; //植物判定成功时的生长概率(0-1000)

@@ -7,10 +7,8 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.item.HoeItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.item.ShovelItem;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
@@ -27,6 +25,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.items.ItemHandlerHelper;
+import skily_leyu.mistyrain.common.utility.Action;
 import skily_leyu.mistyrain.common.utility.ItemUtils;
 import skily_leyu.mistyrain.tileentity.WoodenPotTileEntity;
 
@@ -64,45 +63,54 @@ public class BlockWoodenPot extends Block{
                 WoodenPotTileEntity tileEntity = (WoodenPotTileEntity)world.getBlockEntity(blockPos);
                 ItemStack itemStack = playerEntity.getMainHandItem();
                 if(!itemStack.isEmpty()&&tileEntity!=null){
-                    //撤回物品/清空植物
-                    //清空土壤时，会清空水份
-                    if(itemStack.getItem() instanceof HoeItem || itemStack.getItem() instanceof ShovelItem){
-                        ItemStack returnStack = tileEntity.onItemRemove();
-                        if(returnStack!=null){
-                            world.playSound(null, playerEntity.blockPosition(), SoundEvents.GRASS_FALL, SoundCategory.NEUTRAL, 1.0F, 1.0F);
+                    Action action = tileEntity.onItemInteract(itemStack);
+                    switch(action.getActionType()){
+                        case ADD_SOIL:
+                            world.playSound(null, playerEntity.blockPosition(), SoundEvents.GRASS_PLACE, SoundCategory.NEUTRAL, 1.0F, 1.0F);
+                            ItemUtils.shrinkItem(playerEntity, itemStack, action.getAmount());
+                            break;
+                        case ADD_PLANT:
+                            world.playSound(null, playerEntity.blockPosition(), SoundEvents.CROP_PLANTED, SoundCategory.NEUTRAL, 1.0F, 1.0F);
+                            ItemUtils.shrinkItem(playerEntity, itemStack, action.getAmount());
+                            break;
+                        case ADD_BUCKET_FLUID:
+                            SoundEvent soundBucket = (itemStack.getItem()==Items.LAVA_BUCKET)?SoundEvents.BUCKET_EMPTY_LAVA:SoundEvents.BUCKET_EMPTY;
+                            world.playSound(null, playerEntity.blockPosition(), soundBucket, SoundCategory.NEUTRAL, 1.0F, 1.0F);
+                            ItemUtils.replaceHandItem(playerEntity, hand, new ItemStack(Items.BUCKET));
+                            break;
+                        case ADD_FLUID:
+                            FluidStack fluidStack = FluidUtil.getFluidContained(itemStack).get();
+                            SoundEvent soundFluid = (fluidStack.getFluid()==Fluids.LAVA)?SoundEvents.BUCKET_EMPTY_LAVA:SoundEvents.BUCKET_EMPTY;
+                            world.playSound(null, playerEntity.blockPosition(), soundFluid, SoundCategory.NEUTRAL, 1.0F, 1.0F);
+                            if(!playerEntity.isCreative()){
+                                fluidStack.shrink(action.getAmount());
+                            }
+                            break;
+                        case REMOVE_SOIL:
+                            world.playSound(null, playerEntity.blockPosition(), SoundEvents.GRAVEL_PLACE, SoundCategory.NEUTRAL, 1.0F, 1.0F);
                             if(!playerEntity.isCreative()){
                                 //消耗耐久
                                 itemStack.hurt(1, RANDOM, (ServerPlayerEntity) playerEntity);
                                 //获得物品返还
-                                ItemHandlerHelper.giveItemToPlayer(playerEntity, returnStack);
-                            }
-                        }
-                    }else{
-                        //若是桶且包含流体，则执行流体操作
-                        //若是拥有流体容器的物品，则执行流体操作
-                        //若是其它物品，则执行物品添加操作，如添加土壤/植物
-                        if(tileEntity.onHandleBucket(itemStack)){
-                            SoundEvent sound = (itemStack.getItem()==Items.LAVA_BUCKET)?SoundEvents.BUCKET_EMPTY_LAVA:SoundEvents.BUCKET_EMPTY;
-                            world.playSound(null, playerEntity.blockPosition(), sound, SoundCategory.NEUTRAL, 1.0F, 1.0F);
-                            ItemUtils.replaceHandItem(playerEntity, hand, new ItemStack(Items.BUCKET));
-                        }else{
-                            int amount = tileEntity.onHandleFluid(itemStack);
-                            if(amount>0){
-                                FluidStack fluidStack = FluidUtil.getFluidContained(itemStack).get();
-                                SoundEvent sound = (fluidStack.getFluid()==Fluids.LAVA)?SoundEvents.BUCKET_EMPTY_LAVA:SoundEvents.BUCKET_EMPTY;
-                                world.playSound(null, playerEntity.blockPosition(), sound, SoundCategory.NEUTRAL, 1.0F, 1.0F);
-                                if(!playerEntity.isCreative()){
-                                    fluidStack.shrink(amount);
-                                }
-                            }else{
-                                //添加物品
-                                int shrinkAmount = tileEntity.onItemAdd(itemStack);
-                                if(shrinkAmount>0){
-                                    world.playSound(null, playerEntity.blockPosition(), SoundEvents.GRASS_PLACE, SoundCategory.NEUTRAL, 1.0F, 1.0F);
-                                    ItemUtils.shrinkItem(playerEntity, itemStack, shrinkAmount);
+                                ItemStack returnStack = action.getReturnStack();
+                                if(returnStack!=null){
+                                    ItemHandlerHelper.giveItemToPlayer(playerEntity, returnStack);
                                 }
                             }
-                        }
+                            break;
+                        case REMOVE_PLANT:
+                            world.playSound(null, playerEntity.blockPosition(), SoundEvents.CROP_BREAK, SoundCategory.NEUTRAL, 1.0F, 1.0F);
+                            if(!playerEntity.isCreative()){
+                                //消耗耐久
+                                itemStack.hurt(1, RANDOM, (ServerPlayerEntity) playerEntity);
+                                //获得物品返还
+                                ItemStack returnStack = action.getReturnStack();
+                                if(returnStack!=null){
+                                    ItemHandlerHelper.giveItemToPlayer(playerEntity, returnStack);
+                                }
+                            }
+                            break;
+                        default:
                     }
                 }
             }
