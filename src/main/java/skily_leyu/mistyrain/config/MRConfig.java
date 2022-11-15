@@ -9,6 +9,11 @@ import skily_leyu.mistyrain.common.core.time.MRTimeDot;
 public class MRConfig {
 
     public static ForgeConfigSpec COMMON_CONFIG;
+    public static ForgeConfigSpec CLIENT_CONFIG;
+
+    public static class Client{
+        public static ForgeConfigSpec.IntValue PARTICLE_AMOUNT; //粒子特效数量
+    }
 
     public static class TimeRule{
         public static ForgeConfigSpec.IntValue MONTH_START; //第一次进入游戏时的起始月份
@@ -118,6 +123,13 @@ public class MRConfig {
         COMMON_BUILDER.pop();
 
         COMMON_CONFIG = COMMON_BUILDER.build();
+
+        ForgeConfigSpec.Builder CLIENT_BUILDER = new ForgeConfigSpec.Builder();
+        CLIENT_BUILDER.comment("渲染设置").push("render");
+        Client.PARTICLE_AMOUNT = CLIENT_BUILDER.comment("粒子特效渲染数量").defineInRange("particle_amount", 16, 0, 32);
+        CLIENT_BUILDER.pop();
+
+        CLIENT_CONFIG = CLIENT_BUILDER.build();
     }
 
 }

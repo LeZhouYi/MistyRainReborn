@@ -25,7 +25,6 @@ import skily_leyu.mistyrain.common.core.pot.PotHandler;
 import skily_leyu.mistyrain.common.utility.Action;
 import skily_leyu.mistyrain.common.utility.ActionType;
 import skily_leyu.mistyrain.common.utility.ItemUtils;
-import skily_leyu.mistyrain.common.utility.MRDebug;
 import skily_leyu.mistyrain.config.MRConfig;
 import skily_leyu.mistyrain.config.MRSetting;
 
@@ -129,7 +128,6 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
                 action = onItemAdd(itemStack);
             }
         }
-        MRDebug.printItemHandler(this.plantInv);
         if(action!=null&&!action.isEmpty()){
             syncToTrackingClients();
         }
@@ -187,7 +185,7 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
             //添加肥料
             int fertiValue = MRSetting.getFertiMap().isFertilizer(itemStackIn);
             if(fertiValue!=MRConfig.Constants.EMPTY_FERTI&&this.fertiTank<this.getPot().getMaxFerti()){
-                this.consumeFerti(fertiValue);
+                this.consumeFerti(-fertiValue);
                 return new Action(ActionType.ADD_FERTI,1);
             }
             //添加植物
@@ -205,6 +203,22 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
             }
         }
         return Action.EMPTY;
+    }
+
+    /**
+     * 判断当前物品是否是肥料且能否进行施肥操作
+     * @param itemStack
+     * @return
+     */
+    public boolean canUseFerti(ItemStack itemStack){
+        if(!this.isSoilEmpty()){
+            //添加肥料
+            int fertiValue = MRSetting.getFertiMap().isFertilizer(itemStack);
+            if(fertiValue!=MRConfig.Constants.EMPTY_FERTI&&this.fertiTank<this.getPot().getMaxFerti()){
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

@@ -1,14 +1,20 @@
 package skily_leyu.mistyrain.block.pot;
 
+import java.util.Random;
+
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemTier;
 import net.minecraft.item.Items;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
@@ -27,6 +33,7 @@ import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.items.ItemHandlerHelper;
 import skily_leyu.mistyrain.common.utility.Action;
 import skily_leyu.mistyrain.common.utility.ItemUtils;
+import skily_leyu.mistyrain.config.MRConfig;
 import skily_leyu.mistyrain.tileentity.WoodenPotTileEntity;
 
 public class BlockWoodenPot extends Block{
@@ -34,7 +41,10 @@ public class BlockWoodenPot extends Block{
     private static VoxelShape SHAPE = VoxelShapes.box(0.1875D, 0.0D, 0.1875D, 0.8125D, 0.4375D, 0.8125D);
 
     public BlockWoodenPot() {
-        super(AbstractBlock.Properties.of(Material.WOOD));
+        super(AbstractBlock.Properties.of(Material.WOOD,DyeColor.BROWN)
+                                    .harvestLevel(ItemTier.WOOD.getLevel())
+                                    .sound(SoundType.WOOD)
+                                    .strength(explosionResistance));
     }
 
     @Override
@@ -56,61 +66,74 @@ public class BlockWoodenPot extends Block{
     @Override
     public ActionResultType use(BlockState blockState, World world, BlockPos blockPos,
             PlayerEntity playerEntity, Hand hand, BlockRayTraceResult rayTraceResult) {
-        if(!world.isClientSide()){
-            if(playerEntity.isCrouching()){
-                return ActionResultType.PASS;
+        if(playerEntity.isCrouching()){
+            return ActionResultType.PASS;
+        }
+        WoodenPotTileEntity tileEntity = (WoodenPotTileEntity)world.getBlockEntity(blockPos);
+        ItemStack itemStack = playerEntity.getMainHandItem();
+        if(!itemStack.isEmpty()&&tileEntity!=null){
+            if(!world.isClientSide()){
+                Action action = tileEntity.onItemInteract(itemStack);
+                switch(action.getActionType()){
+                    case ADD_SOIL:
+                        world.playSound(null, playerEntity.blockPosition(), SoundEvents.GRASS_PLACE, SoundCategory.NEUTRAL, 1.0F, 1.0F);
+                        ItemUtils.shrinkItem(playerEntity, itemStack, action.getAmount());
+                        break;
+                    case ADD_PLANT:
+                        world.playSound(null, playerEntity.blockPosition(), SoundEvents.CROP_PLANTED, SoundCategory.NEUTRAL, 1.0F, 1.0F);
+                        ItemUtils.shrinkItem(playerEntity, itemStack, action.getAmount());
+                        break;
+                    case ADD_BUCKET_FLUID:
+                        SoundEvent soundBucket = (itemStack.getItem()==Items.LAVA_BUCKET)?SoundEvents.BUCKET_EMPTY_LAVA:SoundEvents.BUCKET_EMPTY;
+                        world.playSound(null, playerEntity.blockPosition(), soundBucket, SoundCategory.NEUTRAL, 1.0F, 1.0F);
+                        ItemUtils.replaceHandItem(playerEntity, hand, new ItemStack(Items.BUCKET));
+                        break;
+                    case ADD_FLUID:
+                        FluidStack fluidStack = FluidUtil.getFluidContained(itemStack).get();
+                        SoundEvent soundFluid = (fluidStack.getFluid()==Fluids.LAVA)?SoundEvents.BUCKET_EMPTY_LAVA:SoundEvents.BUCKET_EMPTY;
+                        world.playSound(null, playerEntity.blockPosition(), soundFluid, SoundCategory.NEUTRAL, 1.0F, 1.0F);
+                        if(!playerEntity.isCreative()){
+                            fluidStack.shrink(action.getAmount());
+                        }
+                        break;
+                    case ADD_FERTI:
+                        ItemUtils.shrinkItem(playerEntity, itemStack, action.getAmount());
+                        break;
+                    case REMOVE_SOIL:
+                        world.playSound(null, playerEntity.blockPosition(), SoundEvents.GRAVEL_PLACE, SoundCategory.NEUTRAL, 1.0F, 1.0F);
+                        if(!playerEntity.isCreative()){
+                            //消耗耐久
+                            itemStack.hurt(1, RANDOM, (ServerPlayerEntity) playerEntity);
+                            //获得物品返还
+                            ItemStack returnStack = action.getReturnStack();
+                            if(returnStack!=null){
+                                ItemHandlerHelper.giveItemToPlayer(playerEntity, returnStack);
+                            }
+                        }
+                        break;
+                    case REMOVE_PLANT:
+                        world.playSound(null, playerEntity.blockPosition(), SoundEvents.CROP_BREAK, SoundCategory.NEUTRAL, 1.0F, 1.0F);
+                        if(!playerEntity.isCreative()){
+                            //消耗耐久
+                            itemStack.hurt(1, RANDOM, (ServerPlayerEntity) playerEntity);
+                            //获得物品返还
+                            ItemStack returnStack = action.getReturnStack();
+                            if(returnStack!=null){
+                                ItemHandlerHelper.giveItemToPlayer(playerEntity, returnStack);
+                            }
+                        }
+                        break;
+                    default:
+                }
             }else{
-                WoodenPotTileEntity tileEntity = (WoodenPotTileEntity)world.getBlockEntity(blockPos);
-                ItemStack itemStack = playerEntity.getMainHandItem();
-                if(!itemStack.isEmpty()&&tileEntity!=null){
-                    Action action = tileEntity.onItemInteract(itemStack);
-                    switch(action.getActionType()){
-                        case ADD_SOIL:
-                            world.playSound(null, playerEntity.blockPosition(), SoundEvents.GRASS_PLACE, SoundCategory.NEUTRAL, 1.0F, 1.0F);
-                            ItemUtils.shrinkItem(playerEntity, itemStack, action.getAmount());
-                            break;
-                        case ADD_PLANT:
-                            world.playSound(null, playerEntity.blockPosition(), SoundEvents.CROP_PLANTED, SoundCategory.NEUTRAL, 1.0F, 1.0F);
-                            ItemUtils.shrinkItem(playerEntity, itemStack, action.getAmount());
-                            break;
-                        case ADD_BUCKET_FLUID:
-                            SoundEvent soundBucket = (itemStack.getItem()==Items.LAVA_BUCKET)?SoundEvents.BUCKET_EMPTY_LAVA:SoundEvents.BUCKET_EMPTY;
-                            world.playSound(null, playerEntity.blockPosition(), soundBucket, SoundCategory.NEUTRAL, 1.0F, 1.0F);
-                            ItemUtils.replaceHandItem(playerEntity, hand, new ItemStack(Items.BUCKET));
-                            break;
-                        case ADD_FLUID:
-                            FluidStack fluidStack = FluidUtil.getFluidContained(itemStack).get();
-                            SoundEvent soundFluid = (fluidStack.getFluid()==Fluids.LAVA)?SoundEvents.BUCKET_EMPTY_LAVA:SoundEvents.BUCKET_EMPTY;
-                            world.playSound(null, playerEntity.blockPosition(), soundFluid, SoundCategory.NEUTRAL, 1.0F, 1.0F);
-                            if(!playerEntity.isCreative()){
-                                fluidStack.shrink(action.getAmount());
-                            }
-                            break;
-                        case REMOVE_SOIL:
-                            world.playSound(null, playerEntity.blockPosition(), SoundEvents.GRAVEL_PLACE, SoundCategory.NEUTRAL, 1.0F, 1.0F);
-                            if(!playerEntity.isCreative()){
-                                //消耗耐久
-                                itemStack.hurt(1, RANDOM, (ServerPlayerEntity) playerEntity);
-                                //获得物品返还
-                                ItemStack returnStack = action.getReturnStack();
-                                if(returnStack!=null){
-                                    ItemHandlerHelper.giveItemToPlayer(playerEntity, returnStack);
-                                }
-                            }
-                            break;
-                        case REMOVE_PLANT:
-                            world.playSound(null, playerEntity.blockPosition(), SoundEvents.CROP_BREAK, SoundCategory.NEUTRAL, 1.0F, 1.0F);
-                            if(!playerEntity.isCreative()){
-                                //消耗耐久
-                                itemStack.hurt(1, RANDOM, (ServerPlayerEntity) playerEntity);
-                                //获得物品返还
-                                ItemStack returnStack = action.getReturnStack();
-                                if(returnStack!=null){
-                                    ItemHandlerHelper.giveItemToPlayer(playerEntity, returnStack);
-                                }
-                            }
-                            break;
-                        default:
+                //渲染骨粉特效
+                if(tileEntity.canUseFerti(itemStack)){
+                    Random rand = world.getRandom();
+                    for(int particleCount = 0;particleCount<MRConfig.Client.PARTICLE_AMOUNT.get();particleCount++){
+                        double x = blockPos.getX()+0.1D+rand.nextDouble()*0.8D;
+                        double y = blockPos.getY()+0.4D+rand.nextDouble()*0.5D;
+                        double z = blockPos.getZ()+0.1D+rand.nextDouble()*0.8D;
+                        world.addParticle(ParticleTypes.HAPPY_VILLAGER , x, y, z, rand.nextGaussian(), 0.0D, rand.nextGaussian());
                     }
                 }
             }

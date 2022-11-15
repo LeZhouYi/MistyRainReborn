@@ -71,6 +71,7 @@ public class PotHandler {
     }
 
     public void deserializeNBT(CompoundNBT nbt) {
+        this.stageMap.clear();
         ListNBT nbtTagList = nbt.getList("Plants", Constants.NBT.TAG_COMPOUND);
         for(int i = 0;i<nbtTagList.size();i++){
             CompoundNBT plantTag = nbtTagList.getCompound(i);
@@ -102,6 +103,16 @@ public class PotHandler {
      */
     public boolean isEmpty() {
         return this.stageMap.size()<1;
+    }
+
+    @Override
+    public String toString() {
+        String text = "";
+        for(Map.Entry<Integer,PotPlantStage> entry:this.stageMap.entrySet()){
+            String tempString = String.format("slot:%d,plantStage:%s", entry.getKey(),entry.getValue().toString());
+            text+=tempString;
+        }
+        return text;
     }
 
 }

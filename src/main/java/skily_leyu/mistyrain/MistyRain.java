@@ -37,6 +37,7 @@ public class MistyRain {
         MRItem.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
         MRTileEntity.TILEENTITY_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, MRConfig.COMMON_CONFIG);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, MRConfig.CLIENT_CONFIG);
     }
 
     private void setup(final FMLCommonSetupEvent event){

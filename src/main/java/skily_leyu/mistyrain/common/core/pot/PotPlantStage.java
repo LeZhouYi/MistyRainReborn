@@ -107,7 +107,7 @@ public class PotPlantStage {
 
     @Override
     public String toString() {
-        return "%s";
+        return String.format("health:%d,stage:%d,plant:%s", this.health,this.nowStage,this.plantKey);
     }
 
 }

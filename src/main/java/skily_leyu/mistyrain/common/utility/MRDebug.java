@@ -1,5 +1,6 @@
 package skily_leyu.mistyrain.common.utility;
 
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 
 public class MRDebug {
@@ -12,8 +13,12 @@ public class MRDebug {
         }
     }
 
-    public static void printPlantHandler(){
+    public static void printItemStack(ItemStack itemStack){
+        System.out.println(itemStack.toString());
+    }
 
+    public static void printString(String text){
+        System.out.println(text);
     }
 
 }
