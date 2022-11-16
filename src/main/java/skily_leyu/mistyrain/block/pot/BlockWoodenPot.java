@@ -2,6 +2,8 @@ package skily_leyu.mistyrain.block.pot;
 
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -44,7 +46,7 @@ public class BlockWoodenPot extends Block{
         super(AbstractBlock.Properties.of(Material.WOOD,DyeColor.BROWN)
                                     .harvestLevel(ItemTier.WOOD.getLevel())
                                     .sound(SoundType.WOOD)
-                                    .strength(explosionResistance));
+                                    .strength(2.0F,3.0F));
     }
 
     @Override
@@ -139,6 +141,12 @@ public class BlockWoodenPot extends Block{
             }
         }
         return ActionResultType.SUCCESS;
+    }
+
+    @Override
+    public void playerDestroy(World p_180657_1_, PlayerEntity p_180657_2_, BlockPos p_180657_3_, BlockState p_180657_4_,
+            @Nullable TileEntity p_180657_5_, ItemStack p_180657_6_) {
+        super.playerDestroy(p_180657_1_, p_180657_2_, p_180657_3_, p_180657_4_, p_180657_5_, p_180657_6_);
     }
 
 }
