@@ -82,19 +82,14 @@ public class PotHandler {
     }
 
     /**
-     * 移除植物并返回标志，若True，则表示需返还种子，若False，则表示种子已被消耗
+     * 移除植物
      * @param i
      * @return
      */
-    public boolean removePlant(int i) {
-        boolean willReturn = false;
+    public void removePlant(int i) {
         if(this.stageMap.containsKey(i)){
-            if(this.stageMap.get(i).getState()==0){
-                willReturn=true;
-            }
             this.stageMap.remove(i);
         }
-        return willReturn;
     }
 
     /**

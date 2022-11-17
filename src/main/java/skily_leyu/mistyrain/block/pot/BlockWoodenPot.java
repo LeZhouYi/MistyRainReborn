@@ -2,8 +2,6 @@ package skily_leyu.mistyrain.block.pot;
 
 import java.util.Random;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -35,6 +33,7 @@ import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.items.ItemHandlerHelper;
 import skily_leyu.mistyrain.common.utility.Action;
 import skily_leyu.mistyrain.common.utility.ItemUtils;
+import skily_leyu.mistyrain.common.utility.MRDebug;
 import skily_leyu.mistyrain.config.MRConfig;
 import skily_leyu.mistyrain.tileentity.WoodenPotTileEntity;
 
@@ -144,9 +143,18 @@ public class BlockWoodenPot extends Block{
     }
 
     @Override
-    public void playerDestroy(World p_180657_1_, PlayerEntity p_180657_2_, BlockPos p_180657_3_, BlockState p_180657_4_,
-            @Nullable TileEntity p_180657_5_, ItemStack p_180657_6_) {
-        super.playerDestroy(p_180657_1_, p_180657_2_, p_180657_3_, p_180657_4_, p_180657_5_, p_180657_6_);
+    public void onRemove(BlockState oldState, World world, BlockPos blockPos, BlockState newStage,
+            boolean flag) {
+        if(!world.isClientSide()){
+            WoodenPotTileEntity tileEntity = (WoodenPotTileEntity)world.getBlockEntity(blockPos);
+            if(tileEntity!=null){
+                for(ItemStack dropItem:tileEntity.getDrops()){
+                    MRDebug.printItemStack(dropItem);
+                    popResource((World)world, blockPos, dropItem);
+                }
+                world.removeBlockEntity(blockPos);
+            }
+        }
     }
 
 }

@@ -1,6 +1,8 @@
 package skily_leyu.mistyrain.common.utility;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import net.minecraft.entity.player.PlayerEntity;
@@ -11,6 +13,28 @@ import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.items.ItemStackHandler;
 
 public class ItemUtils {
+
+    /**
+     * 获取Handler中的所有物品
+     * @param handler
+     * @param willClear True即清空所有物品
+     * @return
+     */
+    public static List<ItemStack> getHandlerItem(ItemStackHandler handler, boolean willClear){
+        List<ItemStack> listStacks = new ArrayList<>();
+        if(handler!=null){
+            for(int i = 0;i<handler.getSlots();i++){
+                ItemStack slotStack = handler.getStackInSlot(i);
+                if(!slotStack.isEmpty()){
+                    listStacks.add(slotStack);
+                    if(willClear){
+                        handler.extractItem(i, slotStack.getCount(), false);
+                    }
+                }
+            }
+        }
+        return listStacks;
+    }
 
     /**
      * 判断物品是否拥有流体并返回

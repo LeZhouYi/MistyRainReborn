@@ -25,6 +25,31 @@ public class PotPlantStage {
     }
 
     /**
+     * 更新健康值
+     * @param update
+     */
+    public void updateHealth(int update){
+        this.health+=update;
+        if(this.health>MRConfig.Constants.MAX_HEALTH){
+            this.health=MRConfig.Constants.MAX_HEALTH;
+        }
+        if(this.health<0){
+            this.health=0;
+        }
+    }
+
+    /**
+     * 消耗肥料
+     * @param tileEntity
+     * @param rand
+     * @return
+     */
+    public int consumerFerti(PotTileEntity tileEntity, Random rand){
+        int fertiConsume = this.getPlant().getNeedFerti();
+        return tileEntity.consumeFerti(fertiConsume)?MRConfig.PotRule.GROW_HEALTH.get():MRConfig.PotRule.nextFertiHealth(rand);
+    }
+
+    /**
      * 消耗水份
      * @param tileEntity
      * @return
@@ -32,9 +57,12 @@ public class PotPlantStage {
     public int consumeWater(PotTileEntity tileEntity,Random rand){
         int waterCousume = this.getPlant().getNeedWater();
         FluidTank tank = tileEntity.getWaterTank();
-        int consumeResult = tank.getFluidAmount()-waterCousume;
-        tank.drain(waterCousume, FluidAction.EXECUTE);
-        return consumeResult>0?MRConfig.PotRule.GROW_HEALTH.get():MRConfig.PotRule.nextWaterHealth(rand);
+        if(this.getPlant().isSuitWater(tank.getFluid())){
+            int consumeResult = tank.getFluidAmount()-waterCousume;
+            tank.drain(waterCousume, FluidAction.EXECUTE);
+            return consumeResult>0?MRConfig.PotRule.GROW_HEALTH.get():MRConfig.PotRule.nextWaterHealth(rand);
+        }
+        return 0;
     }
 
     /**
@@ -66,9 +94,16 @@ public class PotPlantStage {
         Plant plant = MRSetting.getPlantMap().getPlant(plantKey);
         World world = tileEntity.getLevel();
         if(plant!=null&&world!=null){
-            checkTemper(tileEntity, world, world.getRandom());
-            if(MRConfig.PotRule.canGrow(world.getRandom())){
-                this.nowStage = plant.getNextStage(nowStage, world.getRandom());
+            Random random = world.getRandom();
+            int heathGrowCheck = checkTemper(tileEntity, world,random)+checkLight(tileEntity, world, random)+consumeWater(tileEntity, random)+consumerFerti(tileEntity, random);
+            if(MRConfig.PotRule.growCheck(random, heathGrowCheck)){
+                this.updateHealth(MRConfig.PotRule.nextHealth(random, false));
+                if(MRConfig.PotRule.canGrow(world.getRandom())){
+                    //TODO:
+                    this.nowStage = plant.getNextStage(nowStage, world.getRandom());
+                }
+            }else{
+                this.updateHealth(MRConfig.PotRule.nextHealth(random, true));
             }
         }
     }

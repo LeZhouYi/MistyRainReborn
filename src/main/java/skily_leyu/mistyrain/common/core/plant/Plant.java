@@ -7,9 +7,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import skily_leyu.mistyrain.common.core.anima.Anima;
 import skily_leyu.mistyrain.common.core.soil.SoilType;
+import skily_leyu.mistyrain.common.utility.FluidUtils;
 import skily_leyu.mistyrain.common.utility.ItemUtils;
 import skily_leyu.mistyrain.common.utility.MathUtils;
 import skily_leyu.mistyrain.config.MRSetting;
@@ -28,6 +30,19 @@ public class Plant {
     private int needFertilizer; //消耗的肥料值
     private List<TemperType> needTemper; //适宜的生长温度
     private int[] needLight; //适宜的光照
+
+    public boolean isSuitWater(FluidStack fluidStack){
+        return this.suitWater.equals(FluidUtils.getFluidName(fluidStack));
+
+    }
+
+    /**
+     * 获取所需肥料值
+     * @return
+     */
+    public int getNeedFerti(){
+        return this.needFertilizer;
+    }
 
     /**
      * 检查当前温度是否合适

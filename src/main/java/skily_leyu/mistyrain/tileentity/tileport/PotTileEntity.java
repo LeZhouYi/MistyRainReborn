@@ -1,5 +1,7 @@
 package skily_leyu.mistyrain.tileentity.tileport;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import javax.annotation.Nullable;
@@ -155,15 +157,18 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
     /**
      * 消耗肥料，若consumeValue<0,则为添加肥料
      * @param consumeValue
+     * @return True则表示肥料足够消耗，False则表示肥料不足
      */
-    public void consumeFerti(int consumeValue){
+    public boolean consumeFerti(int consumeValue){
         this.fertiTank-=consumeValue;
         if(this.fertiTank<0){
             this.fertiTank=0;
+            return false;
         }
         if(this.fertiTank>this.getPot().getMaxFerti()){
             this.fertiTank=this.getPot().getMaxFerti();
         }
+        return true;
     }
 
     /**
@@ -231,8 +236,8 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
         for(int i = this.plantInv.getSlots()-1;i>=0;i--){
             ItemStack plantStack = ItemUtils.clearStackInHandler(plantInv, i);
             if(!plantStack.isEmpty()){
-                ItemStack returnStack = (this.potHandler.removePlant(i))?plantStack:ItemStack.EMPTY;
-                return new Action(ActionType.REMOVE_PLANT,1,returnStack);
+                this.potHandler.removePlant(i);
+                return new Action(ActionType.REMOVE_PLANT,1,plantStack);
             }
         }
         //若未清空植物，则清空土壤
@@ -344,6 +349,17 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
      */
     public FluidTank getWaterTank() {
         return this.waterTank;
+    }
+
+    /**
+     * 获取掉落物
+     * @return
+     */
+    public List<ItemStack> getDrops(){
+        List<ItemStack> drops = new ArrayList<>();
+        drops.addAll(ItemUtils.getHandlerItem(this.dirtInv, false));
+        drops.addAll(ItemUtils.getHandlerItem(this.plantInv, false));
+        return drops;
     }
 
 }
