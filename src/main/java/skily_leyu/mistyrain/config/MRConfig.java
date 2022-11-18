@@ -44,6 +44,7 @@ public class MRConfig {
         public static int EMPTY_FERTI = -1; //标志当前物品不是肥料
         public static int HEALTH_FACTOR_CHECK = 100; //生长要属通过阀值
         public static int MAX_HEALTH = 200; //最大健康度累计
+        public static int MAX_GROW_BOUND = 1000;//最大生长随机数
     }
 
     public static class PotRule{
@@ -100,8 +101,9 @@ public class MRConfig {
          * @param random
          * @return
          */
-        public static boolean canGrow(Random random){
-            return random.nextInt(1000)<PotRule.PLANT_GROW_CHANCE.get();
+        public static boolean canGrow(Random random,int health){
+            int rate = (int)(PotRule.PLANT_GROW_CHANCE.get()*(health/(float)(Constants.MAX_HEALTH/2)));
+            return random.nextInt(Constants.MAX_GROW_BOUND)<rate;
         }
 
         /**
@@ -131,7 +133,7 @@ public class MRConfig {
         COMMON_BUILDER.comment("时间系统设置").push("time");
         TimeRule.MONTH_START = COMMON_BUILDER.comment("首次进入游戏时的月份").defineInRange("month_start", 2, 0, 11);
         TimeRule.DAYS_PER_MONTH = COMMON_BUILDER.comment("每月多少天").defineInRange("days_per_month", 30, 10, 60);
-        TimeRule.TEMPER_CHANGE_FACTOR = COMMON_BUILDER.comment("节气对温度影响的幅度，值越大则影响越大，即容易出现温度变化").defineInRange("grow_health", 0.25D, 0.0D, 1.0D);
+        TimeRule.TEMPER_CHANGE_FACTOR = COMMON_BUILDER.comment("节气对温度影响的幅度，值越大则影响越大，即容易出现温度变化").defineInRange("temper_change_factor", 0.25D, 0.0D, 1.0D);
         COMMON_BUILDER.pop();
 
         COMMON_BUILDER.comment("盆栽系统设置").push("pot plant");
@@ -143,8 +145,8 @@ public class MRConfig {
         PotRule.LIGHT_FACTOR = COMMON_BUILDER.comment("光照对盆栽的影响程度，值越大影响越小").defineInRange("light_factor", 0.75D, 0.0D, 1.0D);
         PotRule.FERTI_FACTOR = COMMON_BUILDER.comment("肥料对盆栽的影响程度，值越大影响越小").defineInRange("ferti_factor", 0.85D, 0.0D, 1.0D);
         PotRule.TEMPER_FACTOR = COMMON_BUILDER.comment("温度对盆栽的影响程度，值越大影响越小").defineInRange("temper_factor", 0.65D, 0.0D, 1.0D);
-        PotRule.FLUID_UNIT = COMMON_BUILDER.comment("水桶对盆栽交互时的容量").defineInRange("grow_health", 1000, 500, 2000);
-        PotRule.DEBUFF_HEALTH = COMMON_BUILDER.comment("未通过生长要素检查时扣除健康的最大值").defineInRange("debuff_health", 1, 0, Constants.MAX_HEALTH);
+        PotRule.FLUID_UNIT = COMMON_BUILDER.comment("水桶对盆栽交互时的容量").defineInRange("fluid_unit", 1000, 500, 2000);
+        PotRule.DEBUFF_HEALTH = COMMON_BUILDER.comment("未通过生长要素检查时扣除健康的最大值").defineInRange("debuff_health", 3 , 0, Constants.MAX_HEALTH);
         PotRule.BUFF_HEALTH = COMMON_BUILDER.comment("通过生长要素检查时增加健康的最大值").defineInRange("debuff_health", 3, 0, Constants.MAX_HEALTH);
         COMMON_BUILDER.pop();
 

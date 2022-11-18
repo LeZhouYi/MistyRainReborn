@@ -1,5 +1,6 @@
 package skily_leyu.mistyrain.common.core.pot;
 
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.nbt.CompoundNBT;
@@ -7,6 +8,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
+import skily_leyu.mistyrain.common.core.anima.Anima;
 import skily_leyu.mistyrain.common.core.plant.Plant;
 import skily_leyu.mistyrain.config.MRConfig;
 import skily_leyu.mistyrain.config.MRSetting;
@@ -22,6 +24,16 @@ public class PotPlantStage {
         this.nowStage = nowStage;
         this.plantKey = plantKey;
         this.health = MRConfig.PotRule.BASE_HEALTH.get();
+    }
+
+    /**
+     * 检查灵气是否满足生长需求
+     * @param potTileEntity
+     * @return
+     */
+    public boolean checkAnima(PotTileEntity potTileEntity){
+        List<Anima> needAnima = this.getPlant().getNeedAnima();
+        return false;
     }
 
     /**
@@ -98,8 +110,7 @@ public class PotPlantStage {
             int heathGrowCheck = checkTemper(tileEntity, world,random)+checkLight(tileEntity, world, random)+consumeWater(tileEntity, random)+consumerFerti(tileEntity, random);
             if(MRConfig.PotRule.growCheck(random, heathGrowCheck)){
                 this.updateHealth(MRConfig.PotRule.nextHealth(random, false));
-                if(MRConfig.PotRule.canGrow(world.getRandom())){
-                    //TODO:
+                if(MRConfig.PotRule.canGrow(world.getRandom(),this.health)){
                     this.nowStage = plant.getNextStage(nowStage, world.getRandom());
                 }
             }else{

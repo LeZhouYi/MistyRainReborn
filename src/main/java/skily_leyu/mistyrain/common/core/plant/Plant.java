@@ -31,6 +31,19 @@ public class Plant {
     private List<TemperType> needTemper; //适宜的生长温度
     private int[] needLight; //适宜的光照
 
+    /**
+     * 所需生长灵气清单
+     * @return
+     */
+    public List<Anima> getNeedAnima(){
+        return this.needAnimas;
+    }
+
+    /**
+     * 判断当前流体是否符合
+     * @param fluidStack
+     * @return
+     */
     public boolean isSuitWater(FluidStack fluidStack){
         return this.suitWater.equals(FluidUtils.getFluidName(fluidStack));
 
@@ -80,7 +93,7 @@ public class Plant {
         if(stages.size()<1){
             return null;
         }
-        if(meta==0&&stages.get(0).isStage(PlantStageType.SEED_DROP)){
+        if(meta==0&&stages.get(0).isNowStage(PlantStageType.SEED_DROP)){
             return null;
         }
         Block plantBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(getName()));
