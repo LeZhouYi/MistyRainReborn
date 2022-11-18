@@ -21,6 +21,7 @@ import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.ItemStackHandler;
+import skily_leyu.mistyrain.common.core.anima.Anima;
 import skily_leyu.mistyrain.common.core.plant.Plant;
 import skily_leyu.mistyrain.common.core.pot.Pot;
 import skily_leyu.mistyrain.common.core.pot.PotHandler;
@@ -360,6 +361,14 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
         drops.addAll(ItemUtils.getHandlerItem(this.dirtInv, false));
         drops.addAll(ItemUtils.getHandlerItem(this.plantInv, false));
         return drops;
+    }
+
+    /**
+     * 获取产生的灵气
+     * @return
+     */
+    public List<Anima> getGenAnima() {
+        return new ArrayList<>();
     }
 
 }

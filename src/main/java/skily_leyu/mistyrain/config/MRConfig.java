@@ -59,6 +59,9 @@ public class MRConfig {
         public static ForgeConfigSpec.IntValue FLUID_UNIT; //水桶对盆栽交互的容量
         public static ForgeConfigSpec.IntValue DEBUFF_HEALTH; //未通过检查时扣除健康的最大值
         public static ForgeConfigSpec.IntValue BUFF_HEALTH; //通过检查时增加健康的最大值
+        public static ForgeConfigSpec.IntValue ANIMA_HONRI_RADIUS_BASE; //基础灵气检查的水平半径
+        public static ForgeConfigSpec.IntValue ANIMA_VERTI_RADIUS_BASE; //基础灵气检查的竖直半径
+        public static ForgeConfigSpec.IntValue ANIMA_COMBINE_AMOUNT; //灵气浓度进阶所有数量
 
                 /**
          * 获取下一个水份影响的生长值
@@ -138,7 +141,7 @@ public class MRConfig {
 
         COMMON_BUILDER.comment("盆栽系统设置").push("pot plant");
         PotRule.PLANT_TICK = COMMON_BUILDER.comment("盆栽植物时间刻,值越小生长越快").defineInRange("plant_tick", 120, 20, 600);
-        PotRule.PLANT_GROW_CHANCE = COMMON_BUILDER.comment("盆栽生长要素判定成功后，进入下一生长阶段的基础概率").defineInRange("plant_grow_chance", 100, 0, 1000);
+        PotRule.PLANT_GROW_CHANCE = COMMON_BUILDER.comment("盆栽生长要素判定成功后，进入下一生长阶段的基础概率").defineInRange("plant_grow_chance", 100, 0, Constants.MAX_GROW_BOUND);
         PotRule.BASE_HEALTH = COMMON_BUILDER.comment("刚种植时盆栽默认的健康值").defineInRange("base_health", 100, 0, Constants.MAX_HEALTH);
         PotRule.GROW_HEALTH = COMMON_BUILDER.comment("盆栽生长要素判定的基础健康值,值越大越容易通过生长判定和忽略生长要素影响").defineInRange("grow_health", 25, 0, 100);
         PotRule.WATER_FACTOR = COMMON_BUILDER.comment("水份对盆栽的影响程度，值越大影响越小").defineInRange("water_factor", 0.55D, 0.0D, 1.0D);
@@ -147,7 +150,10 @@ public class MRConfig {
         PotRule.TEMPER_FACTOR = COMMON_BUILDER.comment("温度对盆栽的影响程度，值越大影响越小").defineInRange("temper_factor", 0.65D, 0.0D, 1.0D);
         PotRule.FLUID_UNIT = COMMON_BUILDER.comment("水桶对盆栽交互时的容量").defineInRange("fluid_unit", 1000, 500, 2000);
         PotRule.DEBUFF_HEALTH = COMMON_BUILDER.comment("未通过生长要素检查时扣除健康的最大值").defineInRange("debuff_health", 3 , 0, Constants.MAX_HEALTH);
-        PotRule.BUFF_HEALTH = COMMON_BUILDER.comment("通过生长要素检查时增加健康的最大值").defineInRange("debuff_health", 3, 0, Constants.MAX_HEALTH);
+        PotRule.BUFF_HEALTH = COMMON_BUILDER.comment("通过生长要素检查时增加健康的最大值").defineInRange("buff_health", 3, 0, Constants.MAX_HEALTH);
+        PotRule.ANIMA_HONRI_RADIUS_BASE = COMMON_BUILDER.comment("基础盆栽植物灵气检查的水平半径，不算自身那格").defineInRange("anima_honri_radius_base", 1, 0, 7);
+        PotRule.ANIMA_VERTI_RADIUS_BASE = COMMON_BUILDER.comment("基础盆栽植物灵气检查的竖直半径，不算自身那格").defineInRange("anima_verti_radius_base", 0, 0, 7);
+        PotRule.ANIMA_COMBINE_AMOUNT = COMMON_BUILDER.comment("灵气浓度进阶所需数量").defineInRange("anima_combine_amount", 3, 2, 8);
         COMMON_BUILDER.pop();
 
         COMMON_CONFIG = COMMON_BUILDER.build();

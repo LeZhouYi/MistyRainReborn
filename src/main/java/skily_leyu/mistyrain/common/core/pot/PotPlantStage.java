@@ -1,9 +1,11 @@
 package skily_leyu.mistyrain.common.core.pot;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
@@ -18,22 +20,49 @@ public class PotPlantStage {
 
     private int health; //健康度
     private int nowStage; //当前状态
+    private boolean canGenAnima; //标记当前是否能够产生灵气
     private String plantKey; //当前植物
 
     public PotPlantStage(int nowStage,String plantKey){
         this.nowStage = nowStage;
         this.plantKey = plantKey;
+        this.canGenAnima = false;
         this.health = MRConfig.PotRule.BASE_HEALTH.get();
     }
 
     /**
-     * 检查灵气是否满足生长需求
+     * 检查灵气是否满足生长需求，若满足则可以产生灵气，否则不能
      * @param potTileEntity
      * @return
      */
-    public boolean checkAnima(PotTileEntity potTileEntity){
-        List<Anima> needAnima = this.getPlant().getNeedAnima();
-        return false;
+    public void updateCheckAnima(PotTileEntity potTileEntity,World worldIn,BlockPos pos){
+        List<Anima> needAnimas = this.getPlant().getNeedAnima();
+        if(needAnimas!=null){
+            if(needAnimas.size()==0){
+                this.canGenAnima = true;
+            }else{
+                List<Anima> gatherAnimas = new ArrayList<>();
+                //获取检测坐标集
+                int offsetHori = MRConfig.PotRule.ANIMA_HONRI_RADIUS_BASE.get();
+                int offsetVerti = MRConfig.PotRule.ANIMA_VERTI_RADIUS_BASE.get();
+                Iterable<BlockPos> checkPosList = BlockPos.betweenClosed(pos.offset(-offsetHori, -offsetVerti, -offsetHori), pos.offset(offsetHori, offsetVerti, offsetHori));
+                //检测范围内盆栽产生的灵气并统计
+                for(BlockPos checkPos:checkPosList){
+                    //不统计本身
+                    if(checkPos!=pos){
+                        TileEntity checkEntity = worldIn.getBlockEntity(checkPos);
+                        if(checkEntity!=null&&checkEntity instanceof PotTileEntity){
+                            gatherAnimas.addAll(((PotTileEntity)checkEntity).getGenAnima());
+                        }
+                    }
+                }
+                //合并
+                gatherAnimas = Anima.combineAnimas(gatherAnimas);
+                this.canGenAnima = Anima.suitAnima(needAnimas, gatherAnimas);
+            }
+        }else{
+            this.canGenAnima = false;
+        }
     }
 
     /**
@@ -107,15 +136,20 @@ public class PotPlantStage {
         World world = tileEntity.getLevel();
         if(plant!=null&&world!=null){
             Random random = world.getRandom();
+            //统计生长要素判定
             int heathGrowCheck = checkTemper(tileEntity, world,random)+checkLight(tileEntity, world, random)+consumeWater(tileEntity, random)+consumerFerti(tileEntity, random);
+            //是否满足生长要素,不满足时概率通过
             if(MRConfig.PotRule.growCheck(random, heathGrowCheck)){
                 this.updateHealth(MRConfig.PotRule.nextHealth(random, false));
+                //是否满足生长到下一阶段，健康值越高越容易进入下一阶段，默认最高为50%
                 if(MRConfig.PotRule.canGrow(world.getRandom(),this.health)){
                     this.nowStage = plant.getNextStage(nowStage, world.getRandom());
                 }
             }else{
                 this.updateHealth(MRConfig.PotRule.nextHealth(random, true));
             }
+            //更新灵气状态
+            updateCheckAnima(tileEntity,world,tileEntity.getBlockPos());
         }
     }
 
@@ -136,11 +170,17 @@ public class PotPlantStage {
         return this;
     }
 
+    public PotPlantStage setCanGenAnima(boolean canGen){
+        this.canGenAnima = canGen;
+        return this;
+    }
+
     public CompoundNBT save() {
         CompoundNBT plantTag = new CompoundNBT();
         plantTag.putInt("NowStage", nowStage);
         plantTag.putString("PlantKey", plantKey);
         plantTag.putInt("Health", health);
+        plantTag.putBoolean("CanGenAnima", canGenAnima);
         return plantTag;
     }
 
@@ -148,7 +188,8 @@ public class PotPlantStage {
         int nowStage = plantTag.getInt("NowStage");
         String plantKey = plantTag.getString("PlantKey");
         int health = plantTag.getInt("Health");
-        return new PotPlantStage(nowStage, plantKey).setHealth(health);
+        boolean canGen = plantTag.getBoolean("canGenAnima");
+        return new PotPlantStage(nowStage, plantKey).setHealth(health).setCanGenAnima(canGen);
     }
 
     @Override

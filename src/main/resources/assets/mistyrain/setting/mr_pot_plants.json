@@ -52,7 +52,8 @@
             "genAnimas":[
                 {
                     "type": "BLANK",
-                    "level": "THIN"
+                    "level": "THIN",
+                    "amount": 1
                 }
             ],
             "likeSoils": ["minecraft:farmland"],
@@ -100,11 +101,13 @@
             "genAnima":[
                 {
                     "type":"WOOD",
-                    "level":"THIN"
+                    "level":"THIN",
+                    "amount": 1
                 },
                 {
                     "type":"BLANK",
-                    "level":"NULL"
+                    "level":"NULL",
+                    "amount": 1
                 }
             ],
             "likeSoils":["minecraft:podzol"],
@@ -158,21 +161,25 @@
             "needAnimas":[
                 {
                     "type":"BLANK",
-                    "level":"FULL"
+                    "level":"FULL",
+                    "amount": 1
                 },
                 {
                     "type":"WOOD",
-                    "level":"THIN"
+                    "level":"THIN",
+                    "amount": 1
                 }
             ],
             "genAnima":[
                 {
                     "type":"FIRE",
-                    "level":"THIN"
+                    "level":"THIN",
+                    "amount": 1
                 },
                 {
                     "type":"BLANK",
-                    "level":"NULL"
+                    "level":"NULL",
+                    "amount": 1
                 }
             ],
             "likeSoils":["minecraft:sand"],
@@ -233,21 +240,25 @@
             "needAnimas":[
                 {
                     "type":"BLANK",
-                    "level":"FULL"
+                    "level":"FULL",
+                    "amount": 1
                 },
                 {
                     "type":"FIRE",
-                    "level":"THIN"
+                    "level":"THIN",
+                    "amount": 1
                 }
             ],
             "genAnima":[
                 {
                     "type":"SOIL",
-                    "level":"THIN"
+                    "level":"THIN",
+                    "amount": 1
                 },
                 {
                     "type":"BLANK",
-                    "level":"NULL"
+                    "level":"NULL",
+                    "amount": 1
                 }
             ],
             "likeSoils":["minecraft:gravel"],
@@ -301,21 +312,25 @@
             "needAnimas":[
                 {
                     "type":"BLANK",
-                    "level":"FULL"
+                    "level":"FULL",
+                    "amount": 1
                 },
                 {
                     "type":"SOIL",
-                    "level":"THIN"
+                    "level":"THIN",
+                    "amount": 1
                 }
             ],
             "genAnima":[
                 {
                     "type":"GOLD",
-                    "level":"THIN"
+                    "level":"THIN",
+                    "amount": 1
                 },
                 {
                     "type":"BLANK",
-                    "level":"NULL"
+                    "level":"NULL",
+                    "amount": 1
                 }
             ],
             "likeSoils":["minecraft:cobble_stone"],
@@ -376,21 +391,25 @@
             "needAnimas": [
                 {
                     "type":"BLANK",
-                    "level":"FULL"
+                    "level":"FULL",
+                    "amount": 1
                 },
                 {
                     "type":"GOLD",
-                    "level":"THIN"
+                    "level":"THIN",
+                    "amount": 1
                 }
             ],
             "genAnimas":[
                 {
                     "type": "WATER",
-                    "level": "THIN"
+                    "level": "THIN",
+                    "amount": 1
                 },
                 {
                     "type": "BLANK",
-                    "level": "NULL"
+                    "level": "NULL",
+                    "amount": 1
                 }
             ],
             "likeSoils": ["minecraft:water"],
