@@ -13,6 +13,10 @@ public class PlantStage {
         return nowStage==stageType;
     }
 
+    public PlantStageType getNowStageType(){
+        return this.nowStage;
+    }
+
     /**
      * 随机获取下一个生长状态类型
      * @param random

@@ -32,6 +32,14 @@ public class Plant {
     private int[] needLight; //适宜的光照
 
     /**
+     * 返回产生的灵气清单
+     * @return
+     */
+    public List<Anima> getGenAnima(){
+        return this.genAnimas;
+    }
+
+    /**
      * 所需生长灵气清单
      * @return
      */
@@ -104,13 +112,25 @@ public class Plant {
     }
 
     /**
+     * 获取当前生长状态
+     * @param nowStage
+     * @return
+     */
+    public PlantStageType getPlantStage(int nowStage){
+        if(this.stages!=null&&nowStage<this.stages.size()&&nowStage>=0){
+            return this.stages.get(nowStage).getNowStageType();
+        }
+        return null;
+    }
+
+    /**
      * 获取下一生长阶段
      * @param nowStage
      * @param random
      * @return
      */
     public int getNextStage(int nowStage,Random random){
-        if(this.stages!=null&&nowStage<this.stages.size()){
+        if(this.stages!=null&&nowStage<this.stages.size()&&nowStage>=0){
             PlantStage nowPlantStage = this.stages.get(nowStage);
             PlantStageType nextStageType = nowPlantStage.getNextStageType(random);
             for(int i = 0;i<this.stages.size();i++){

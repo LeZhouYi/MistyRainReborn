@@ -14,10 +14,28 @@ public class Anima {
     private AnimaLevel level; //灵气等级
     private int amount; //所拥有份数
 
+    public static final Anima EMPTY = new Anima(AnimaType.NULL, AnimaLevel.NULL, 0);
+
     public Anima(AnimaType type, AnimaLevel level, int amount){
         this.type = type;
         this.level = level;
         this.amount = amount;
+    }
+
+    /**
+     * 获取当前灵气相生的灵气类型
+     * @return
+     */
+    public AnimaType getGenType(){
+        return this.type.getGenType();
+    }
+
+    /**
+     * 获取当前灵气相消的灵气类型
+     * @return
+     */
+    public AnimaType getDecayType(){
+        return this.type.getDecayType();
     }
 
     /**
@@ -43,7 +61,7 @@ public class Anima {
     }
 
     /**
-     * 比较所拥有灵气份数的多少(转成同等浓度)
+     * 比较所拥有灵气份数的多少(转成同等浓度)，<0则小于当前浓度，>0则大于当前浓度
      * @return
      */
     public int compareAmount(Anima anima){
@@ -59,6 +77,7 @@ public class Anima {
      */
     public static List<Anima> combineAnimas(List<Anima> inputs){
         List<Anima> result = new ArrayList<>();
+        //浓度合并进阶
         for(AnimaType type: AnimaType.values()){
             Anima teResult = new Anima(type,AnimaLevel.THIN,0);
             for(Anima teAnima:inputs){
@@ -70,7 +89,58 @@ public class Anima {
                 result.add(teResult.upgrade());
             }
         }
+        //灵气相生进阶
+        for(int i = 0;i<result.size();i++){
+            Anima teAnima = result.get(i);
+            Anima checkAnima = extractAnima(result, teAnima.getGenType());
+            if(!checkAnima.isEmpty()){
+                if(teAnima.getLevel().compareTo(checkAnima.getLevel())<0){
+                    result.get(i).upLevel(1);
+                }
+            }
+        }
+        //灵气相消阶段
+        for(int i = 0;i<result.size();i++){
+            Anima teAnima = result.get(i);
+            Anima checkAnima = extractAnima(result, teAnima.getDecayType());
+            if(!checkAnima.isEmpty()){
+                if(teAnima.getLevel().compareTo(checkAnima.getLevel())<0){
+                    result.get(i).upLevel(-1);
+                }
+            }
+        }
         return result;
+    }
+
+    /**
+     * 将当前灵气浓度升up级(up>0)或降up级(up<0)，而不改变灵气份数
+     * @param up
+     */
+    public void upLevel(int up){
+        int size = AnimaLevel.values().length;
+        int resultLevel = up+this.level.ordinal();
+        resultLevel = resultLevel<0?0:((resultLevel>=size)?(size-1):resultLevel);
+        if(this.level.ordinal()==0&&up<0){
+            this.type = AnimaType.NULL;
+        }
+        this.level = AnimaLevel.values()[resultLevel];
+    }
+
+    /**
+     * 获取灵气集中对应类型的灵气
+     * @param inputs
+     * @param type
+     * @return
+     */
+    public static Anima extractAnima(List<Anima> inputs,AnimaType type){
+        if(inputs!=null&&type!=null){
+            for(Anima anima:inputs){
+                if(anima.isAnima(type)){
+                    return anima;
+                }
+            }
+        }
+        return Anima.EMPTY;
     }
 
     /**
@@ -137,6 +207,11 @@ public class Anima {
      */
     public boolean isAnima(AnimaType type){
         return this.type == type;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("type:%s,level:%s,amount:%d", this.type,this.level,this.amount);
     }
 
 }

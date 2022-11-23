@@ -1,6 +1,8 @@
 package skily_leyu.mistyrain.common.core.pot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -10,6 +12,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraftforge.common.util.Constants;
+import skily_leyu.mistyrain.common.core.anima.Anima;
 import skily_leyu.mistyrain.common.core.plant.Plant;
 import skily_leyu.mistyrain.tileentity.tileport.PotTileEntity;
 
@@ -108,6 +111,18 @@ public class PotHandler {
             text+=tempString;
         }
         return text;
+    }
+
+    /**
+     * 返回当前盆栽所有植物产生的灵气
+     * @return
+     */
+    public List<Anima> getGenAnimas(){
+        List<Anima> genAnimas = new ArrayList<>();
+        for(PotPlantStage stage:this.stageMap.values()){
+            genAnimas.addAll(stage.getGenAnimas());
+        }
+        return genAnimas;
     }
 
 }

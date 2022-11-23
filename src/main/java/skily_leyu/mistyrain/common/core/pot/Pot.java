@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
+import skily_leyu.mistyrain.common.core.anima.Anima;
 import skily_leyu.mistyrain.common.core.soil.SoilType;
 import skily_leyu.mistyrain.common.utility.ItemUtils;
 import skily_leyu.mistyrain.config.MRSetting;
@@ -18,6 +19,15 @@ public class Pot {
     private List<SoilType> suitSoilType; //适合的土壤类型
     private List<String> suitFluids; //适合的水份
     private int fertilizer; //肥料值
+    private List<Anima> extraAnimas; //植物产生灵气时，可以额外增加的灵气
+
+    /**
+     * 获取额外的灵气产生
+     * @return
+     */
+    public List<Anima> getExtraAnimas(){
+        return this.extraAnimas;
+    }
 
     /**
      * 获取花盆的名字

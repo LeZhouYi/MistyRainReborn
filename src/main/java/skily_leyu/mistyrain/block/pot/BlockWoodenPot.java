@@ -33,6 +33,7 @@ import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.items.ItemHandlerHelper;
 import skily_leyu.mistyrain.common.utility.Action;
 import skily_leyu.mistyrain.common.utility.ItemUtils;
+import skily_leyu.mistyrain.common.utility.MRDebug;
 import skily_leyu.mistyrain.config.MRConfig;
 import skily_leyu.mistyrain.tileentity.WoodenPotTileEntity;
 
@@ -136,7 +137,7 @@ public class BlockWoodenPot extends Block{
                         world.addParticle(ParticleTypes.HAPPY_VILLAGER , x, y, z, rand.nextGaussian(), 0.0D, rand.nextGaussian());
                     }
                 }
-                tileEntity.toString();
+                MRDebug.printAnimas(tileEntity.getGenAnima());
             }
         }
         return ActionResultType.SUCCESS;

@@ -1,7 +1,10 @@
 package skily_leyu.mistyrain.common.utility;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
+import skily_leyu.mistyrain.common.core.anima.Anima;
 
 public class MRDebug {
 
@@ -19,6 +22,14 @@ public class MRDebug {
 
     public static void printString(String text){
         System.out.println(text);
+    }
+
+    public static void printAnimas(List<Anima> inputs){
+        if(inputs!=null){
+            for(Anima anima:inputs){
+                System.out.println(anima.toString());
+            }
+        }
     }
 
 }

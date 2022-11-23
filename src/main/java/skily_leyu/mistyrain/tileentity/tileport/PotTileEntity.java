@@ -368,7 +368,11 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
      * @return
      */
     public List<Anima> getGenAnima() {
-        return new ArrayList<>();
+        List<Anima> genAnimas =  this.potHandler.getGenAnimas();
+        if(genAnimas!=null && genAnimas.size()>0){
+            genAnimas.addAll(this.getPot().getExtraAnimas());
+        }
+        return genAnimas;
     }
 
 }

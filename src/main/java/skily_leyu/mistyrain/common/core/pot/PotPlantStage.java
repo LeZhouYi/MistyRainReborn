@@ -12,6 +12,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import skily_leyu.mistyrain.common.core.anima.Anima;
 import skily_leyu.mistyrain.common.core.plant.Plant;
+import skily_leyu.mistyrain.common.core.plant.PlantStageType;
 import skily_leyu.mistyrain.config.MRConfig;
 import skily_leyu.mistyrain.config.MRSetting;
 import skily_leyu.mistyrain.tileentity.tileport.PotTileEntity;
@@ -35,10 +36,13 @@ public class PotPlantStage {
      * @param potTileEntity
      * @return
      */
-    public void updateCheckAnima(PotTileEntity potTileEntity,World worldIn,BlockPos pos){
+    public void updateCheckAnima(PotTileEntity potTileEntity,World worldIn,BlockPos pos,PlantStageType stageType){
         List<Anima> needAnimas = this.getPlant().getNeedAnima();
         if(needAnimas!=null){
-            if(needAnimas.size()==0){
+            if(!stageType.canGenAnima()){
+                this.canGenAnima = false;
+            }
+            else if(needAnimas.size()==0){
                 this.canGenAnima = true;
             }else{
                 List<Anima> gatherAnimas = new ArrayList<>();
@@ -149,7 +153,8 @@ public class PotPlantStage {
                 this.updateHealth(MRConfig.PotRule.nextHealth(random, true));
             }
             //更新灵气状态
-            updateCheckAnima(tileEntity,world,tileEntity.getBlockPos());
+            PlantStageType plantStageType = plant.getPlantStage(this.nowStage);
+            updateCheckAnima(tileEntity,world,tileEntity.getBlockPos(),plantStageType);
         }
     }
 
@@ -195,6 +200,21 @@ public class PotPlantStage {
     @Override
     public String toString() {
         return String.format("health:%d,stage:%d,plant:%s", this.health,this.nowStage,this.plantKey);
+    }
+
+    /**
+     * 返回当前产生的灵气
+     * @return
+     */
+    public List<Anima> getGenAnimas(){
+        List<Anima> genAnimas = new ArrayList<>();
+        if(!this.canGenAnima){
+            Plant plant = MRSetting.getPlantMap().getPlant(plantKey);
+            if(plant!=null){
+                genAnimas.addAll(plant.getGenAnima());
+            }
+        }
+        return genAnimas;
     }
 
 }

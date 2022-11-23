@@ -7,7 +7,14 @@
             "suitSoils":[],
             "suitSoilType":["DIRT","COBBLE","SAND"],
             "suitFluids":["minecraft:water"],
-            "fertilizer":1000
+            "fertilizer":1000,
+            "extraAnimas":[
+                {
+                    "type": "WOOD",
+                    "level": "NULL",
+                    "amount": 1
+                }
+            ]
         }
     }
 }
