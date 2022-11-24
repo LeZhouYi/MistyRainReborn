@@ -11,6 +11,7 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.item.HoeItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.ShearsItem;
 import net.minecraft.item.ShovelItem;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
@@ -118,6 +119,10 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
             if(isRemoveTools(itemStack)){
                 action = onItemRemove();
             }
+            //收获产品
+            else if(isHarvestTools(itemStack)){
+                action = onHarvest(itemStack);
+            }
             //原生流体桶操作
             else if(isBucket(itemStack)){
                 action = onHandleBucket(itemStack);
@@ -138,12 +143,34 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
     }
 
     /**
+     * 执行收获的操作
+     * @return
+     */
+    public Action onHarvest(ItemStack itemStack) {
+        World world = this.getLevel();
+        if(world!=null){
+            List<ItemStack> results = this.potHandler.getHarvest(world.random);
+            return new Action(ActionType.HARVEST, 1, results);
+        }
+        return Action.EMPTY;
+    }
+
+    /**
      * 判断当前物品是否为带流体的桶
      * @param itemStack
      * @return
      */
     public boolean isBucket(ItemStack itemStack){
         return itemStack.getItem() == Items.WATER_BUCKET || itemStack.getItem()==Items.LAVA_BUCKET;
+    }
+
+    /**
+     * 判断当前物品是否为收获工具
+     * @param itemStack
+     * @return
+     */
+    public boolean isHarvestTools(ItemStack itemStack){
+        return itemStack.getItem() instanceof ShearsItem;
     }
 
     /**

@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraftforge.common.util.Constants;
@@ -120,9 +122,28 @@ public class PotHandler {
     public List<Anima> getGenAnimas(){
         List<Anima> genAnimas = new ArrayList<>();
         for(PotPlantStage stage:this.stageMap.values()){
-            genAnimas.addAll(stage.getGenAnimas());
+            List<Anima> teAnimas = stage.getGenAnimas();
+            if(teAnimas!=null) {
+                genAnimas.addAll(teAnimas);                
+            }
         }
         return genAnimas;
+    }
+
+    /**
+     * 获得收获
+     * @return
+     */
+    public List<ItemStack> getHarvest(Random random){
+        List<ItemStack> results = new ArrayList<>();
+        for(Map.Entry<Integer,PotPlantStage> entry:this.stageMap.entrySet()){
+            List<ItemStack> teResults = entry.getValue().getHarvest(random); //获得产物
+            if(teResults!=null){
+                results.addAll(teResults);
+                break;
+            }
+        }
+        return results;
     }
 
 }

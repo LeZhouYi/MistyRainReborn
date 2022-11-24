@@ -30,7 +30,6 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.items.ItemHandlerHelper;
 import skily_leyu.mistyrain.common.utility.Action;
 import skily_leyu.mistyrain.common.utility.ItemUtils;
 import skily_leyu.mistyrain.common.utility.MRDebug;
@@ -106,10 +105,7 @@ public class BlockWoodenPot extends Block{
                             //消耗耐久
                             itemStack.hurt(1, RANDOM, (ServerPlayerEntity) playerEntity);
                             //获得物品返还
-                            ItemStack returnStack = action.getReturnStack();
-                            if(returnStack!=null){
-                                ItemHandlerHelper.giveItemToPlayer(playerEntity, returnStack);
-                            }
+                            ItemUtils.addItemToPlayer(action.getReturnStack(), playerEntity);
                         }
                         break;
                     case REMOVE_PLANT:
@@ -118,12 +114,17 @@ public class BlockWoodenPot extends Block{
                             //消耗耐久
                             itemStack.hurt(1, RANDOM, (ServerPlayerEntity) playerEntity);
                             //获得物品返还
-                            ItemStack returnStack = action.getReturnStack();
-                            if(returnStack!=null){
-                                ItemHandlerHelper.giveItemToPlayer(playerEntity, returnStack);
-                            }
+                            ItemUtils.addItemToPlayer(action.getReturnStack(), playerEntity);
                         }
                         break;
+                    case HARVEST:
+                        world.playSound(null, playerEntity.blockPosition(), SoundEvents.SHEEP_SHEAR, SoundCategory.NEUTRAL, 1.0F, 1.0F);
+                        if(!playerEntity.isCreative()){
+                            //消耗耐久
+                            itemStack.hurt(1, RANDOM, (ServerPlayerEntity) playerEntity);
+                            //获得物品返还
+                            ItemUtils.addItemToPlayer(action.getReturnStack(), playerEntity);
+                        }
                     default:
                 }
             }else{

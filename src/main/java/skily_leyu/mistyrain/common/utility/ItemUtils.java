@@ -10,9 +10,26 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 
 public class ItemUtils {
+
+    /**
+     * 添加物品给玩家
+     * @param stacks
+     * @param playerEntity
+     */
+    public static void addItemToPlayer(List<ItemStack> stacks, PlayerEntity playerEntity){
+        if(stacks!=null&&!playerEntity.isCreative()){
+            for(ItemStack stack:stacks){
+                if(stack!=null){
+                    ItemHandlerHelper.giveItemToPlayer(playerEntity, stack);
+                }
+            }
+        }
+
+    }
 
     /**
      * 获取Handler中的所有物品

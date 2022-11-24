@@ -1,7 +1,11 @@
 package skily_leyu.mistyrain.common.core.plant;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
+
+import net.minecraft.item.ItemStack;
 
 public class PlantStage {
 
@@ -37,6 +41,29 @@ public class PlantStage {
             }
         }
         return nowStage;
+    }
+
+    /**
+     * 获取当前状态可以转换的状态
+     * @return
+     */
+    public Set<PlantStageType> getTransStageType() {
+        if(this.harvests!=null&&this.harvests.size()>0){
+            return this.harvests.keySet();
+        }
+        return null;
+    }
+
+    /**
+     * 获取产物
+     * @param transType
+     * @return
+     */
+    public Map<String,Integer> getHarvest(PlantStageType transType) {
+        if(this.harvests!=null&&this.harvests.containsKey(transType)){
+            return this.harvests.get(transType);
+        }
+        return null;
     }
 
 }

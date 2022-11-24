@@ -1,5 +1,8 @@
 package skily_leyu.mistyrain.common.utility;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 
 /**
@@ -8,34 +11,41 @@ import net.minecraft.item.ItemStack;
 public class Action {
     private ActionType actionType;
     private int amount;
-    private ItemStack returnStack;
+    private List<ItemStack> returnStacks;
 
     public static final Action EMPTY = new Action();
 
     public Action(){
         this.actionType = ActionType.EMPTY;
         this.amount = 0;
-        this.returnStack = ItemStack.EMPTY;
+        this.returnStacks = new ArrayList<>();
     }
 
     public Action(ActionType actionType,int amount){
         this.actionType = actionType;
         this.amount = amount;
-        this.returnStack = ItemStack.EMPTY;
+        this.returnStacks = new ArrayList<>();
     }
 
     public Action(ActionType actionType,int amount,ItemStack returnStack){
         this.actionType = actionType;
         this.amount = amount;
-        this.returnStack = returnStack;
+        this.returnStacks = new ArrayList<>();
+        returnStacks.add(returnStack);
+    }
+
+    public Action(ActionType actionType,int amount,List<ItemStack> returnStacks){
+        this.actionType = actionType;
+        this.amount = amount;
+        this.returnStacks = returnStacks;
     }
 
     /**
      * 获得操作后返还的物品
      * @return
      */
-    public ItemStack getReturnStack(){
-        return this.returnStack;
+    public List<ItemStack> getReturnStack(){
+        return this.returnStacks;
     }
 
     /**

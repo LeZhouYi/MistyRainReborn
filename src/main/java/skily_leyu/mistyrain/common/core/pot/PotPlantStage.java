@@ -2,14 +2,19 @@ package skily_leyu.mistyrain.common.core.pot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.minecraftforge.registries.ForgeRegistries;
 import skily_leyu.mistyrain.common.core.anima.Anima;
 import skily_leyu.mistyrain.common.core.plant.Plant;
 import skily_leyu.mistyrain.common.core.plant.PlantStageType;
@@ -211,10 +216,41 @@ public class PotPlantStage {
         if(!this.canGenAnima){
             Plant plant = MRSetting.getPlantMap().getPlant(plantKey);
             if(plant!=null){
-                genAnimas.addAll(plant.getGenAnima());
+                List<Anima> teAnimas = plant.getGenAnima();
+                if(teAnimas!=null) {
+                    genAnimas.addAll(teAnimas);                    
+                }
             }
         }
         return genAnimas;
+    }
+
+    /**
+     * 获取产物
+     * @return
+     */
+    public List<ItemStack> getHarvest(Random random) {
+        Plant plant = MRSetting.getPlantMap().getPlant(plantKey);
+        List<ItemStack> results = new ArrayList<>();
+        if(plant!=null){
+            Set<PlantStageType> transTypes = plant.getTransStageType(this.nowStage); //获取可转变的状态
+            if(transTypes!=null&&transTypes.size()>0){
+                PlantStageType transType = transTypes.toArray(new PlantStageType[0])[random.nextInt(transTypes.size())]; //随机选取转变状态
+                Map<String,Integer> resultStacks = plant.getHarvest(this.nowStage,transType); //获取对应状态的产物表
+                for(Map.Entry<String,Integer> entry:resultStacks.entrySet()){
+                    int amount = (int)(entry.getValue()*(1.0+(this.health-MRConfig.Constants.MAX_HEALTH/2)/(MRConfig.Constants.MAX_HEALTH/4))); //计算增产/减产数量
+                    if(amount>0){
+                        ItemStack resultStack = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(entry.getKey()))); //获得物品
+                        resultStack.setCount(Math.min(amount, resultStack.getMaxStackSize())); //不超过物品最大堆叠数
+                        results.add(resultStack);
+                    }
+                }
+                this.nowStage = plant.getTransStage(transType,this.nowStage); //转为收获后的状态
+            }else{
+                return null; //没有可转变的状态，返回Null，标志当前动作没有执行成功
+            }
+        }
+        return results;
     }
 
 }

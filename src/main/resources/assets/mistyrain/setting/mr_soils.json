@@ -19,7 +19,7 @@
             "minecraft:podzol"
         ],
         "COBBLE":[
-            "minecraft:cobble_stone",
+            "minecraft:cobblestone",
             "minecraft:gravel"
         ],
         "LAVA":[

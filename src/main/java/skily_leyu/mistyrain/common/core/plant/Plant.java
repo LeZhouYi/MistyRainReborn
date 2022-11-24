@@ -1,7 +1,9 @@
 package skily_leyu.mistyrain.common.core.plant;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -53,8 +55,11 @@ public class Plant {
      * @return
      */
     public boolean isSuitWater(FluidStack fluidStack){
-        return this.suitWater.equals(FluidUtils.getFluidName(fluidStack));
-
+        if(fluidStack!=null){
+            String fluidName = FluidUtils.getFluidName(fluidStack);
+            return fluidName!=null && this.suitWater!=null && this.suitWater.equals(fluidName);
+        }
+        return false;
     }
 
     /**
@@ -124,6 +129,22 @@ public class Plant {
     }
 
     /**
+     * 获取对应状态类型具体的状态值，不存在则返回nowStage
+     * @param nowStage
+     * @return
+     */
+    public int getTransStage(PlantStageType transType,int nowStage){
+        if(this.stages!=null){
+            for(int i = 0;i<this.stages.size();i++){
+                if(this.stages.get(i).getNowStageType()==transType){
+                    return i;
+                }
+            }
+        }
+        return nowStage;
+    }
+
+    /**
      * 获取下一生长阶段
      * @param nowStage
      * @param random
@@ -178,4 +199,28 @@ public class Plant {
         return name;
     }
 
+    /**
+     * 获取当前状态被收获后要转换的状态
+     * @param nowStage
+     * @return
+     */
+    public Set<PlantStageType> getTransStageType(int nowStage) {
+        if(this.stages!=null&&nowStage<this.stages.size()&&nowStage>=0){
+            return this.stages.get(nowStage).getTransStageType();
+        }
+        return null;
+    }
+
+    /**
+     * 获取当前状态对应转换状态所能收获的内容
+     * @param nowStage
+     * @param transType
+     * @return
+     */
+    public Map<String,Integer> getHarvest(int nowStage, PlantStageType transType) {
+        if(this.stages!=null&&nowStage<this.stages.size()&&nowStage>=0){
+            return this.stages.get(nowStage).getHarvest(transType);
+        }
+        return null;
+    }
 }
