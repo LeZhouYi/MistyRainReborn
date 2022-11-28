@@ -6,7 +6,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import skily_leyu.mistyrain.tileentity.MRTileEntity;
 
-@Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class MRTileEntityRender {
 
     @SubscribeEvent
@@ -14,6 +14,10 @@ public class MRTileEntityRender {
         ClientRegistry.bindTileEntityRenderer(MRTileEntity.woodenPotTileEntity.get(), (tileEntityRendererDispatcher -> {
             return new WoodenPotTER(tileEntityRendererDispatcher);
         }));
+        ClientRegistry.bindTileEntityRenderer(MRTileEntity.clayPotTileEntity.get(), (tileEntityRendererDispatcher -> {
+            return new ClayPotTER(tileEntityRendererDispatcher);
+        }));
+
     }
 
 }

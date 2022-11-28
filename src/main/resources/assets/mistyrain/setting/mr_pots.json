@@ -15,6 +15,22 @@
                     "amount": 1
                 }
             ]
+        },
+        "mr_clay_pot":{
+            "name": "mr_clay_pot",
+            "slotSize":1,
+            "tankSize": 4000,
+            "suitSoils":["minecraft:water_bucket"],
+            "suitSoilType":[],
+            "suitFluids":["minecraft:water"],
+            "fertilizer":1000,
+            "extraAnimas":[
+                {
+                    "type": "SOIL",
+                    "level": "NULL",
+                    "amount": 1
+                }
+            ]
         }
     }
 }

@@ -8,17 +8,18 @@ import skily_leyu.mistyrain.config.MRConfig;
 
 public class FertiMap {
 
-    private Map<String,Integer> fertiMap;
+    private Map<String, Integer> fertiMap;
 
     /**
      * 判断当前物品是不是肥料，并返回该肥料的营养值
+     *
      * @param itemStackIn
      * @return
      */
-    public int isFertilizer(ItemStack itemStackIn){
-        if(!itemStackIn.isEmpty()){
+    public int isFertilizer(ItemStack itemStackIn) {
+        if (itemStackIn != null && !itemStackIn.isEmpty()) {
             String itemName = ItemUtils.getRegistryName(itemStackIn);
-            if(this.fertiMap.containsKey(itemName)){
+            if (this.fertiMap.containsKey(itemName)) {
                 return this.fertiMap.get(itemName);
             }
         }

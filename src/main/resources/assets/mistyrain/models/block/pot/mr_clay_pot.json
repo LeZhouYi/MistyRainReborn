@@ -1,0 +1,6 @@
+{
+    "parent":"mistyrain:block/pot/flat_pot",
+    "textures":{
+        "flat_pot_face":"mistyrain:block/pot/clay_pot_face"
+    }
+}
