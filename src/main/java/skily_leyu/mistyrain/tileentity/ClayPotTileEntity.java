@@ -8,7 +8,6 @@ import skily_leyu.mistyrain.common.core.action.Action;
 import skily_leyu.mistyrain.common.core.action.ActionType;
 import skily_leyu.mistyrain.common.utility.FluidUtils;
 import skily_leyu.mistyrain.common.utility.ItemUtils;
-import skily_leyu.mistyrain.common.utility.MRDebug;
 import skily_leyu.mistyrain.config.MRConfig;
 import skily_leyu.mistyrain.tileentity.tileport.PotTileEntity;
 
@@ -24,13 +23,10 @@ public class ClayPotTileEntity extends PotTileEntity {
     @Override
     public Action onSoilAdd(ItemStack itemStack) {
         FluidStack fluidStack = FluidUtils.getFluidStack(itemStack);
-        MRDebug.printString("TEST soilAdd");
-        if (fluidStack != null && !fluidStack.isEmpty()
+        if (!fluidStack.isEmpty()
                 && fluidStack.getAmount() >= MRConfig.PotRule.FLUID_UNIT.get()) {
-            MRDebug.printString("TEST pass check");
             int amount = ItemUtils.addItemInHandler(this.dirtInv, itemStack, true);
             if (amount > 0) {
-                MRDebug.printString("TEST success add");
                 return new Action(ActionType.ADD_FLUID, MRConfig.PotRule.FLUID_UNIT.get());
             }
         }

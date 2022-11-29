@@ -13,7 +13,6 @@ import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.model.data.EmptyModelData;
-import net.minecraftforge.fluids.FluidStack;
 import skily_leyu.mistyrain.common.utility.FluidUtils;
 import skily_leyu.mistyrain.common.utility.RenderUtils;
 import skily_leyu.mistyrain.tileentity.ClayPotTileEntity;
@@ -38,8 +37,7 @@ public class ClayPotTER extends TileEntityRenderer<ClayPotTileEntity> {
         // 流体
         ItemStack dirtStack = tileEntityIn.getDirtStack(0);
         if (!dirtStack.isEmpty()) {
-            FluidStack fluidStack = FluidUtils.getFluidStack(dirtStack);
-            TextureAtlasSprite texture = RenderUtils.getFluidSprite(fluidStack);
+            TextureAtlasSprite texture = RenderUtils.getFluidSprite(FluidUtils.getFluidStack(dirtStack));
             IVertexBuilder builder = bufferIn.getBuffer(RenderType.translucent());
             if (texture != null) {
                 matrixStackIn.pushPose();

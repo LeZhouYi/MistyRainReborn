@@ -97,7 +97,7 @@ public class Pot {
     public boolean isSuitSoilFluid(ItemStack itemStack) {
         if (itemStack != null && !itemStack.isEmpty()) {
             FluidStack fluidStack = FluidUtils.getFluidStack(itemStack);
-            if (!fluidStack.isEmpty()) {
+            if (fluidStack.isEmpty()) {
                 return false;
             }
             if (this.suitSoils.contains(FluidUtils.getFluidName(fluidStack))) {

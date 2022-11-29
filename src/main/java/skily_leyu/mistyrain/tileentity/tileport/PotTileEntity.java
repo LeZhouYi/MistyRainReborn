@@ -116,30 +116,30 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
         Action action = Action.EMPTY;
         if (itemStack != null && !itemStack.isEmpty()) {
             // 移除泥土/植物
-            if (isRemoveTools(itemStack)) {
-                action = onRemovePlant();
+            if (this.isRemoveTools(itemStack)) {
+                action = this.onRemovePlant();
                 if (action.isEmpty()) {
-                    action = onRemoveSoil();
+                    action = this.onRemoveSoil();
                 }
             }
             // 收获产品
-            else if (isHarvestTools(itemStack)) {
-                action = onHarvest(itemStack);
-            }
-            // 流体容器操作
-            else if (!FluidUtils.getFluidStack(itemStack).isEmpty()) {
-                action = onHandleFluid(itemStack);
+            else if (this.isHarvestTools(itemStack)) {
+                action = this.onHarvest(itemStack);
             }
             // 添加土壤
             else if (!isSoilFull()
                     && (this.getPot().isSuitSoil(itemStack) || this.getPot().isSuitSoilFluid(itemStack))) {
-                action = onSoilAdd(itemStack);
+                action = this.onSoilAdd(itemStack);
+            }
+            // 流体容器操作
+            else if (!FluidUtils.getFluidStack(itemStack).isEmpty()) {
+                action = this.onHandleFluid(itemStack);
             }
             // 肥料，其余物品
             else if (!this.isSoilEmpty()) {
-                action = onFertiAdd(itemStack);
+                action = this.onFertiAdd(itemStack);
                 if (action.isEmpty()) {
-                    action = onPlantAdd(itemStack);
+                    action = this.onPlantAdd(itemStack);
                 }
             }
         }
