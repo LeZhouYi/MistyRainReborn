@@ -1,6 +1,9 @@
 package skily_leyu.mistyrain.tileentity;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -21,6 +24,7 @@ public class ClayPotTileEntity extends PotTileEntity {
      * 更改添加土壤为添加水份，但仍为保留一份物品占据土壤栏
      */
     @Override
+    @Nonnull
     public Action onSoilAdd(ItemStack itemStack) {
         FluidStack fluidStack = FluidUtils.getFluidStack(itemStack);
         if (!fluidStack.isEmpty()
@@ -37,12 +41,24 @@ public class ClayPotTileEntity extends PotTileEntity {
      * 返还土壤时直接清空，没有额外返还
      */
     @Override
+    @Nonnull
     public Action onRemoveSoil() {
         Action action = super.onRemoveSoil();
         if (!action.isEmpty()) {
             action.setReturnStacks(new ArrayList<>());
         }
         return action;
+    }
+
+    /**
+     * 获取掉落物，排除土壤
+     */
+    @Override
+    @Nonnull
+    public List<ItemStack> getDrops() {
+        List<ItemStack> drops = new ArrayList<>();
+        drops.addAll(ItemUtils.getHandlerItem(this.plantInv, false));
+        return drops;
     }
 
 }

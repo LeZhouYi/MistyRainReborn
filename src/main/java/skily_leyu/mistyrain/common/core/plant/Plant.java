@@ -1,10 +1,13 @@
 package skily_leyu.mistyrain.common.core.plant;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
@@ -133,12 +136,12 @@ public class Plant {
      * @param nowStage
      * @return
      */
-    @Nullable
+    @Nonnull
     public PlantStageType getPlantStage(int nowStage) {
         if (this.stages != null && nowStage < this.stages.size() && nowStage >= 0) {
             return this.stages.get(nowStage).getNowStageType();
         }
-        return null;
+        return PlantStageType.NULL;
     }
 
     /**
@@ -244,12 +247,12 @@ public class Plant {
      * @param nowStage
      * @return
      */
-    @Nullable
+    @Nonnull
     public Set<PlantStageType> getTransStageType(int nowStage) {
         if (this.stages != null && nowStage < this.stages.size() && nowStage >= 0) {
             return this.stages.get(nowStage).getTransStageType();
         }
-        return null;
+        return new HashSet<>();
     }
 
     /**
@@ -259,11 +262,11 @@ public class Plant {
      * @param transType
      * @return
      */
-    @Nullable
+    @Nonnull
     public Map<String, Integer> getHarvest(int nowStage, PlantStageType transType) {
         if (this.stages != null && nowStage < this.stages.size() && nowStage >= 0) {
             return this.stages.get(nowStage).getHarvest(transType);
         }
-        return null;
+        return new HashMap<>();
     }
 }

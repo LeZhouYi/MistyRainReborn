@@ -249,31 +249,28 @@ public class PotPlantStage {
     @Nullable
     public List<ItemStack> getHarvest(Random random) {
         Plant plant = MRSetting.getPlantMap().getPlant(plantKey);
-        List<ItemStack> results = new ArrayList<>();
         if (plant != null) {
             Set<PlantStageType> transTypes = plant.getTransStageType(this.nowStage); // 获取可转变的状态
             if (transTypes != null && transTypes.size() > 0) {
                 PlantStageType transType = transTypes.toArray(new PlantStageType[0])[random.nextInt(transTypes.size())]; // 随机选取转变状态
                 Map<String, Integer> resultStacks = plant.getHarvest(this.nowStage, transType); // 获取对应状态的产物表
-                if (resultStacks != null) {
-                    for (Map.Entry<String, Integer> entry : resultStacks.entrySet()) {
-                        int amount = (int) (entry.getValue() * (1.0
-                                + (this.health - MRConfig.Constants.MAX_HEALTH / 2)
-                                        / (MRConfig.Constants.MAX_HEALTH / 4))); // 计算增产/减产数量
-                        if (amount > 0) {
-                            ItemStack resultStack = new ItemStack(
-                                    ForgeRegistries.ITEMS.getValue(new ResourceLocation(entry.getKey()))); // 获得物品
-                            resultStack.setCount(Math.min(amount, resultStack.getMaxStackSize())); // 不超过物品最大堆叠数
-                            results.add(resultStack);
-                        }
+                List<ItemStack> results = new ArrayList<>();
+                for (Map.Entry<String, Integer> entry : resultStacks.entrySet()) {
+                    int amount = (int) (entry.getValue() * (1.0
+                            + (this.health - MRConfig.Constants.MAX_HEALTH / 2)
+                                    / (MRConfig.Constants.MAX_HEALTH / 4))); // 计算增产/减产数量
+                    if (amount > 0) {
+                        ItemStack resultStack = new ItemStack(
+                                ForgeRegistries.ITEMS.getValue(new ResourceLocation(entry.getKey()))); // 获得物品
+                        resultStack.setCount(Math.min(amount, resultStack.getMaxStackSize())); // 不超过物品最大堆叠数
+                        results.add(resultStack);
                     }
-                    this.nowStage = plant.getTransStage(transType, this.nowStage); // 转为收获后的状态
                 }
-            } else {
-                return null; // 没有可转变的状态，返回Null，标志当前动作没有执行成功
+                this.nowStage = plant.getTransStage(transType, this.nowStage); // 转为收获后的状态
+                return results;
             }
         }
-        return results;
+        return null; // 没有可转变的状态，返回Null，标志当前动作没有执行成功
     }
 
 }

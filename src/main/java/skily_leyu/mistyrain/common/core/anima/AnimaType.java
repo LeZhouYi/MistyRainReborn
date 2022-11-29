@@ -1,6 +1,6 @@
 package skily_leyu.mistyrain.common.core.anima;
 
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 public enum AnimaType {
 
@@ -19,7 +19,7 @@ public enum AnimaType {
      *
      * @return
      */
-    @Nullable
+    @Nonnull
     public AnimaType getDecayType() {
         if (this == WOOD) {
             return GOLD;
@@ -32,7 +32,7 @@ public enum AnimaType {
         } else if (this == SOIL) {
             return WOOD;
         } else {
-            return null;
+            return NULL;
         }
     }
 
@@ -41,7 +41,7 @@ public enum AnimaType {
      *
      * @return
      */
-    @Nullable
+    @Nonnull
     public AnimaType getGenType() {
         if (this == GOLD) {
             return WATER;
@@ -54,7 +54,7 @@ public enum AnimaType {
         } else if (this == SOIL) {
             return GOLD;
         } else {
-            return null;
+            return NULL;
         }
     }
 

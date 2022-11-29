@@ -3,41 +3,42 @@ package skily_leyu.mistyrain.common.core.action;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
 
 /**
  * 执行操作的结果记录
  */
 public class Action {
+    @Nonnull
     private ActionType actionType;
     private int amount;
+    @Nonnull
     private List<ItemStack> returnStacks;
 
+    @Nonnull
     public static final Action EMPTY = new Action();
 
     public Action() {
-        this.actionType = ActionType.EMPTY;
-        this.amount = 0;
-        this.returnStacks = new ArrayList<>();
+        this(ActionType.EMPTY, 0, new ArrayList<>());
     }
 
     public Action(ActionType actionType, int amount) {
-        this.actionType = actionType;
-        this.amount = amount;
-        this.returnStacks = new ArrayList<>();
+        this(actionType, amount, new ArrayList<>());
     }
 
     public Action(ActionType actionType, int amount, ItemStack returnStack) {
-        this.actionType = actionType;
+        this.actionType = (actionType != null) ? actionType : ActionType.EMPTY;
         this.amount = amount;
         this.returnStacks = new ArrayList<>();
         returnStacks.add(returnStack);
     }
 
     public Action(ActionType actionType, int amount, List<ItemStack> returnStacks) {
-        this.actionType = actionType;
+        this.actionType = (actionType != null) ? actionType : ActionType.EMPTY;
         this.amount = amount;
-        this.returnStacks = returnStacks;
+        this.returnStacks = (returnStacks != null) ? returnStacks : new ArrayList<>();
     }
 
     /**
@@ -46,7 +47,7 @@ public class Action {
      * @param returnStacks
      */
     public void setReturnStacks(List<ItemStack> returnStacks) {
-        this.returnStacks = returnStacks;
+        this.returnStacks = (returnStacks != null) ? returnStacks : new ArrayList<>();
     }
 
     /**
@@ -54,6 +55,7 @@ public class Action {
      *
      * @return
      */
+    @Nonnull
     public List<ItemStack> getReturnStack() {
         return this.returnStacks;
     }
@@ -63,6 +65,7 @@ public class Action {
      *
      * @return
      */
+    @Nonnull
     public ActionType getActionType() {
         return this.actionType;
     }

@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -67,14 +68,27 @@ public class ItemUtils {
     }
 
     /**
-     * 减少ItemStack的数量/耐久，若处于创造模式则不处理
+     * 消耗物品耐久，创造模式则不处理
+     *
+     * @param playerEntity
+     * @param itemStack
+     * @param damage
+     */
+    public static void hurtItem(ServerPlayerEntity playerEntity, ItemStack itemStack, int damage) {
+        if (!playerEntity.isCreative() && !itemStack.isEmpty()) {
+            itemStack.hurt(damage, playerEntity.getRandom(), playerEntity);
+        }
+    }
+
+    /**
+     * 减少ItemStack的数量，若处于创造模式则不处理
      *
      * @param playerEntity
      * @param itemStack
      * @param amount
      */
     public static void shrinkItem(PlayerEntity playerEntity, ItemStack itemStack, int amount) {
-        if (!playerEntity.isCreative() && !itemStack.isEmpty() && amount > 0) {
+        if (!playerEntity.isCreative() && !itemStack.isEmpty()) {
             itemStack.shrink(amount);
         }
     }
@@ -96,16 +110,14 @@ public class ItemUtils {
      * @param slot
      * @return
      */
+    @Nonnull
     public static ItemStack clearStackInHandler(ItemStackHandler handler, int slot) {
         if (handler != null && handler.getSlots() >= slot) {
             ItemStack backStack = handler.getStackInSlot(slot);
-            ItemStack emptyStack = ItemStack.EMPTY;
-            if (emptyStack != null) {
-                handler.setStackInSlot(slot, emptyStack);
-            }
+            handler.setStackInSlot(slot, new ItemStack(null));
             return backStack;
         }
-        return ItemStack.EMPTY;
+        return new ItemStack(null);
     }
 
     /**

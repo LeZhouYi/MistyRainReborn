@@ -3,6 +3,7 @@ package skily_leyu.mistyrain.tileentity.tileport;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.BlockState;
@@ -112,6 +113,7 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
      * @param itemStack
      * @return
      */
+    @Nonnull
     public Action onItemInteract(ItemStack itemStack) {
         Action action = Action.EMPTY;
         if (itemStack != null && !itemStack.isEmpty()) {
@@ -143,7 +145,7 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
                 }
             }
         }
-        if (action != null && !action.isEmpty()) {
+        if (!action.isEmpty()) {
             syncToTrackingClients();
         }
         return action;
@@ -168,6 +170,7 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
      *
      * @return
      */
+    @Nonnull
     public Action onRemovePlant() {
         // 清空植物
         for (int i = this.plantInv.getSlots() - 1; i >= 0; i--) {
@@ -186,6 +189,7 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
      * @param itemStack
      * @return
      */
+    @Nonnull
     public Action onFertiAdd(ItemStack itemStack) {
         int fertiValue = MRSetting.getFertiMap().isFertilizer(itemStack);
         if (fertiValue != MRConfig.Constants.EMPTY_FERTI && this.fertiTank < this.getPot().getMaxFerti()) {
@@ -201,6 +205,7 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
      * @param itemStack
      * @return
      */
+    @Nonnull
     public Action onSoilAdd(ItemStack itemStack) {
         if (itemStack != null) {
             int amount = ItemUtils.addItemInHandler(this.dirtInv, itemStack, true);
@@ -216,6 +221,7 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
      *
      * @return
      */
+    @Nonnull
     public Action onHarvest(ItemStack itemStack) {
         World world = this.getLevel();
         if (world != null) {
@@ -279,6 +285,7 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
      * @param itemStack
      * @return
      */
+    @Nonnull
     public Action onPlantAdd(ItemStack itemStackIn) {
         Plant potPlant = MRSetting.getPlantMap().isPlantSeed(itemStackIn);
         if (potPlant != null) {
@@ -318,6 +325,7 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
      *
      * @return
      */
+    @Nonnull
     public Action onRemoveSoil() {
         // 若清空土壤
         for (int i = this.dirtInv.getSlots() - 1; i >= 0; i--) {
@@ -335,6 +343,7 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
      * @param itemStack
      * @return
      */
+    @Nonnull
     public Action onHandleFluid(ItemStack itemStack) {
         if (!isSoilEmpty() && itemStack != null) {
             FluidStack fluidStack = FluidUtils.getFluidStack(itemStack);
@@ -416,6 +425,7 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
      *
      * @return
      */
+    @Nonnull
     public List<ItemStack> getDrops() {
         List<ItemStack> drops = new ArrayList<>();
         drops.addAll(ItemUtils.getHandlerItem(this.dirtInv, false));

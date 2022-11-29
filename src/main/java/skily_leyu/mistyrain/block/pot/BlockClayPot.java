@@ -16,7 +16,7 @@ import skily_leyu.mistyrain.tileentity.ClayPotTileEntity;
 
 public class BlockClayPot extends BlockMRPot {
 
-    private static VoxelShape SHAPE = VoxelShapes.box(0.09375D, 0.0D, 0.09375D, 0.90625D, 0.1875D, 0.90625D);
+    private static VoxelShape SHAPE = VoxelShapes.box(0.09375D, 0.0D, 0.09375D, 0.90625D, 0.21875D, 0.90625D);
 
     public BlockClayPot() {
         super(AbstractBlock.Properties.of(Material.CLAY, DyeColor.BROWN)

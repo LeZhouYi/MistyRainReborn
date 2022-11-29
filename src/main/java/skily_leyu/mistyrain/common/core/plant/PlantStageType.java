@@ -18,15 +18,17 @@ public enum PlantStageType {
     FADE,
     GATHER_1,
     GATHER_2,
-    PLANT_DROP;
+    PLANT_DROP,
+    NULL;
 
     /**
      * 判断当前状态是否可以产生灵气
+     *
      * @param type
      * @return
      */
-    public boolean canGenAnima(){
-        if(this==SEED_DROP||this==SPROUT||this==ROOT_DEPTH||this==FADE||this==PLANT_DROP){
+    public boolean canGenAnima() {
+        if (this == SEED_DROP || this == SPROUT || this == ROOT_DEPTH || this == FADE || this == PLANT_DROP) {
             return false;
         }
         return true;

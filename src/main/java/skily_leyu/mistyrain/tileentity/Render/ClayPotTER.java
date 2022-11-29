@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.model.data.EmptyModelData;
+import net.minecraftforge.fluids.FluidStack;
 import skily_leyu.mistyrain.common.utility.FluidUtils;
 import skily_leyu.mistyrain.common.utility.RenderUtils;
 import skily_leyu.mistyrain.tileentity.ClayPotTileEntity;
@@ -23,12 +24,14 @@ public class ClayPotTER extends TileEntityRenderer<ClayPotTileEntity> {
         super(rendererDispatcherIn);
     }
 
-    private void add(IVertexBuilder renderer, MatrixStack stack, float x, float y, float z, float u, float v) {
+    private void add(IVertexBuilder renderer, MatrixStack stack, float x, float y, float z, float u, float v,
+            float r, float g, float b, float a, int light) {
         renderer.vertex(stack.last().pose(), x, y, z)
-                .color(1.0F, 1.0F, 1.0F, 1.0F)
+                .color(r, g, b, a)
                 .uv(u, v)
-                .overlayCoords(0, 240)
-                .normal(1, 0, 0).endVertex();
+                .uv2(light)
+                .normal(1, 0, 0)
+                .endVertex();
     }
 
     @Override
@@ -37,18 +40,28 @@ public class ClayPotTER extends TileEntityRenderer<ClayPotTileEntity> {
         // 流体
         ItemStack dirtStack = tileEntityIn.getDirtStack(0);
         if (!dirtStack.isEmpty()) {
-            TextureAtlasSprite texture = RenderUtils.getFluidSprite(FluidUtils.getFluidStack(dirtStack));
-            IVertexBuilder builder = bufferIn.getBuffer(RenderType.translucent());
+            FluidStack fluidStack = FluidUtils.getFluidStack(dirtStack);
+            TextureAtlasSprite texture = RenderUtils.getFluidSprite(fluidStack);
             if (texture != null) {
-                matrixStackIn.pushPose();
-                matrixStackIn.translate(0.0625, 0.3126, 0.0625);
-                matrixStackIn.scale(0.875F, 0.875F, 0.875F);
+                IVertexBuilder builder = bufferIn.getBuffer(RenderType.translucent());
+                int light = 15728880;
+                int color = RenderUtils.getLiquidColor(fluidStack, tileEntityIn);
 
+                float r = RenderUtils.getRed(color);
+                float g = RenderUtils.getGreen(color);
+                float b = RenderUtils.getBlue(color);
+                float a = RenderUtils.getAlpha(color);
+
+                float min = 0.15625F;
+                float max = 0.84375F;
+                float y = 0.1875F;
+
+                matrixStackIn.pushPose();
                 // 顶面
-                add(builder, matrixStackIn, 0.0F, 0.25F, 1.0F, texture.getU0(), texture.getV1());
-                add(builder, matrixStackIn, 1.0F, 0.25F, 1.0F, texture.getU1(), texture.getV1());
-                add(builder, matrixStackIn, 0.0F, 0.25F, 0.0F, texture.getU0(), texture.getV0());
-                add(builder, matrixStackIn, 1.0F, 0.25F, 0.0F, texture.getU1(), texture.getV0());
+                add(builder, matrixStackIn, min, y, max, texture.getU0(), texture.getV1(), r, g, b, a, light);
+                add(builder, matrixStackIn, max, y, max, texture.getU1(), texture.getV1(), r, g, b, a, light);
+                add(builder, matrixStackIn, max, y, min, texture.getU1(), texture.getV0(), r, g, b, a, light);
+                add(builder, matrixStackIn, min, y, min, texture.getU0(), texture.getV0(), r, g, b, a, light);
 
                 matrixStackIn.popPose();
             }
