@@ -3,9 +3,7 @@ package skily_leyu.mistyrain.common.core.pot;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.registries.ForgeRegistries;
 import skily_leyu.mistyrain.common.core.anima.Anima;
 import skily_leyu.mistyrain.common.core.soil.SoilType;
 import skily_leyu.mistyrain.common.utility.FluidUtils;
@@ -67,10 +65,7 @@ public class Pot {
      */
     public boolean isSuitFluid(FluidStack fluidStack) {
         if (fluidStack != null && !fluidStack.isEmpty()) {
-            ResourceLocation location = fluidStack.getFluid().getRegistryName();
-            if (location != null) {
-                return this.suitFluids.contains(location.toString());
-            }
+            return this.suitFluids.contains(FluidUtils.getFluidName(fluidStack));
         }
         return false;
     }
@@ -100,19 +95,22 @@ public class Pot {
      * @return
      */
     public boolean isSuitSoilFluid(ItemStack itemStack) {
-        if (itemStack != null) {
+        if (itemStack != null && !itemStack.isEmpty()) {
             FluidStack fluidStack = FluidUtils.getFluidStack(itemStack);
             if (!fluidStack.isEmpty()) {
-                for (String suitName : this.suitSoils) {
-                    ItemStack suitItem = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(suitName)));
-                    FluidStack suitFluid = FluidUtils.getFluidStack(suitItem);
-                    if (!suitFluid.isEmpty() && fluidStack.isFluidEqual(suitFluid)) {
-                        return true;
-                    }
+                return false;
+            }
+            if (this.suitSoils.contains(FluidUtils.getFluidName(fluidStack))) {
+                return true;
+            }
+            for (SoilType soilType : this.suitSoilType) {
+                if (MRSetting.getSoilMap().contains(soilType, fluidStack)) {
+                    return true;
                 }
             }
         }
         return false;
+
     }
 
     /**

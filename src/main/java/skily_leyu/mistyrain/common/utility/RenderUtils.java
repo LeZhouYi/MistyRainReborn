@@ -1,5 +1,7 @@
 package skily_leyu.mistyrain.common.utility;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.ResourceLocation;
@@ -13,6 +15,7 @@ public class RenderUtils {
      * @param fluidStack
      * @return
      */
+    @Nullable
     public static TextureAtlasSprite getFluidSprite(FluidStack fluidStack) {
         if (fluidStack != null && fluidStack.isEmpty()) {
             ResourceLocation fluidStil = fluidStack.getFluid().getAttributes().getStillTexture();

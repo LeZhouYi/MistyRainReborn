@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
@@ -24,12 +26,12 @@ import skily_leyu.mistyrain.tileentity.tileport.PotTileEntity;
 
 public class PotPlantStage {
 
-    private int health; //健康度
-    private int nowStage; //当前状态
-    private boolean canGenAnima; //标记当前是否能够产生灵气
-    private String plantKey; //当前植物
+    private int health; // 健康度
+    private int nowStage; // 当前状态
+    private boolean canGenAnima; // 标记当前是否能够产生灵气
+    private String plantKey; // 当前植物
 
-    public PotPlantStage(int nowStage,String plantKey){
+    public PotPlantStage(int nowStage, String plantKey) {
         this.nowStage = nowStage;
         this.plantKey = plantKey;
         this.canGenAnima = false;
@@ -38,133 +40,146 @@ public class PotPlantStage {
 
     /**
      * 检查灵气是否满足生长需求，若满足则可以产生灵气，否则不能
+     *
      * @param potTileEntity
      * @return
      */
-    public void updateCheckAnima(PotTileEntity potTileEntity,World worldIn,BlockPos pos,PlantStageType stageType){
+    public void updateCheckAnima(PotTileEntity potTileEntity, World worldIn, BlockPos pos, PlantStageType stageType) {
         List<Anima> needAnimas = this.getPlant().getNeedAnima();
-        if(needAnimas!=null){
-            if(!stageType.canGenAnima()){
+        if (needAnimas != null) {
+            if (!stageType.canGenAnima()) {
                 this.canGenAnima = false;
-            }
-            else if(needAnimas.size()==0){
+            } else if (needAnimas.size() == 0) {
                 this.canGenAnima = true;
-            }else{
+            } else {
                 List<Anima> gatherAnimas = new ArrayList<>();
-                //获取检测坐标集
+                // 获取检测坐标集
                 int offsetHori = MRConfig.PotRule.ANIMA_HONRI_RADIUS_BASE.get();
                 int offsetVerti = MRConfig.PotRule.ANIMA_VERTI_RADIUS_BASE.get();
-                Iterable<BlockPos> checkPosList = BlockPos.betweenClosed(pos.offset(-offsetHori, -offsetVerti, -offsetHori), pos.offset(offsetHori, offsetVerti, offsetHori));
-                //检测范围内盆栽产生的灵气并统计
-                for(BlockPos checkPos:checkPosList){
-                    //不统计本身
-                    if(checkPos!=pos){
+                Iterable<BlockPos> checkPosList = BlockPos.betweenClosed(
+                        pos.offset(-offsetHori, -offsetVerti, -offsetHori),
+                        pos.offset(offsetHori, offsetVerti, offsetHori));
+                // 检测范围内盆栽产生的灵气并统计
+                for (BlockPos checkPos : checkPosList) {
+                    // 不统计本身
+                    if (checkPos != pos) {
                         TileEntity checkEntity = worldIn.getBlockEntity(checkPos);
-                        if(checkEntity!=null&&checkEntity instanceof PotTileEntity){
-                            gatherAnimas.addAll(((PotTileEntity)checkEntity).getGenAnima());
+                        if (checkEntity != null && checkEntity instanceof PotTileEntity) {
+                            gatherAnimas.addAll(((PotTileEntity) checkEntity).getGenAnima());
                         }
                     }
                 }
-                //合并
+                // 合并
                 gatherAnimas = Anima.combineAnimas(gatherAnimas);
                 this.canGenAnima = Anima.suitAnima(needAnimas, gatherAnimas);
             }
-        }else{
+        } else {
             this.canGenAnima = false;
         }
     }
 
     /**
      * 更新健康值
+     *
      * @param update
      */
-    public void updateHealth(int update){
-        this.health+=update;
-        if(this.health>MRConfig.Constants.MAX_HEALTH){
-            this.health=MRConfig.Constants.MAX_HEALTH;
+    public void updateHealth(int update) {
+        this.health += update;
+        if (this.health > MRConfig.Constants.MAX_HEALTH) {
+            this.health = MRConfig.Constants.MAX_HEALTH;
         }
-        if(this.health<0){
-            this.health=0;
+        if (this.health < 0) {
+            this.health = 0;
         }
     }
 
     /**
      * 消耗肥料
+     *
      * @param tileEntity
      * @param rand
      * @return
      */
-    public int consumerFerti(PotTileEntity tileEntity, Random rand){
+    public int consumerFerti(PotTileEntity tileEntity, Random rand) {
         int fertiConsume = this.getPlant().getNeedFerti();
-        return tileEntity.consumeFerti(fertiConsume)?MRConfig.PotRule.GROW_HEALTH.get():MRConfig.PotRule.nextFertiHealth(rand);
+        return tileEntity.consumeFerti(fertiConsume) ? MRConfig.PotRule.GROW_HEALTH.get()
+                : MRConfig.PotRule.nextFertiHealth(rand);
     }
 
     /**
      * 消耗水份
+     *
      * @param tileEntity
      * @return
      */
-    public int consumeWater(PotTileEntity tileEntity,Random rand){
+    public int consumeWater(PotTileEntity tileEntity, Random rand) {
         int waterCousume = this.getPlant().getNeedWater();
         FluidTank tank = tileEntity.getWaterTank();
-        if(this.getPlant().isSuitWater(tank.getFluid())){
-            int consumeResult = tank.getFluidAmount()-waterCousume;
+        if (this.getPlant().isSuitWater(tank.getFluid())) {
+            int consumeResult = tank.getFluidAmount() - waterCousume;
             tank.drain(waterCousume, FluidAction.EXECUTE);
-            return consumeResult>0?MRConfig.PotRule.GROW_HEALTH.get():MRConfig.PotRule.nextWaterHealth(rand);
+            return consumeResult > 0 ? MRConfig.PotRule.GROW_HEALTH.get() : MRConfig.PotRule.nextWaterHealth(rand);
         }
         return 0;
     }
 
     /**
      * 检查光照
+     *
      * @param tileEntity
      * @return
      */
-    public int checkLight(PotTileEntity tileEntity,World worldIn,Random rand){
+    public int checkLight(PotTileEntity tileEntity, World worldIn, Random rand) {
         int light = worldIn.getRawBrightness(tileEntity.getBlockPos(), 0);
-        return this.getPlant().isSuitLight(light)?MRConfig.PotRule.GROW_HEALTH.get():MRConfig.PotRule.nextLightHealth(rand);
+        return this.getPlant().isSuitLight(light) ? MRConfig.PotRule.GROW_HEALTH.get()
+                : MRConfig.PotRule.nextLightHealth(rand);
     }
 
     /**
      * 检查温度
+     *
      * @param tileEntity
      * @return
      */
-    public int checkTemper(PotTileEntity tileEntity,World worldIn,Random rand){
+    public int checkTemper(PotTileEntity tileEntity, World worldIn, Random rand) {
         BlockPos blockpos = tileEntity.getBlockPos();
-        float temper = worldIn.getBiome(blockpos).getTemperature(blockpos)+MRConfig.TimeRule.getTemperChange(worldIn);
-        return this.getPlant().isSuitTemper(temper)?MRConfig.PotRule.GROW_HEALTH.get():MRConfig.PotRule.nextTemperHealth(rand);
+        float temper = worldIn.getBiome(blockpos).getTemperature(blockpos) + MRConfig.TimeRule.getTemperChange(worldIn);
+        return this.getPlant().isSuitTemper(temper) ? MRConfig.PotRule.GROW_HEALTH.get()
+                : MRConfig.PotRule.nextTemperHealth(rand);
     }
 
     /**
      * 执行植物生长的判定，消耗，状态更新
+     *
      * @param tileEntity
      */
-    public void tick(PotTileEntity tileEntity){
+    public void tick(PotTileEntity tileEntity) {
         Plant plant = MRSetting.getPlantMap().getPlant(plantKey);
         World world = tileEntity.getLevel();
-        if(plant!=null&&world!=null){
+        if (plant != null && world != null) {
             Random random = world.getRandom();
-            //统计生长要素判定
-            int heathGrowCheck = checkTemper(tileEntity, world,random)+checkLight(tileEntity, world, random)+consumeWater(tileEntity, random)+consumerFerti(tileEntity, random);
-            //是否满足生长要素,不满足时概率通过
-            if(MRConfig.PotRule.growCheck(random, heathGrowCheck)){
+            // 统计生长要素判定
+            int heathGrowCheck = checkTemper(tileEntity, world, random) + checkLight(tileEntity, world, random)
+                    + consumeWater(tileEntity, random) + consumerFerti(tileEntity, random);
+            // 是否满足生长要素,不满足时概率通过
+            if (MRConfig.PotRule.growCheck(random, heathGrowCheck)) {
                 this.updateHealth(MRConfig.PotRule.nextHealth(random, false));
-                //是否满足生长到下一阶段，健康值越高越容易进入下一阶段，默认最高为50%
-                if(MRConfig.PotRule.canGrow(world.getRandom(),this.health)){
+                // 是否满足生长到下一阶段，健康值越高越容易进入下一阶段，默认最高为50%
+                if (MRConfig.PotRule.canGrow(world.getRandom(), this.health)) {
                     this.nowStage = plant.getNextStage(nowStage, world.getRandom());
                 }
-            }else{
+            } else {
                 this.updateHealth(MRConfig.PotRule.nextHealth(random, true));
             }
-            //更新灵气状态
+            // 更新灵气状态
             PlantStageType plantStageType = plant.getPlantStage(this.nowStage);
-            updateCheckAnima(tileEntity,world,tileEntity.getBlockPos(),plantStageType);
+            updateCheckAnima(tileEntity, world, tileEntity.getBlockPos(), plantStageType);
         }
     }
 
     /**
      * 获取当前植物的配置数据
+     *
      * @return
      */
     public Plant getPlant() {
@@ -175,12 +190,12 @@ public class PotPlantStage {
         return nowStage;
     }
 
-    public PotPlantStage setHealth(int health){
+    public PotPlantStage setHealth(int health) {
         this.health = health;
         return this;
     }
 
-    public PotPlantStage setCanGenAnima(boolean canGen){
+    public PotPlantStage setCanGenAnima(boolean canGen) {
         this.canGenAnima = canGen;
         return this;
     }
@@ -194,7 +209,7 @@ public class PotPlantStage {
         return plantTag;
     }
 
-    public static PotPlantStage load(CompoundNBT plantTag){
+    public static PotPlantStage load(CompoundNBT plantTag) {
         int nowStage = plantTag.getInt("NowStage");
         String plantKey = plantTag.getString("PlantKey");
         int health = plantTag.getInt("Health");
@@ -204,21 +219,22 @@ public class PotPlantStage {
 
     @Override
     public String toString() {
-        return String.format("health:%d,stage:%d,plant:%s", this.health,this.nowStage,this.plantKey);
+        return String.format("health:%d,stage:%d,plant:%s", this.health, this.nowStage, this.plantKey);
     }
 
     /**
      * 返回当前产生的灵气
+     *
      * @return
      */
-    public List<Anima> getGenAnimas(){
+    public List<Anima> getGenAnimas() {
         List<Anima> genAnimas = new ArrayList<>();
-        if(!this.canGenAnima){
+        if (!this.canGenAnima) {
             Plant plant = MRSetting.getPlantMap().getPlant(plantKey);
-            if(plant!=null){
+            if (plant != null) {
                 List<Anima> teAnimas = plant.getGenAnima();
-                if(teAnimas!=null) {
-                    genAnimas.addAll(teAnimas);                    
+                if (teAnimas != null) {
+                    genAnimas.addAll(teAnimas);
                 }
             }
         }
@@ -227,27 +243,34 @@ public class PotPlantStage {
 
     /**
      * 获取产物
+     *
      * @return
      */
+    @Nullable
     public List<ItemStack> getHarvest(Random random) {
         Plant plant = MRSetting.getPlantMap().getPlant(plantKey);
         List<ItemStack> results = new ArrayList<>();
-        if(plant!=null){
-            Set<PlantStageType> transTypes = plant.getTransStageType(this.nowStage); //获取可转变的状态
-            if(transTypes!=null&&transTypes.size()>0){
-                PlantStageType transType = transTypes.toArray(new PlantStageType[0])[random.nextInt(transTypes.size())]; //随机选取转变状态
-                Map<String,Integer> resultStacks = plant.getHarvest(this.nowStage,transType); //获取对应状态的产物表
-                for(Map.Entry<String,Integer> entry:resultStacks.entrySet()){
-                    int amount = (int)(entry.getValue()*(1.0+(this.health-MRConfig.Constants.MAX_HEALTH/2)/(MRConfig.Constants.MAX_HEALTH/4))); //计算增产/减产数量
-                    if(amount>0){
-                        ItemStack resultStack = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(entry.getKey()))); //获得物品
-                        resultStack.setCount(Math.min(amount, resultStack.getMaxStackSize())); //不超过物品最大堆叠数
-                        results.add(resultStack);
+        if (plant != null) {
+            Set<PlantStageType> transTypes = plant.getTransStageType(this.nowStage); // 获取可转变的状态
+            if (transTypes != null && transTypes.size() > 0) {
+                PlantStageType transType = transTypes.toArray(new PlantStageType[0])[random.nextInt(transTypes.size())]; // 随机选取转变状态
+                Map<String, Integer> resultStacks = plant.getHarvest(this.nowStage, transType); // 获取对应状态的产物表
+                if (resultStacks != null) {
+                    for (Map.Entry<String, Integer> entry : resultStacks.entrySet()) {
+                        int amount = (int) (entry.getValue() * (1.0
+                                + (this.health - MRConfig.Constants.MAX_HEALTH / 2)
+                                        / (MRConfig.Constants.MAX_HEALTH / 4))); // 计算增产/减产数量
+                        if (amount > 0) {
+                            ItemStack resultStack = new ItemStack(
+                                    ForgeRegistries.ITEMS.getValue(new ResourceLocation(entry.getKey()))); // 获得物品
+                            resultStack.setCount(Math.min(amount, resultStack.getMaxStackSize())); // 不超过物品最大堆叠数
+                            results.add(resultStack);
+                        }
                     }
+                    this.nowStage = plant.getTransStage(transType, this.nowStage); // 转为收获后的状态
                 }
-                this.nowStage = plant.getTransStage(transType,this.nowStage); //转为收获后的状态
-            }else{
-                return null; //没有可转变的状态，返回Null，标志当前动作没有执行成功
+            } else {
+                return null; // 没有可转变的状态，返回Null，标志当前动作没有执行成功
             }
         }
         return results;

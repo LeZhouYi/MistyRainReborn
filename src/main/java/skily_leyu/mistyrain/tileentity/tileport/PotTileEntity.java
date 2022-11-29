@@ -285,7 +285,7 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
             for (int i = 0; i < this.dirtInv.getSlots(); i++) {
                 ItemStack dirtStack = this.dirtInv.getStackInSlot(i);
                 ItemStack plantStack = this.plantInv.getStackInSlot(i);
-                if (!dirtStack.isEmpty() && plantStack.isEmpty() && potPlant.isSuitSoil(dirtStack)) {
+                if (!dirtStack.isEmpty() && plantStack.isEmpty() && (potPlant.isSuitSoil(dirtStack))) {
                     ItemUtils.setStackInHandler(plantInv, itemStackIn, i, 1);
                     potHandler.addPlant(i, potPlant);
                     return new Action(ActionType.ADD_PLANT, 1);

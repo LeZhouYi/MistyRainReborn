@@ -3,6 +3,8 @@ package skily_leyu.mistyrain.common.utility;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
@@ -19,9 +21,9 @@ public class ItemUtils {
      */
     public static void addItemToPlayer(List<ItemStack> stacks, PlayerEntity playerEntity) {
         if (stacks != null && !playerEntity.isCreative()) {
-            for (ItemStack stack : stacks) {
-                if (stack != null) {
-                    ItemHandlerHelper.giveItemToPlayer(playerEntity, stack);
+            for (ItemStack itemStack : stacks) {
+                if (itemStack != null && !itemStack.isEmpty()) {
+                    ItemHandlerHelper.giveItemToPlayer(playerEntity, itemStack);
                 }
             }
         }
@@ -35,6 +37,7 @@ public class ItemUtils {
      * @param willClear True即清空所有物品
      * @return
      */
+    @Nonnull
     public static List<ItemStack> getHandlerItem(ItemStackHandler handler, boolean willClear) {
         List<ItemStack> listStacks = new ArrayList<>();
         if (handler != null) {
