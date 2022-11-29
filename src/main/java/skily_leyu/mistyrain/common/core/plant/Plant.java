@@ -197,11 +197,8 @@ public class Plant {
      * @param dirtStack
      * @return
      */
-    public boolean isSuitSoilFluid(ItemStack dirtStack) {
-        String dirtName = FluidUtils.getFluidName(FluidUtils.getFluidStack(dirtStack));
-        if (dirtName == null) {
-            return false;
-        }
+    public boolean isSuitSoil(ItemStack dirtStack) {
+        String dirtName = ItemUtils.getRegistryName(dirtStack);
         if (likeSoils.contains(dirtName)) {
             return true;
         }
@@ -210,22 +207,19 @@ public class Plant {
                 return true;
             }
         }
-        return false;
-    }
-
-    /**
-     * 检查当前物品是否为该植物合适生长的土壤
-     *
-     * @param dirtStack
-     * @return
-     */
-    public boolean isSuitSoil(ItemStack dirtStack) {
-        String dirtName = ItemUtils.getRegistryName(dirtStack);
-        if (likeSoils.contains(dirtName)) {
+        FluidStack fluidStack = FluidUtils.getFluidStack(dirtStack);
+        if (fluidStack.isEmpty()) {
+            return false;
+        }
+        String fluidName = FluidUtils.getFluidName(fluidStack);
+        if (fluidName == null) {
+            return false;
+        }
+        if (likeSoils.contains(fluidName)) {
             return true;
         }
         for (SoilType soilType : suitSoilTypes) {
-            if (MRSetting.getSoilMap().contains(soilType, dirtStack)) {
+            if (MRSetting.getSoilMap().contains(soilType, fluidStack)) {
                 return true;
             }
         }

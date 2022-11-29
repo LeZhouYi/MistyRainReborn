@@ -20,6 +20,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import skily_leyu.mistyrain.common.core.anima.Anima;
 import skily_leyu.mistyrain.common.core.plant.Plant;
 import skily_leyu.mistyrain.common.core.plant.PlantStageType;
+import skily_leyu.mistyrain.common.utility.MRDebug;
 import skily_leyu.mistyrain.config.MRConfig;
 import skily_leyu.mistyrain.config.MRSetting;
 import skily_leyu.mistyrain.tileentity.tileport.PotTileEntity;
@@ -229,13 +230,11 @@ public class PotPlantStage {
      */
     public List<Anima> getGenAnimas() {
         List<Anima> genAnimas = new ArrayList<>();
-        if (!this.canGenAnima) {
+        MRDebug.printString("canGen:" + String.valueOf(!this.canGenAnima));
+        if (this.canGenAnima) {
             Plant plant = MRSetting.getPlantMap().getPlant(plantKey);
             if (plant != null) {
-                List<Anima> teAnimas = plant.getGenAnima();
-                if (teAnimas != null) {
-                    genAnimas.addAll(teAnimas);
-                }
+                genAnimas.addAll(plant.getGenAnima());
             }
         }
         return genAnimas;

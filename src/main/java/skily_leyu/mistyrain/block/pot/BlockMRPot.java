@@ -21,6 +21,7 @@ import net.minecraftforge.fluids.FluidUtil;
 import skily_leyu.mistyrain.common.core.action.Action;
 import skily_leyu.mistyrain.common.utility.FluidUtils;
 import skily_leyu.mistyrain.common.utility.ItemUtils;
+import skily_leyu.mistyrain.common.utility.MRDebug;
 import skily_leyu.mistyrain.config.MRConfig;
 import skily_leyu.mistyrain.tileentity.tileport.PotTileEntity;
 
@@ -101,6 +102,7 @@ public abstract class BlockMRPot extends Block {
                             rand.nextGaussian());
                 }
             }
+            MRDebug.printAnimas(tileEntity.getGenAnima());
         }
         return ActionResultType.SUCCESS;
     }

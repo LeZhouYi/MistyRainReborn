@@ -128,10 +128,7 @@ public class PotHandler {
     public List<Anima> getGenAnimas() {
         List<Anima> genAnimas = new ArrayList<>();
         for (PotPlantStage stage : this.stageMap.values()) {
-            List<Anima> teAnimas = stage.getGenAnimas();
-            if (teAnimas != null) {
-                genAnimas.addAll(teAnimas);
-            }
+            genAnimas.addAll(stage.getGenAnimas());
         }
         return genAnimas;
     }

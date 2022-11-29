@@ -85,16 +85,6 @@ public class Pot {
                 return true;
             }
         }
-        return false;
-    }
-
-    /**
-     * 判断当前物品是否包含流体且为合适的土壤
-     *
-     * @param itemStack
-     * @return
-     */
-    public boolean isSuitSoilFluid(ItemStack itemStack) {
         if (itemStack != null && !itemStack.isEmpty()) {
             FluidStack fluidStack = FluidUtils.getFluidStack(itemStack);
             if (fluidStack.isEmpty()) {
@@ -110,7 +100,6 @@ public class Pot {
             }
         }
         return false;
-
     }
 
     /**
