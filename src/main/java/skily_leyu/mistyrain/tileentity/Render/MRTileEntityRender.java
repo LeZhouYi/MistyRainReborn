@@ -1,4 +1,4 @@
-package skily_leyu.mistyrain.tileentity.render;
+package skily_leyu.mistyrain.tileentity.Render;
 
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -11,12 +11,12 @@ public class MRTileEntityRender {
 
     @SubscribeEvent
     public static void onClientEvent(FMLClientSetupEvent event) {
-        ClientRegistry.bindTileEntityRenderer(MRTileEntity.woodenPotTileEntity.get(), (tileEntityRendererDispatcher -> {
-            return new WoodenPotTER(tileEntityRendererDispatcher);
-        }));
-        ClientRegistry.bindTileEntityRenderer(MRTileEntity.clayPotTileEntity.get(), (tileEntityRendererDispatcher -> {
-            return new ClayPotTER(tileEntityRendererDispatcher);
-        }));
+//        ClientRegistry.bindTileEntityRenderer(MRTileEntity.woodenPotTileEntity.get(), (tileEntityRendererDispatcher -> {
+//            return new WoodenPotTER(tileEntityRendererDispatcher);
+//        }));
+//        ClientRegistry.bindTileEntityRenderer(MRTileEntity.clayPotTileEntity.get(), (tileEntityRendererDispatcher -> {
+//            return new ClayPotTER(tileEntityRendererDispatcher);
+//        }));
 
     }
 

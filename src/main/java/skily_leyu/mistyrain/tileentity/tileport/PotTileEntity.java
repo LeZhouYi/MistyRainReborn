@@ -129,15 +129,14 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
                 action = this.onHarvest(itemStack);
             }
             // 添加土壤
-            else if (!isSoilFull()
-                    && (this.getPot().isSuitSoil(itemStack) || this.getPot().isSuitSoilFluid(itemStack))) {
+            else if (!isSoilFull() && this.getPot().isSuitSoil(itemStack)) {
                 action = this.onSoilAdd(itemStack);
             }
             // 流体容器操作
             else if (!FluidUtils.getFluidStack(itemStack).isEmpty()) {
                 action = this.onHandleFluid(itemStack);
             }
-            // 肥料，其余物品
+            // 添加肥料，植物
             else if (!this.isSoilEmpty()) {
                 action = this.onFertiAdd(itemStack);
                 if (action.isEmpty()) {
@@ -292,8 +291,7 @@ public abstract class PotTileEntity extends ModTileEntity implements ITickableTi
             for (int i = 0; i < this.dirtInv.getSlots(); i++) {
                 ItemStack dirtStack = this.dirtInv.getStackInSlot(i);
                 ItemStack plantStack = this.plantInv.getStackInSlot(i);
-                if (!dirtStack.isEmpty() && plantStack.isEmpty()
-                        && (potPlant.isSuitSoil(dirtStack) || potPlant.isSuitSoilFluid(dirtStack))) {
+                if (!dirtStack.isEmpty() && plantStack.isEmpty() && potPlant.isSuitSoil(dirtStack)) {
                     ItemUtils.setStackInHandler(plantInv, itemStackIn, i, 1);
                     potHandler.addPlant(i, potPlant);
                     return new Action(ActionType.ADD_PLANT, 1);

@@ -11,18 +11,18 @@ public class MRTileEntity {
     public static final DeferredRegister<TileEntityType<?>> TILEENTITY_REGISTER = DeferredRegister
             .create(ForgeRegistries.TILE_ENTITIES, MistyRain.MOD_ID);
 
-    public static RegistryObject<TileEntityType<WoodenPotTileEntity>> woodenPotTileEntity = TILEENTITY_REGISTER
-            .register("mr_wooden_pot_tileentity", () -> {
-                return TileEntityType.Builder.of(() -> {
-                    return new WoodenPotTileEntity();
-                }, MRBlock.blockWoodenPot.get()).build(null);
-            });
-
-    public static RegistryObject<TileEntityType<ClayPotTileEntity>> clayPotTileEntity = TILEENTITY_REGISTER
-            .register("mr_clay_pot_tileentity", () -> {
-                return TileEntityType.Builder.of(() -> {
-                    return new ClayPotTileEntity();
-                }, MRBlock.blockClayPot.get()).build(null);
-            });
+//    public static RegistryObject<TileEntityType<WoodenPotTileEntity>> woodenPotTileEntity = TILEENTITY_REGISTER
+//            .register("mr_wooden_pot_tileentity", () -> {
+//                return TileEntityType.Builder.of(() -> {
+//                    return new WoodenPotTileEntity();
+//                }, MRBlock.blockWoodenPot.get()).build(null);
+//            });
+//
+//    public static RegistryObject<TileEntityType<ClayPotTileEntity>> clayPotTileEntity = TILEENTITY_REGISTER
+//            .register("mr_clay_pot_tileentity", () -> {
+//                return TileEntityType.Builder.of(() -> {
+//                    return new ClayPotTileEntity();
+//                }, MRBlock.blockClayPot.get()).build(null);
+//            });
 
 }

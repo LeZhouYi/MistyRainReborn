@@ -340,9 +340,9 @@
             "needTemper": ["COLD","COOL","WARM"],
             "needLight": [5,12]
         },
-        "mistyrain.mr_narcissus":{
-            "name":"mistyrain.mr_narcissus",
-            "seeds":["mistyrain.mr_narcissus"],
+        "mistyrain:mr_narcissus":{
+            "name":"mistyrain:mr_narcissus",
+            "seeds":["mistyrain:mr_narcissus"],
             "stages":[
                 {
                     "nowStage":"PLANT_DROP",
