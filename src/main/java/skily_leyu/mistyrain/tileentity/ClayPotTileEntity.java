@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-import skily_leyu.mistyrain.common.utility.Action;
-import skily_leyu.mistyrain.common.utility.ActionType;
+import skily_leyu.mistyrain.common.core.action.Action;
+import skily_leyu.mistyrain.common.core.action.ActionType;
 import skily_leyu.mistyrain.common.utility.FluidUtils;
 import skily_leyu.mistyrain.common.utility.ItemUtils;
 import skily_leyu.mistyrain.common.utility.MRDebug;

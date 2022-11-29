@@ -1,4 +1,4 @@
-package skily_leyu.mistyrain.common.utility;
+package skily_leyu.mistyrain.common.core.plant;
 
 import net.minecraft.state.IntegerProperty;
 

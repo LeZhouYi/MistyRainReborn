@@ -12,7 +12,7 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 
-public class BlockSnowVelvet extends BlockPotPlant{
+public class BlockSnowVelvet extends BlockPotPlant {
 
     private static IntegerProperty STAGE = IntegerProperty.create("plant_stage", 0, 5);
     private static VoxelShape SHAPE = VoxelShapes.box(0.09375D, 0.0D, 0.09375D, 0.90625D, 0.9375D, 0.90625D);

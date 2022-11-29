@@ -9,9 +9,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
-import skily_leyu.mistyrain.common.utility.IMRPlant;
+import skily_leyu.mistyrain.common.core.plant.IMRPlant;
 
-public abstract class BlockPotPlant extends Block implements IMRPlant{
+public abstract class BlockPotPlant extends Block implements IMRPlant {
 
     public BlockPotPlant(Properties p_i48440_1_) {
         super(p_i48440_1_);
@@ -20,8 +20,8 @@ public abstract class BlockPotPlant extends Block implements IMRPlant{
     @Override
     public ActionResultType use(BlockState blockState, World world, BlockPos blockPos,
             PlayerEntity playerEntity, Hand hand, BlockRayTraceResult rayTraceResult) {
-        if(!world.isClientSide() && hand == Hand.MAIN_HAND){
-            if(playerEntity.getMainHandItem().isEmpty()){
+        if (!world.isClientSide() && hand == Hand.MAIN_HAND) {
+            if (playerEntity.getMainHandItem().isEmpty()) {
                 world.setBlock(blockPos, blockState.cycle(getStageProperty()), Constants.BlockFlags.BLOCK_UPDATE);
             }
         }

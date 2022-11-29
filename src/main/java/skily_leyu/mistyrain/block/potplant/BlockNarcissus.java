@@ -7,7 +7,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer.Builder;
 
-public class BlockNarcissus extends BlockPotPlant{
+public class BlockNarcissus extends BlockPotPlant {
 
     private static IntegerProperty STAGE = IntegerProperty.create("plant_stage", 0, 5);
 
