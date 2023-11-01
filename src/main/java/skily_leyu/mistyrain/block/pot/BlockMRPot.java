@@ -1,8 +1,23 @@
-//package skily_leyu.mistyrain.block.pot;
-//
+package skily_leyu.mistyrain.block.pot;
+
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.item.DyeColor;
+import net.minecraft.item.ItemTier;
+
+public class BlockMRPot extends Block {
+
+    public BlockMRPot(Properties properties) {
+        super(AbstractBlock.Properties.of(Material.WOOD, DyeColor.BROWN)
+                .harvestLevel(ItemTier.WOOD.getLevel())
+                .sound(SoundType.WOOD)
+                .strength(2.0F, 3.0F));
+    }
+}
 //import java.util.Random;
 //
-//import net.minecraft.block.Block;
 //import net.minecraft.block.BlockState;
 //import net.minecraft.entity.player.PlayerEntity;
 //import net.minecraft.entity.player.ServerPlayerEntity;
