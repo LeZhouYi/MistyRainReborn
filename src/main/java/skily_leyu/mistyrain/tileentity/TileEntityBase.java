@@ -1,4 +1,4 @@
-package skily_leyu.mistyrain.tileentity.tileport;
+package skily_leyu.mistyrain.tileentity;
 
 import javax.annotation.Nullable;
 
@@ -13,9 +13,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerChunkProvider;
 import net.minecraft.world.server.ServerWorld;
 
-public class ModTileEntity extends TileEntity{
+public class TileEntityBase extends TileEntity{
 
-    public ModTileEntity(TileEntityType<?> tileEntityType) {
+    public TileEntityBase(TileEntityType<?> tileEntityType) {
         super(tileEntityType);
     }
 

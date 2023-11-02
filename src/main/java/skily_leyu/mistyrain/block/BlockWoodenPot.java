@@ -1,56 +1,62 @@
-package skily_leyu.mistyrain.block.pot;
+package skily_leyu.mistyrain.block;
 
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemTier;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.world.IBlockReader;
+import net.minecraftforge.common.extensions.IForgeTileEntity;
+import skily_leyu.mistyrain.tileentity.TileEntityWoodenPot;
 
-public class BlockMRPot extends Block {
+public class BlockWoodenPot extends Block {
 
-    public BlockMRPot(Properties properties) {
+    private static VoxelShape SHAPE = VoxelShapes.box(0.1875D, 0.0D, 0.1875D, 0.8125D, 0.4375D, 0.8125D);//碰撞箱，触碰箱
+
+    public BlockWoodenPot() {
         super(AbstractBlock.Properties.of(Material.WOOD, DyeColor.BROWN)
-                .harvestLevel(ItemTier.WOOD.getLevel())
-                .sound(SoundType.WOOD)
-                .strength(2.0F, 3.0F));
+                .harvestLevel(ItemTier.WOOD.getLevel()) //挖掘等级
+                .sound(SoundType.WOOD) //音效
+                .strength(2.0F, 3.0F)); //硬度，抗性
     }
-}
-//import java.util.Random;
-//
-//import net.minecraft.block.BlockState;
-//import net.minecraft.entity.player.PlayerEntity;
-//import net.minecraft.entity.player.ServerPlayerEntity;
-//import net.minecraft.item.ItemStack;
-//import net.minecraft.particles.ParticleTypes;
-//import net.minecraft.util.ActionResultType;
-//import net.minecraft.util.Hand;
-//import net.minecraft.util.SoundCategory;
-//import net.minecraft.util.SoundEvent;
-//import net.minecraft.util.SoundEvents;
-//import net.minecraft.util.math.BlockPos;
-//import net.minecraft.util.math.BlockRayTraceResult;
-//import net.minecraft.world.World;
-//import net.minecraftforge.fluids.FluidStack;
-//import net.minecraftforge.fluids.FluidUtil;
-//import skily_leyu.mistyrain.common.core.action.Action;
-//import skily_leyu.mistyrain.common.utility.FluidUtils;
-//import skily_leyu.mistyrain.common.utility.ItemUtils;
-//import skily_leyu.mistyrain.common.utility.MRDebug;
-//import skily_leyu.mistyrain.config.MRConfig;
-//import skily_leyu.mistyrain.tileentity.tileport.PotTileEntity;
-//
-//public abstract class BlockMRPot extends Block {
-//
-//    public BlockMRPot(Properties properties) {
-//        super(properties);
+
+    @Override
+    public VoxelShape getShape(BlockState p_220053_1_, IBlockReader p_220053_2_, BlockPos p_220053_3_,
+                               ISelectionContext p_220053_4_) {
+        return SHAPE;
+    }
+
+    @Override
+    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+        return new TileEntityWoodenPot();
+    }
+
+    @Override
+    public boolean hasTileEntity(BlockState state) {
+        return true;
+    }
+
+    //    @Override
+//    public void onRemove(BlockState oldState, World world, BlockPos blockPos, BlockState newStage,
+//            boolean flag) {
+//        if (!world.isClientSide()) {
+//            PotTileEntity tileEntity = (PotTileEntity) world.getBlockEntity(blockPos);
+//            if (tileEntity != null) {
+//                for (ItemStack dropItem : tileEntity.getDrops()) {
+//                    popResource(world, blockPos, dropItem);
+//                }
+//                world.removeBlockEntity(blockPos);
+//            }
+//        }
 //    }
-//
-//    @Override
-//    public boolean hasTileEntity(BlockState state) {
-//        return true;
-//    }
-//
+
 //    @Override
 //    public ActionResultType use(BlockState blockState, World world, BlockPos blockPos,
 //            PlayerEntity playerEntity, Hand hand, BlockRayTraceResult rayTraceResult) {
@@ -121,19 +127,5 @@ public class BlockMRPot extends Block {
 //        }
 //        return ActionResultType.SUCCESS;
 //    }
-//
-//    @Override
-//    public void onRemove(BlockState oldState, World world, BlockPos blockPos, BlockState newStage,
-//            boolean flag) {
-//        if (!world.isClientSide()) {
-//            PotTileEntity tileEntity = (PotTileEntity) world.getBlockEntity(blockPos);
-//            if (tileEntity != null) {
-//                for (ItemStack dropItem : tileEntity.getDrops()) {
-//                    popResource(world, blockPos, dropItem);
-//                }
-//                world.removeBlockEntity(blockPos);
-//            }
-//        }
-//    }
-//
-//}
+
+}
