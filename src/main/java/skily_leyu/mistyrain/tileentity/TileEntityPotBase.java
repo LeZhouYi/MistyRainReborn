@@ -1,14 +1,22 @@
 package skily_leyu.mistyrain.tileentity;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.world.World;
 import net.minecraftforge.items.ItemStackHandler;
+import skily_leyu.mistyrain.common.core.action.Action;
+import skily_leyu.mistyrain.common.core.action.ActionType;
 import skily_leyu.mistyrain.common.core.pot.Pot;
+import skily_leyu.mistyrain.common.utility.ItemUtils;
 import skily_leyu.mistyrain.config.MRSetting;
 import skily_leyu.mistyrain.config.MRConfig;
+
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class TileEntityPotBase extends TileEntityBase implements ITickableTileEntity {
 
@@ -72,7 +80,7 @@ public abstract class TileEntityPotBase extends TileEntityBase implements ITicka
         this.tickCount = nbt.getInt("TickCount");
     }
 
-        /**
+    /**
      * 获取更新速率
      *
      * @return
@@ -81,27 +89,37 @@ public abstract class TileEntityPotBase extends TileEntityBase implements ITicka
         return MRConfig.PotRule.PLANT_TICK.get();
     }
 
-//    /**
-//     * 物品与盆栽交互的主入口
-//     *
-//     * @param itemStack
-//     * @return
-//     */
-//    @Nonnull
-//    public Action onItemInteract(ItemStack itemStack) {
-//        Action action = Action.EMPTY;
-//        if (itemStack != null && !itemStack.isEmpty()) {
-//            // 移除泥土/植物
-//            if (this.isRemoveTools(itemStack)) {
-//                action = this.onRemovePlant();
-//                if (action.isEmpty()) {
-//                    action = this.onRemoveSoil();
-//                }
-//            }
-//            // 收获产品
-//            else if (this.isHarvestTools(itemStack)) {
-//                action = this.onHarvest(itemStack);
-//            }
+    /**
+     * 判断当前物品是否为收获工具
+     *
+     * @param itemStack
+     * @return
+     */
+    public boolean isHarvestTools(ItemStack itemStack) {
+        return itemStack.getItem() instanceof ShearsItem;
+    }
+
+    /**
+     * 物品与盆栽交互的主入口
+     *
+     * @param itemStack
+     * @return
+     */
+    @Nonnull
+    public Action onItemInteract(ItemStack itemStack) {
+        Action action = Action.EMPTY;
+        if (itemStack != null && !itemStack.isEmpty()) {
+            // 移除泥土/植物
+            if (this.isRemoveTools(itemStack)) {
+                action = this.onRemovePlant();
+                if (action.isEmpty()) {
+                    action = this.onRemoveSoil();
+                }
+            }
+            // 收获产品
+            else if (this.isHarvestTools(itemStack)) {
+                action = this.onHarvest(itemStack);
+            }
 //            // 添加土壤
 //            else if (!isSoilFull() && this.getPot().isSuitSoil(itemStack)) {
 //                action = this.onSoilAdd(itemStack);
@@ -117,12 +135,12 @@ public abstract class TileEntityPotBase extends TileEntityBase implements ITicka
 //                    action = this.onPlantAdd(itemStack);
 //                }
 //            }
-//        }
-//        if (!action.isEmpty()) {
-//            syncToTrackingClients();
-//        }
-//        return action;
-//    }
+        }
+        if (!action.isEmpty()) {
+            syncToTrackingClients();
+        }
+        return action;
+    }
 //
 //    /**
 //     * 判断土壤栏是否全部存在土壤
@@ -138,118 +156,77 @@ public abstract class TileEntityPotBase extends TileEntityBase implements ITicka
 //        return true;
 //    }
 //
-//    /**
-//     * 移除植物
-//     *
-//     * @return
-//     */
-//    @Nonnull
-//    public Action onRemovePlant() {
-//        // 清空植物
-//        for (int i = this.plantInv.getSlots() - 1; i >= 0; i--) {
-//            ItemStack plantStack = ItemUtils.clearStackInHandler(plantInv, i);
-//            if (!plantStack.isEmpty()) {
-//                return new Action(ActionType.REMOVE_PLANT, 1, plantStack);
-//            }
-//        }
-//        return Action.EMPTY;
-//    }
-//
-//    /**
-//     * 添加肥料操作
-//     *
-//     * @param itemStack
-//     * @return
-//     */
-//    @Nonnull
-//    public Action onFertiAdd(ItemStack itemStack) {
-//        int fertiValue = MRSetting.getFertiMap().isFertilizer(itemStack);
-//        if (fertiValue != MRConfig.Constants.EMPTY_FERTI && this.fertiTank < this.getPot().getMaxFerti()) {
-//            this.consumeFerti(-fertiValue);
-//            return new Action(ActionType.ADD_FERTI, 1);
-//        }
-//        return Action.EMPTY;
-//    }
-//
-//    /**
-//     * 添加土壤
-//     *
-//     * @param itemStack
-//     * @return
-//     */
-//    @Nonnull
-//    public Action onSoilAdd(ItemStack itemStack) {
-//        if (itemStack != null) {
-//            int amount = ItemUtils.addItemInHandler(this.dirtInv, itemStack, true);
-//            if (amount > 0) {
-//                return new Action(ActionType.ADD_SOIL, amount);
-//            }
-//        }
-//        return Action.EMPTY;
-//    }
-//
-//    /**
-//     * 执行收获的操作
-//     *
-//     * @return
-//     */
-//    @Nonnull
-//    public Action onHarvest(ItemStack itemStack) {
-//        World world = this.getLevel();
-//        if (world != null) {
-//            List<ItemStack> results = this.potHandler.getHarvest(world.random);
-//            return new Action(ActionType.HARVEST, 1, results);
-//        }
-//        return Action.EMPTY;
-//    }
-//
-//    /**
-//     * 判断当前物品是否为带流体的桶
-//     *
-//     * @param itemStack
-//     * @return
-//     */
-//    public boolean isBucket(ItemStack itemStack) {
-//        return itemStack.getItem() == Items.WATER_BUCKET || itemStack.getItem() == Items.LAVA_BUCKET;
-//    }
-//
-//    /**
-//     * 判断当前物品是否为收获工具
-//     *
-//     * @param itemStack
-//     * @return
-//     */
-//    public boolean isHarvestTools(ItemStack itemStack) {
-//        return itemStack.getItem() instanceof ShearsItem;
-//    }
-//
-//    /**
-//     * 判断当前工具是否为移除工具
-//     *
-//     * @param itemStack
-//     * @return
-//     */
-//    public boolean isRemoveTools(ItemStack itemStack) {
-//        return itemStack.getItem() instanceof ShovelItem || itemStack.getItem() instanceof HoeItem;
-//    }
-//
-//    /**
-//     * 消耗肥料，若consumeValue<0,则为添加肥料
-//     *
-//     * @param consumeValue
-//     * @return True则表示肥料足够消耗，False则表示肥料不足
-//     */
-//    public boolean consumeFerti(int consumeValue) {
-//        this.fertiTank -= consumeValue;
-//        if (this.fertiTank < 0) {
-//            this.fertiTank = 0;
-//            return false;
-//        }
-//        if (this.fertiTank > this.getPot().getMaxFerti()) {
-//            this.fertiTank = this.getPot().getMaxFerti();
-//        }
-//        return true;
-//    }
+    /**
+     * 移除植物
+     *
+     * @return
+     */
+    @Nonnull
+    public Action onRemovePlant() {
+        // 清空植物
+        for (int i = this.plantInv.getSlots() - 1; i >= 0; i--) {
+            ItemStack plantStack = ItemUtils.clearStackInHandler(plantInv, i);
+            if (!plantStack.isEmpty()) {
+                return new Action(ActionType.REMOVE_PLANT, 1, plantStack);
+            }
+        }
+        return Action.EMPTY;
+    }
+
+    /**
+     * 添加土壤
+     *
+     * @param itemStack
+     * @return
+     */
+    @Nonnull
+    public Action onSoilAdd(ItemStack itemStack) {
+        if (itemStack != null) {
+            int amount = ItemUtils.addItemInHandler(this.dirtInv, itemStack, true);
+            if (amount > 0) {
+                return new Action(ActionType.ADD_SOIL, amount);
+            }
+        }
+        return Action.EMPTY;
+    }
+
+    /**
+     * 执行收获的操作
+     *
+     * @return
+     */
+    @Nonnull
+    public Action onHarvest(ItemStack itemStack) {
+        World world = this.getLevel();
+        if (world != null) {
+            List<ItemStack> results = new ArrayList<>();
+            return new Action(ActionType.HARVEST, 1, results);
+        }
+        return Action.EMPTY;
+    }
+
+    /**
+     * 判断当前物品是否为带流体的桶
+     *
+     * @param itemStack
+     * @return
+     */
+    public boolean isBucket(ItemStack itemStack) {
+        return itemStack.getItem() == Items.WATER_BUCKET || itemStack.getItem() == Items.LAVA_BUCKET;
+    }
+
+
+
+    /**
+     * 判断当前工具是否为移除工具
+     *
+     * @param itemStack
+     * @return
+     */
+    public boolean isRemoveTools(ItemStack itemStack) {
+        return itemStack.getItem() instanceof ShovelItem || itemStack.getItem() instanceof HoeItem;
+    }
+
 //
 //    /**
 //     * 1.若为植物，则在植物栏放置一次植物并设置该植物状态为0(一般为SeepDrop)
@@ -291,22 +268,22 @@ public abstract class TileEntityPotBase extends TileEntityBase implements ITicka
 //        return false;
 //    }
 //
-//    /**
-//     * 清空土壤，返回该物品
-//     *
-//     * @return
-//     */
-//    @Nonnull
-//    public Action onRemoveSoil() {
-//        // 若清空土壤
-//        for (int i = this.dirtInv.getSlots() - 1; i >= 0; i--) {
-//            ItemStack dirtStack = ItemUtils.clearStackInHandler(dirtInv, i);
-//            if (!dirtStack.isEmpty()) {
-//                return new Action(ActionType.REMOVE_SOIL, 1, dirtStack);
-//            }
-//        }
-//        return Action.EMPTY;
-//    }
+    /**
+     * 清空土壤，返回该物品
+     *
+     * @return
+     */
+    @Nonnull
+    public Action onRemoveSoil() {
+        // 若清空土壤
+        for (int i = this.dirtInv.getSlots() - 1; i >= 0; i--) {
+            ItemStack dirtStack = ItemUtils.clearStackInHandler(dirtInv, i);
+            if (!dirtStack.isEmpty()) {
+                return new Action(ActionType.REMOVE_SOIL, 1, dirtStack);
+            }
+        }
+        return Action.EMPTY;
+    }
 //
 //    /**
 //     * 执行流体容器物品的检查和添加的操作，若返回True则对物品产生操作和更新
@@ -332,20 +309,20 @@ public abstract class TileEntityPotBase extends TileEntityBase implements ITicka
 //        return Action.EMPTY;
 //    }
 //
-//    /**
-//     * 判断土壤栏是否为空
-//     *
-//     * @return
-//     */
-//    public boolean isSoilEmpty() {
-//        for (int i = 0; i < this.dirtInv.getSlots(); i++) {
-//            if (!this.dirtInv.getStackInSlot(i).isEmpty()) {
-//                return false;
-//            }
-//        }
-//        return true;
-//    }
-//
+    /**
+     * 判断土壤栏是否为空
+     *
+     * @return
+     */
+    public boolean isSoilEmpty() {
+        for (int i = 0; i < this.dirtInv.getSlots(); i++) {
+            if (!this.dirtInv.getStackInSlot(i).isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 //    /**
 //     * 获取指定格子植物的BlockState
 //     *
@@ -359,62 +336,31 @@ public abstract class TileEntityPotBase extends TileEntityBase implements ITicka
 //        }
 //        return null;
 //    }
-//
-//    /**
-//     * 获取指定格子的土壤
-//     *
-//     * @param slot
-//     * @return
-//     */
-//    public ItemStack getDirtStack(int slot) {
-//        if (slot >= 0 && slot < this.dirtInv.getSlots()) {
-//            return this.dirtInv.getStackInSlot(slot);
-//        }
-//        return ItemStack.EMPTY;
-//    }
-//
-//    /**
-//     * 获取更新速率
-//     *
-//     * @return
-//     */
-//    public final int getTickRate() {
-//        return MRConfig.PotRule.PLANT_TICK.get();
-//    }
-//
-//    /**
-//     * 获取水份槽
-//     *
-//     * @return
-//     */
-//    public FluidTank getWaterTank() {
-//        return this.waterTank;
-//    }
-//
-//    /**
-//     * 获取掉落物
-//     *
-//     * @return
-//     */
-//    @Nonnull
-//    public List<ItemStack> getDrops() {
-//        List<ItemStack> drops = new ArrayList<>();
-//        drops.addAll(ItemUtils.getHandlerItem(this.dirtInv, false));
-//        drops.addAll(ItemUtils.getHandlerItem(this.plantInv, false));
-//        return drops;
-//    }
-//
-//    /**
-//     * 获取产生的灵气
-//     *
-//     * @return
-//     */
-//    public List<Anima> getGenAnima() {
-//        List<Anima> genAnimas = this.potHandler.getGenAnimas();
-//        if (genAnimas != null && genAnimas.size() > 0) {
-//            genAnimas.addAll(this.getPot().getExtraAnimas());
-//        }
-//        return genAnimas;
-//    }
+
+    /**
+     * 获取指定格子的土壤
+     *
+     * @param slot
+     * @return
+     */
+    public ItemStack getDirtStack(int slot) {
+        if (slot >= 0 && slot < this.dirtInv.getSlots()) {
+            return this.dirtInv.getStackInSlot(slot);
+        }
+        return ItemStack.EMPTY;
+    }
+
+    /**
+     * 获取掉落物
+     *
+     * @return
+     */
+    @Nonnull
+    public List<ItemStack> getDrops() {
+        List<ItemStack> drops = new ArrayList<>();
+        drops.addAll(ItemUtils.getHandlerItem(this.dirtInv, false));
+        drops.addAll(ItemUtils.getHandlerItem(this.plantInv, false));
+        return drops;
+    }
 
 }

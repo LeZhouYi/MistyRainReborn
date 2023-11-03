@@ -48,21 +48,8 @@
                     "harvests":{}
                 }
             ],
-            "needAnimas": [],
-            "genAnimas":[
-                {
-                    "type": "BLANK",
-                    "level": "THIN",
-                    "amount": 1
-                }
-            ],
             "likeSoils": ["minecraft:farmland"],
-            "suitSoilTypes": ["DIRT"],
-            "suitWater": "minecraft:water",
-            "needWater": 10,
-            "needFertilizer": 10,
-            "needTemper": ["COOL","WARM"],
-            "needLight": [8,15]
+            "suitSoilTypes": ["DIRT"]
         },
         "mistyrain:mr_green_wisteria":{
             "name":"mistyrain:mr_green_wisteria",
@@ -88,34 +75,8 @@
                     "harvests":{}
                 }
             ],
-            "needAnimas":[
-                {
-                    "type":"BLANK",
-                    "level":"FULL"
-                },
-                {
-                    "type":"WATER",
-                    "level":"THIN"
-                }
-            ],
-            "genAnima":[
-                {
-                    "type":"WOOD",
-                    "level":"THIN",
-                    "amount": 1
-                },
-                {
-                    "type":"BLANK",
-                    "level":"NULL",
-                    "amount": 1
-                }
-            ],
             "likeSoils":["minecraft:podzol"],
-            "suitSoilTypes":["HUMUS"],
-            "needWater": 15,
-            "needFertilizer": 20,
-            "needTemper": ["COOL","WARM"],
-            "needLight": [5,12]
+            "suitSoilTypes":["HUMUS"]
         },
         "mistyrain:mr_candle_rush":{
             "name":"mistyrain:mr_candle_rush",
@@ -158,36 +119,8 @@
                     "harvests":{}
                 }
             ],
-            "needAnimas":[
-                {
-                    "type":"BLANK",
-                    "level":"FULL",
-                    "amount": 1
-                },
-                {
-                    "type":"WOOD",
-                    "level":"THIN",
-                    "amount": 1
-                }
-            ],
-            "genAnima":[
-                {
-                    "type":"FIRE",
-                    "level":"THIN",
-                    "amount": 1
-                },
-                {
-                    "type":"BLANK",
-                    "level":"NULL",
-                    "amount": 1
-                }
-            ],
             "likeSoils":["minecraft:sand"],
-            "suitSoilTypes":["SAND"],
-            "needWater": 5,
-            "needFertilizer": 20,
-            "needTemper": ["COOL","WARM","HOT"],
-            "needLight": [8,15]
+            "suitSoilTypes":["SAND"]
         },
         "mistyrain:mr_homing_plum":{
             "name":"mistyrain:mr_homing_plum",
@@ -237,36 +170,8 @@
                     "harvests":{}
                 }
             ],
-            "needAnimas":[
-                {
-                    "type":"BLANK",
-                    "level":"FULL",
-                    "amount": 1
-                },
-                {
-                    "type":"FIRE",
-                    "level":"THIN",
-                    "amount": 1
-                }
-            ],
-            "genAnima":[
-                {
-                    "type":"SOIL",
-                    "level":"THIN",
-                    "amount": 1
-                },
-                {
-                    "type":"BLANK",
-                    "level":"NULL",
-                    "amount": 1
-                }
-            ],
             "likeSoils":["minecraft:gravel"],
-            "suitSoilTypes":["COBBLE"],
-            "needWater": 10,
-            "needFertilizer": 20,
-            "needTemper": ["COLD","COOL","WARM"],
-            "needLight": [5,12]
+            "suitSoilTypes":["COBBLE"]
         },
         "mistyrain:mr_breeze_rattan":{
             "name":"mistyrain:mr_breeze_rattan",
@@ -309,36 +214,8 @@
                     "harvests":{}
                 }
             ],
-            "needAnimas":[
-                {
-                    "type":"BLANK",
-                    "level":"FULL",
-                    "amount": 1
-                },
-                {
-                    "type":"SOIL",
-                    "level":"THIN",
-                    "amount": 1
-                }
-            ],
-            "genAnima":[
-                {
-                    "type":"GOLD",
-                    "level":"THIN",
-                    "amount": 1
-                },
-                {
-                    "type":"BLANK",
-                    "level":"NULL",
-                    "amount": 1
-                }
-            ],
             "likeSoils":["minecraft:cobble_stone"],
-            "suitSoilTypes":["COBBLE"],
-            "needWater": 5,
-            "needFertilizer": 25,
-            "needTemper": ["COLD","COOL","WARM"],
-            "needLight": [5,12]
+            "suitSoilTypes":["COBBLE"]
         },
         "mistyrain:mr_narcissus":{
             "name":"mistyrain:mr_narcissus",
@@ -388,37 +265,8 @@
                     "harvests":{}
                 }
             ],
-            "needAnimas": [
-                {
-                    "type":"BLANK",
-                    "level":"FULL",
-                    "amount": 1
-                },
-                {
-                    "type":"GOLD",
-                    "level":"THIN",
-                    "amount": 1
-                }
-            ],
-            "genAnimas":[
-                {
-                    "type": "WATER",
-                    "level": "THIN",
-                    "amount": 1
-                },
-                {
-                    "type": "BLANK",
-                    "level": "NULL",
-                    "amount": 1
-                }
-            ],
             "likeSoils": ["minecraft:water"],
-            "suitSoilTypes": ["WATER"],
-            "suitWater": "minecraft:water",
-            "needWater": 25,
-            "needFertilizer": 5,
-            "needTemper": ["COOL","WARM"],
-            "needLight": [3,10]
+            "suitSoilTypes": ["WATER"]
         }
     }
 }

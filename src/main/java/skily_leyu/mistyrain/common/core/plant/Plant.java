@@ -16,11 +16,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
-import skily_leyu.mistyrain.common.core.anima.Anima;
 import skily_leyu.mistyrain.common.core.soil.SoilType;
 import skily_leyu.mistyrain.common.utility.FluidUtils;
 import skily_leyu.mistyrain.common.utility.ItemUtils;
-import skily_leyu.mistyrain.common.utility.MathUtils;
 import skily_leyu.mistyrain.config.MRSetting;
 
 public class Plant {
@@ -28,86 +26,8 @@ public class Plant {
     private String name; // 植物名
     private List<String> seeds; // 种子或类种子物品名
     private List<PlantStage> stages; // 植物的状态转换表
-    private List<Anima> needAnimas; // 所需灵气
-    private List<Anima> genAnimas; // 产生的灵气
     private List<String> likeSoils; // 喜欢的土壤
     private List<SoilType> suitSoilTypes; // 适合的土壤类型
-    private String suitWater; // 适合的水分
-    private int needWater; // 消耗的水分
-    private int needFertilizer; // 消耗的肥料值
-    private List<TemperType> needTemper; // 适宜的生长温度
-    private int[] needLight; // 适宜的光照
-
-    /**
-     * 返回产生的灵气清单
-     *
-     * @return
-     */
-    public List<Anima> getGenAnima() {
-        return this.genAnimas;
-    }
-
-    /**
-     * 所需生长灵气清单
-     *
-     * @return
-     */
-    public List<Anima> getNeedAnima() {
-        return this.needAnimas;
-    }
-
-    /**
-     * 判断当前流体是否符合
-     *
-     * @param fluidStack
-     * @return
-     */
-    public boolean isSuitWater(FluidStack fluidStack) {
-        if (fluidStack != null) {
-            String fluidName = FluidUtils.getFluidName(fluidStack);
-            return fluidName != null && this.suitWater != null && this.suitWater.equals(fluidName);
-        }
-        return false;
-    }
-
-    /**
-     * 获取所需肥料值
-     *
-     * @return
-     */
-    public int getNeedFerti() {
-        return this.needFertilizer;
-    }
-
-    /**
-     * 检查当前温度是否合适
-     *
-     * @param temperType
-     * @return
-     */
-    public boolean isSuitTemper(float temperIn) {
-        TemperType temperType = TemperType.getTemperType(temperIn);
-        return this.needTemper.contains(temperType);
-    }
-
-    /**
-     * 判断光照是否合适
-     *
-     * @param light
-     * @return
-     */
-    public boolean isSuitLight(int light) {
-        return MathUtils.isBetween(needLight, light);
-    }
-
-    /**
-     * 获取消耗水份的量
-     *
-     * @return
-     */
-    public int getNeedWater() {
-        return this.needWater;
-    }
 
     /**
      * 获取该植物的BlockState,其中meta=0时，若状态为SeedDrop则为null，默认不渲染模型

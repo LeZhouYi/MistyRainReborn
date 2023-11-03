@@ -4,7 +4,6 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-import skily_leyu.mistyrain.common.core.anima.Anima;
 import skily_leyu.mistyrain.common.core.soil.SoilType;
 import skily_leyu.mistyrain.common.utility.FluidUtils;
 import skily_leyu.mistyrain.common.utility.ItemUtils;
@@ -14,21 +13,8 @@ public class Pot {
 
     private String name; // 花盆名
     private int slotSize; // 对应泥土可放格子数，可种植物数量
-    private int tankSize; // 储水量
     private List<String> suitSoils; // 适合的土壤
     private List<SoilType> suitSoilType; // 适合的土壤类型
-    private List<String> suitFluids; // 适合的水份
-    private int fertilizer; // 肥料值
-    private List<Anima> extraAnimas; // 植物产生灵气时，可以额外增加的灵气
-
-    /**
-     * 获取额外的灵气产生
-     *
-     * @return
-     */
-    public List<Anima> getExtraAnimas() {
-        return this.extraAnimas;
-    }
 
     /**
      * 获取花盆的名字
@@ -40,34 +26,12 @@ public class Pot {
     }
 
     /**
-     * 获取最大可储存数
-     *
-     * @return
-     */
-    public int getMaxFerti() {
-        return this.fertilizer;
-    }
-
-    /**
      * 获取格子数
      *
      * @return
      */
     public int getSlotSize() {
         return this.slotSize;
-    }
-
-    /**
-     * 判断当前流体是否为合适的水份
-     *
-     * @param fluidStack
-     * @return
-     */
-    public boolean isSuitFluid(FluidStack fluidStack) {
-        if (fluidStack != null && !fluidStack.isEmpty()) {
-            return this.suitFluids.contains(FluidUtils.getFluidName(fluidStack));
-        }
-        return false;
     }
 
     /**
@@ -100,15 +64,6 @@ public class Pot {
             }
         }
         return false;
-    }
-
-    /**
-     * 获取储水量
-     *
-     * @return
-     */
-    public int getTankSize() {
-        return this.tankSize;
     }
 
 }
