@@ -6,12 +6,16 @@ import javax.annotation.Nullable;
 
 public class PotMap {
 
-    private Map<String,Pot> potMap;
+    protected Map<String,Pot> map;
+
+    public void setMap(Map<String, Pot> map) {
+        this.map = map;
+    }
 
     @Nullable
     public Pot getPot(String name){
-        if(this.potMap.containsKey(name)){
-            return this.potMap.get(name);
+        if(this.map.containsKey(name)){
+            return this.map.get(name);
         }
         return null;
     }

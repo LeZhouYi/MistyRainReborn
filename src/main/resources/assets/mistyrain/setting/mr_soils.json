@@ -1,5 +1,5 @@
 {
-    "soilMap":{
+    "map":{
         "DIRT":[
             "minecraft:dirt",
             "minecraft:farmland",

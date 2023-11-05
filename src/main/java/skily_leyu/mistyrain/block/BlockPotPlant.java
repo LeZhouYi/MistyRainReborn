@@ -1,4 +1,4 @@
-package skily_leyu.mistyrain.block.potplant;
+package skily_leyu.mistyrain.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -11,19 +11,22 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import skily_leyu.mistyrain.common.core.plant.IMRPlant;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
+
+@ParametersAreNonnullByDefault
 public abstract class BlockPotPlant extends Block implements IMRPlant {
 
-    public BlockPotPlant(Properties p_i48440_1_) {
-        super(p_i48440_1_);
+    protected BlockPotPlant(Properties properties) {
+        super(properties);
     }
 
     @Override
+    @Nonnull
     public ActionResultType use(BlockState blockState, World world, BlockPos blockPos,
-            PlayerEntity playerEntity, Hand hand, BlockRayTraceResult rayTraceResult) {
-        if (!world.isClientSide() && hand == Hand.MAIN_HAND) {
-            if (playerEntity.getMainHandItem().isEmpty()) {
-                world.setBlock(blockPos, blockState.cycle(getStageProperty()), Constants.BlockFlags.BLOCK_UPDATE);
-            }
+                                PlayerEntity playerEntity, Hand hand, BlockRayTraceResult rayTraceResult) {
+        if (!world.isClientSide() && hand == Hand.MAIN_HAND && playerEntity.getMainHandItem().isEmpty()) {
+            world.setBlock(blockPos, blockState.cycle(getStageProperty()), Constants.BlockFlags.BLOCK_UPDATE);
         }
         return ActionResultType.SUCCESS;
     }

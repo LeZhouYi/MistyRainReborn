@@ -1,5 +1,6 @@
 package skily_leyu.mistyrain.tileentity;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.BlockState;
@@ -13,9 +14,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerChunkProvider;
 import net.minecraft.world.server.ServerWorld;
 
-public class TileEntityBase extends TileEntity{
+public class TileBase extends TileEntity{
 
-    public TileEntityBase(TileEntityType<?> tileEntityType) {
+    public TileBase(TileEntityType<?> tileEntityType) {
         super(tileEntityType);
     }
 
@@ -36,6 +37,7 @@ public class TileEntityBase extends TileEntity{
     }
 
     @Override
+    @Nonnull
     public CompoundNBT getUpdateTag() {
         return save(new CompoundNBT());
     }

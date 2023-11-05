@@ -23,21 +23,35 @@ import skily_leyu.mistyrain.config.MRSetting;
 
 public class Plant {
 
-    private String name; // 植物名
+    private final String name; // 植物名
     private List<String> seeds; // 种子或类种子物品名
     private List<PlantStage> stages; // 植物的状态转换表
     private List<String> likeSoils; // 喜欢的土壤
     private List<SoilType> suitSoilTypes; // 适合的土壤类型
 
+    public Plant(String name){
+        this.name = name;
+    }
+
+    public void setSeeds(List<String> seeds){
+        this.seeds = seeds;
+    }
+
+    public void setStages(List<PlantStage> stages){
+        this.stages = stages;
+    }
+
+    public void setSoil(List<String> likeSoils,List<SoilType> suitSoilTypes){
+        this.likeSoils = likeSoils;
+        this.suitSoilTypes = suitSoilTypes;
+    }
+
     /**
      * 获取该植物的BlockState,其中meta=0时，若状态为SeedDrop则为null，默认不渲染模型
-     *
-     * @param meta
-     * @return
      */
     @Nullable
     public BlockState getBlockState(int meta) {
-        if (stages.size() < 1) {
+        if (stages.isEmpty()) {
             return null;
         }
         if (meta == 0 && stages.get(0).isNowStage(PlantStageType.SEED_DROP)) {
@@ -52,9 +66,6 @@ public class Plant {
 
     /**
      * 获取当前生长状态
-     *
-     * @param nowStage
-     * @return
      */
     @Nonnull
     public PlantStageType getPlantStage(int nowStage) {
@@ -66,9 +77,6 @@ public class Plant {
 
     /**
      * 获取对应状态类型具体的状态值，不存在则返回nowStage
-     *
-     * @param nowStage
-     * @return
      */
     public int getTransStage(PlantStageType transType, int nowStage) {
         if (this.stages != null) {
@@ -83,10 +91,6 @@ public class Plant {
 
     /**
      * 获取下一生长阶段
-     *
-     * @param nowStage
-     * @param random
-     * @return
      */
     public int getNextStage(int nowStage, Random random) {
         if (this.stages != null && nowStage < this.stages.size() && nowStage >= 0) {
@@ -103,9 +107,6 @@ public class Plant {
 
     /**
      * 判断当前物品是否为该植物的种子
-     *
-     * @param itemStack
-     * @return
      */
     public boolean containSeed(ItemStack itemStack) {
         return seeds.contains(ItemUtils.getRegistryName(itemStack));
@@ -113,9 +114,6 @@ public class Plant {
 
     /**
      * 检查当前物品是否为该植物合适生长的土壤
-     *
-     * @param dirtStack
-     * @return
      */
     public boolean isSuitSoil(ItemStack dirtStack) {
         String dirtName = ItemUtils.getRegistryName(dirtStack);
@@ -148,18 +146,12 @@ public class Plant {
 
     /**
      * 获取注册名
-     *
-     * @return
      */
     public String getName() {
         return name;
     }
-
     /**
      * 获取当前状态被收获后要转换的状态
-     *
-     * @param nowStage
-     * @return
      */
     @Nonnull
     public Set<PlantStageType> getTransStageType(int nowStage) {
@@ -171,10 +163,6 @@ public class Plant {
 
     /**
      * 获取当前状态对应转换状态所能收获的内容
-     *
-     * @param nowStage
-     * @param transType
-     * @return
      */
     @Nonnull
     public Map<String, Integer> getHarvest(int nowStage, PlantStageType transType) {

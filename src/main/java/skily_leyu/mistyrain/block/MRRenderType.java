@@ -9,9 +9,11 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class MRRenderType {
-
+    private MRRenderType(){}
     @SubscribeEvent
     public static void onRenderTypeSetup(FMLClientSetupEvent event) {
         RenderTypeLookup.setRenderLayer(MRBlock.blockWoodenPot.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(MRBlock.blockSnowVelvet.get(), RenderType.cutout());
     }
+
 }

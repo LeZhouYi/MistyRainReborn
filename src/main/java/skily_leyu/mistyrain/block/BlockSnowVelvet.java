@@ -1,4 +1,4 @@
-package skily_leyu.mistyrain.block.potplant;
+package skily_leyu.mistyrain.block;
 
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -12,10 +12,14 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
+
+@ParametersAreNonnullByDefault
 public class BlockSnowVelvet extends BlockPotPlant {
 
-    private static IntegerProperty STAGE = IntegerProperty.create("plant_stage", 0, 5);
-    private static VoxelShape SHAPE = VoxelShapes.box(0.09375D, 0.0D, 0.09375D, 0.90625D, 0.9375D, 0.90625D);
+    private static final IntegerProperty STAGE = IntegerProperty.create("plant_stage", 0, 5);
+    private static final VoxelShape SHAPE = VoxelShapes.box(0.09375D, 0.0D, 0.09375D, 0.90625D, 0.9375D, 0.90625D);
 
     public BlockSnowVelvet() {
         super(AbstractBlock.Properties.of(Material.PLANT).noCollission());
@@ -30,8 +34,9 @@ public class BlockSnowVelvet extends BlockPotPlant {
     }
 
     @Override
-    public VoxelShape getShape(BlockState p_220053_1_, IBlockReader p_220053_2_, BlockPos p_220053_3_,
-            ISelectionContext p_220053_4_) {
+    @Nonnull
+    public VoxelShape getShape(BlockState blockState, IBlockReader blockReader, BlockPos blockPos,
+            ISelectionContext context) {
         return SHAPE;
     }
 

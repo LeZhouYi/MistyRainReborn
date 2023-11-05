@@ -15,7 +15,7 @@ import skily_leyu.mistyrain.block.MRBlock;
 import skily_leyu.mistyrain.config.MRConfig;
 import skily_leyu.mistyrain.config.MRSetting;
 import skily_leyu.mistyrain.item.MRItem;
-import skily_leyu.mistyrain.tileentity.MRTileEntities;
+import skily_leyu.mistyrain.tileentity.MRTiles;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -35,26 +35,30 @@ public class MistyRain {
         MinecraftForge.EVENT_BUS.register(this);
         MRBlock.BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
         MRItem.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
-        MRTileEntities.TILEENTITY_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
+        MRTiles.TILEENTITY_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, MRConfig.COMMON_CONFIG);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, MRConfig.CLIENT_CONFIG);
     }
 
     private void setup(final FMLCommonSetupEvent event){
-        new MRSetting(event);
+        MRSetting.load();
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
+        //PASS
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event){
+        //PASS
     }
 
     private void processIMC(final InterModProcessEvent event){
+        //PASS
     }
 
     @SubscribeEvent
     public void onServerStarting(FMLServerStartingEvent event) {
+        //PASS
     }
 
     public static Logger getLogger(){

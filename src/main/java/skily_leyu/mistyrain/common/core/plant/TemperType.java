@@ -9,15 +9,14 @@ public enum TemperType {
     HOT(1.5F),//炎热
     EXHOT(2.0F);//酷热
 
-    private float temper; //上限温度
+    private final float temper; //上限温度
 
-    private TemperType(float temper){
+    TemperType(float temper){
         this.temper = temper;
     }
 
     /**
      * 获取温度上限
-     * @return
      */
     public float getTemper(){
         return this.temper;
@@ -25,8 +24,6 @@ public enum TemperType {
 
     /**
      * 获取当前温度对标的温度分类
-     * @param temperIn
-     * @return
      */
     public static TemperType getTemperType(float temperIn){
         for(TemperType type:TemperType.values()){

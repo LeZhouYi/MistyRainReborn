@@ -10,7 +10,6 @@ import javax.annotation.Nonnull;
 
 public class PlantStage {
 
-    @Nonnull
     private PlantStageType nowStage;
     private Map<PlantStageType, Integer> nextStages; // PlantStageType为要转变的下个状态,Integer为此状态的权重
     private Map<PlantStageType, Map<String, Integer>> harvests; // PlantStageType为要转变的下个状态,String为获得的物品，Integer为基础数量
@@ -19,6 +18,18 @@ public class PlantStage {
         this.nowStage = PlantStageType.NULL;
         this.nextStages = new HashMap<>();
         this.harvests = new HashMap<>();
+    }
+
+    public void setHarvests(Map<PlantStageType, Map<String, Integer>> harvests) {
+        this.harvests = harvests;
+    }
+
+    public void setNextStages(Map<PlantStageType, Integer> nextStages) {
+        this.nextStages = nextStages;
+    }
+
+    public void setNowStage(PlantStageType nowStage) {
+        this.nowStage = nowStage;
     }
 
     public boolean isNowStage(PlantStageType stageType) {
@@ -32,9 +43,6 @@ public class PlantStage {
 
     /**
      * 随机获取下一个生长状态类型
-     *
-     * @param random
-     * @return
      */
     public PlantStageType getNextStageType(Random random) {
         if (this.nextStages != null && this.nextStages.size() > 0) {
@@ -55,8 +63,6 @@ public class PlantStage {
 
     /**
      * 获取当前状态可以转换的状态
-     *
-     * @return
      */
     @Nonnull
     public Set<PlantStageType> getTransStageType() {
@@ -67,9 +73,6 @@ public class PlantStage {
 
     /**
      * 获取产物
-     *
-     * @param transType
-     * @return
      */
     @Nonnull
     public Map<String, Integer> getHarvest(PlantStageType transType) {

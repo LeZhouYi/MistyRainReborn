@@ -19,6 +19,6 @@ public enum PlantStageType {
     GATHER_1,
     GATHER_2,
     PLANT_DROP,
-    NULL;
+    NULL
 
 }

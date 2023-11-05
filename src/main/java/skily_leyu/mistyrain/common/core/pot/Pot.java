@@ -11,15 +11,29 @@ import skily_leyu.mistyrain.config.MRSetting;
 
 public class Pot {
 
-    private String name; // 花盆名
+    private final String name; // 花盆名
     private int slotSize; // 对应泥土可放格子数，可种植物数量
     private List<String> suitSoils; // 适合的土壤
     private List<SoilType> suitSoilType; // 适合的土壤类型
 
+    public Pot(String name){
+        this.name = name;
+    }
+
+    public void setSlotSize(int slotSize) {
+        this.slotSize = slotSize;
+    }
+
+    public void setSuitSoils(List<String> suitSoils) {
+        this.suitSoils = suitSoils;
+    }
+
+    public void setSuitSoilType(List<SoilType> suitSoilType) {
+        this.suitSoilType = suitSoilType;
+    }
+
     /**
      * 获取花盆的名字
-     *
-     * @return
      */
     public String getPotName() {
         return this.name;
@@ -27,8 +41,6 @@ public class Pot {
 
     /**
      * 获取格子数
-     *
-     * @return
      */
     public int getSlotSize() {
         return this.slotSize;
@@ -36,9 +48,6 @@ public class Pot {
 
     /**
      * 判断当前物品是否是合适的土壤
-     *
-     * @param itemStack
-     * @return
      */
     public boolean isSuitSoil(ItemStack itemStack) {
         if (this.suitSoils.contains(ItemUtils.getRegistryName(itemStack))) {
@@ -49,7 +58,7 @@ public class Pot {
                 return true;
             }
         }
-        if (itemStack != null && !itemStack.isEmpty()) {
+        if (!itemStack.isEmpty()) {
             FluidStack fluidStack = FluidUtils.getFluidStack(itemStack);
             if (fluidStack.isEmpty()) {
                 return false;

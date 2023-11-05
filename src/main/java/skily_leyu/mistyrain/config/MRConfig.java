@@ -22,8 +22,6 @@ public class MRConfig {
 
         /**
          * 获取根据配置设置的TimeDot
-         * @param world
-         * @return
          */
         public static MRTimeDot getTimeDot(World world){
             return new MRTimeDot(world).update(MRConfig.TimeRule.MONTH_START.get(),MRConfig.TimeRule.DAYS_PER_MONTH.get());
@@ -31,8 +29,6 @@ public class MRConfig {
 
         /**
          * 获取当前节气对温度的影响
-         * @param worldIn
-         * @return
          */
         public static float getTemperChange(World worldIn){
             return (float)(new MRTimeDot(worldIn).getSolarTerm().getTemperFactor()*TEMPER_CHANGE_FACTOR.get());
@@ -45,6 +41,12 @@ public class MRConfig {
 
     public static class PotRule{
         public static ForgeConfigSpec.IntValue PLANT_TICK; //盆栽的Tick
+        public static ForgeConfigSpec.IntValue PLANT_GROW_RATE; //盆栽植物生长概率
+
+        public static boolean canGrow(Random random){
+            return random.nextInt(1000)< PLANT_GROW_RATE.get();
+        }
+
     }
 
     static{
@@ -57,6 +59,7 @@ public class MRConfig {
 
         COMMON_BUILDER.comment("盆栽系统设置").push("pot plant");
         PotRule.PLANT_TICK = COMMON_BUILDER.comment("盆栽植物时间刻,值越小生长越快").defineInRange("plant_tick", 120, 20, 600);
+        PotRule.PLANT_GROW_RATE = COMMON_BUILDER.comment("盆栽植物生长概率，值越大生长越快").defineInRange("plant_grow_rate",100,0,1000);
         COMMON_BUILDER.pop();
 
         COMMON_CONFIG = COMMON_BUILDER.build();
