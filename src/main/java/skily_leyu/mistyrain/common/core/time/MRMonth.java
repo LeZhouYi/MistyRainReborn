@@ -16,14 +16,14 @@ public enum MRMonth {
     NOV("nov"),
     DEC("dec");
 
-    private String name;
+    private final String name;
 
-    private MRMonth(String name){
+    MRMonth(String name){
         this.name = name;
     }
 
     public String getI18nString(){
-        return I18n.get(String.format("mrmonth.%d.name",this.ordinal()));
+        return I18n.get(String.format("mr_month.%d.name",this.ordinal()));
     }
 
     public String getName(){

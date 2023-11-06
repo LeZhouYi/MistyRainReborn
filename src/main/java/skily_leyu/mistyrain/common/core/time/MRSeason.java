@@ -9,9 +9,9 @@ public enum MRSeason{
     AUTUMN("autumn"),
     WINTER("winter");
 
-    private String name;
+    private final String name;
 
-    private MRSeason(String name){
+    MRSeason(String name){
         this.name = name;
     }
 
@@ -20,7 +20,7 @@ public enum MRSeason{
     }
 
     public String getI18nString(){
-        return I18n.get(String.format("mrseason.%d.name",this.ordinal()));
+        return I18n.get(String.format("mr_season.%d.name",this.ordinal()));
     }
 
     public MRSeason getNext() {

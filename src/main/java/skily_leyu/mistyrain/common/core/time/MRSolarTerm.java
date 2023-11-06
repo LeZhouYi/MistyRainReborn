@@ -28,10 +28,10 @@ public enum MRSolarTerm {
     SLIGHT_COLD("slight_cold",0.9F),
     GREAT_COLD("great_cold",-1.0F);
 
-    private String name;
-    private float temperFactor;//基础温度影响倍率
+    private final String name;
+    private final float temperFactor;//基础温度影响倍率
 
-    private MRSolarTerm(String name,float temperFactor){
+    MRSolarTerm(String name,float temperFactor){
         this.name = name;
         this.temperFactor = temperFactor;
     }
@@ -45,7 +45,7 @@ public enum MRSolarTerm {
     }
 
     public String getI18nString(){
-        return I18n.get(String.format("mrsolarterm.%d.name",this.ordinal()));
+        return I18n.get(String.format("mr_solar_term.%d.name",this.ordinal()));
     }
 
     public MRSolarTerm getNext() {

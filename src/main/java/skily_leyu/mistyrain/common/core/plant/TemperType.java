@@ -7,7 +7,7 @@ public enum TemperType {
     COOL(0.8F),//凉爽
     WARM(1.0F),//温暖
     HOT(1.5F),//炎热
-    EXHOT(2.0F);//酷热
+    EX_HOT(2.0F);//酷热
 
     private final float temper; //上限温度
 
@@ -31,7 +31,7 @@ public enum TemperType {
                 return type;
             }
         }
-        return TemperType.EXHOT;
+        return TemperType.EX_HOT;
     }
 
 }

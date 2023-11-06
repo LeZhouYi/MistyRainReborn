@@ -12,5 +12,6 @@ public class MRBlock {
             MistyRain.MOD_ID);
     public static final RegistryObject<Block> blockWoodenPot = BLOCKS.register("mr_wooden_pot", BlockWoodenPot::new);
     public static final RegistryObject<Block> blockSnowVelvet = BLOCKS.register("mr_snow_velvet", BlockSnowVelvet::new);
-
+    public static final RegistryObject<Block> blockClayPot = BLOCKS.register("mr_clay_pot", BlockClayPot::new);
+    public static final RegistryObject<Block> blockNarcissus = BLOCKS.register("mr_narcissus", BlockNarcissus::new);
 }

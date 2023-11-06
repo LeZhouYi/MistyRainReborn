@@ -25,7 +25,7 @@ public abstract class BlockPotPlant extends Block implements IMRPlant {
     @Nonnull
     public ActionResultType use(BlockState blockState, World world, BlockPos blockPos,
                                 PlayerEntity playerEntity, Hand hand, BlockRayTraceResult rayTraceResult) {
-        if (!world.isClientSide() && hand == Hand.MAIN_HAND && playerEntity.getMainHandItem().isEmpty()) {
+        if (!world.isClientSide() && hand == Hand.MAIN_HAND && playerEntity.getMainHandItem().isEmpty()&&playerEntity.isCreative()) {
             world.setBlock(blockPos, blockState.cycle(getStageProperty()), Constants.BlockFlags.BLOCK_UPDATE);
         }
         return ActionResultType.SUCCESS;

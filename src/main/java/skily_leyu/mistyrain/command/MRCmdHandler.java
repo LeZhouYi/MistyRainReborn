@@ -10,6 +10,9 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber
 public class MRCmdHandler {
 
+    private MRCmdHandler() {
+    }
+
     @SubscribeEvent
     public static void onServerStarting(RegisterCommandsEvent event) {
         CommandDispatcher<CommandSource> dispatcher = event.getDispatcher();

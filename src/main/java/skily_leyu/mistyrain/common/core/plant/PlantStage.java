@@ -1,10 +1,6 @@
 package skily_leyu.mistyrain.common.core.plant;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 import javax.annotation.Nonnull;
 
@@ -16,8 +12,8 @@ public class PlantStage {
 
     public PlantStage() {
         this.nowStage = PlantStageType.NULL;
-        this.nextStages = new HashMap<>();
-        this.harvests = new HashMap<>();
+        this.nextStages = new EnumMap<>(PlantStageType.class);
+        this.harvests = new EnumMap<>(PlantStageType.class);
     }
 
     public void setHarvests(Map<PlantStageType, Map<String, Integer>> harvests) {
@@ -45,7 +41,7 @@ public class PlantStage {
      * 随机获取下一个生长状态类型
      */
     public PlantStageType getNextStageType(Random random) {
-        if (this.nextStages != null && this.nextStages.size() > 0) {
+        if (this.nextStages != null && !this.nextStages.isEmpty()) {
             int weight = 0;
             for (int value : this.nextStages.values()) {
                 weight += value;

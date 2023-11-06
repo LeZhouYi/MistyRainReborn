@@ -21,7 +21,6 @@ public class MRTimeDot {
 
     /**
      * 初始化
-     * @param world
      */
     public MRTimeDot(World world){
         this.nowTick = world.getDayTime();
@@ -31,9 +30,6 @@ public class MRTimeDot {
 
     /**
      * 更新
-     * @param monthStart
-     * @param daysPerMonth
-     * @return
      */
     public MRTimeDot update(int monthStart, int daysPerMonth){
         this.daysPerMonth = daysPerMonth;
@@ -43,8 +39,6 @@ public class MRTimeDot {
 
     /**
      * 更新
-     * @param world
-     * @return
      */
     public MRTimeDot update(World world){
         this.nowTick = world.getDayTime();
@@ -60,7 +54,6 @@ public class MRTimeDot {
 
     /**
      * 获取当前季节
-     * @return
      */
     public MRSeason getSeason(){
         return nowSeason!=null&&!needUpdate?nowSeason:setSeason();
@@ -68,7 +61,6 @@ public class MRTimeDot {
 
     /**
      * 更新季节
-     * @return
      */
     private MRSeason setSeason() {
         //设一月为0，冬季为3，3=((0+10)%12)/3
@@ -79,7 +71,6 @@ public class MRTimeDot {
 
     /**
      * 获取当前月份
-     * @return
      */
     public MRMonth getMonth(){
         return this.nowMonth!=null&&!needUpdate?this.nowMonth:setMonth();
@@ -87,7 +78,6 @@ public class MRTimeDot {
 
     /**
      * 更新月份
-     * @return
      */
     private MRMonth setMonth() {
         int months = (int)(getAllDays()/daysPerMonth);
@@ -97,7 +87,6 @@ public class MRTimeDot {
 
     /**
      * 获取总天数
-     * @return
      */
     public long getAllDays(){
         return this.allDays;
@@ -112,16 +101,14 @@ public class MRTimeDot {
 
     /**
      * 返回当前为当月的第几天
-     * @return
      */
     public int getMonthDay(){
-        //设alldays=1,每月=30天，首月的第一天=(1-1)%30+1=第一天
+        //设all_days=1,每月=30天，首月的第一天=(1-1)%30+1=第一天
         return (int)((getAllDays()-1)%daysPerMonth)+1;
     }
 
     /**
      * 获取当前节气
-     * @return
      */
     public MRSolarTerm getSolarTerm(){
         return this.nowSolarTerm!=null&&!needUpdate?this.nowSolarTerm:setSolarTerm();
@@ -129,19 +116,17 @@ public class MRTimeDot {
 
     /**
      * 返回时间的整体信息
-     * @return
      */
     public String getTimeInfo(){
         String season = getSeason().getI18nString();
         String month = getMonth().getI18nString();
         String day = getDayString(getMonthDay());
-        String solarterm = getSolarTerm().getI18nString();
-        return I18n.get("mrtime.info", season,month,day,solarterm);
+        String solarTerm = getSolarTerm().getI18nString();
+        return I18n.get("mr_time_info", season,month,day,solarTerm);
     }
 
     /**
      * 返回天数的本地化字串
-     * @return
      */
     public static String getDayString(int day){
         if(day>0&&day<=10){
@@ -149,14 +134,12 @@ public class MRTimeDot {
         }else if(day>10&&day<20){
             return String.format("%s%s", getDayBase(10),getDayBase(day-10));
         }else{
-            return String.format("%s%s", getDayBase(day/10),getDayBase(10),getDayBase(day%10));
+            return String.format("%s%s%s", getDayBase(day/10),getDayBase(10),getDayBase(day%10));
         }
     }
 
     /**
      * 返回基础的天数
-     * @param day
-     * @return
      */
     public static String getDayBase(int day){
         return I18n.get(String.format("day.%d", day));
@@ -164,36 +147,38 @@ public class MRTimeDot {
 
     /**
      * 更新节气
-     * @return
      */
     private MRSolarTerm setSolarTerm(){
         //设首月为2月，设天数为30天中的第4天，则节气=(22+1*2+0)%24=0
         //设首月为1月，设天数为30天中的第29天，则节气=(22+0*2+2)%24=0
         int monthIndex = getMonth().ordinal();
         float dayPercent = getMonthDay()/(float)daysPerMonth;
-        int extractIndex = dayPercent<5/30F?0:(dayPercent<20F/30F)?1:2; //偏移值，用于计算对应节气的下标
+        int extractIndex = countExtractIndex(dayPercent); //偏移值，用于计算对应节气的下标
         this.nowSolarTerm = MRSolarTerm.values()[(22+monthIndex*2+extractIndex)%24];
         return this.nowSolarTerm;
     }
 
+    public int countExtractIndex(float dayPercent){
+        if(dayPercent<5/30F){
+            return 0;
+        }
+        return dayPercent<20F/30F?1:2;
+    }
+
     /**
      * 获取当前节气与目标节气相差的天数
-     * @param solarTerm
-     * @return
      */
     public int diffDays(MRSolarTerm solarTerm) {
         //节气所占天数=daysPerMonth/2
         //设当前节气为3，设置节气为4，diff=(4-3+24)%24=1
         //设当前节气为5，设置节气为4，diff=(4-5+24)%24=23
-        int nowSolarDays = ((getMonthDay()+(int)(daysPerMonth/2-daysPerMonth*5/30F))-1)%(daysPerMonth/2)+1;
+        int nowSolarDays = ((getMonthDay()+(int)(daysPerMonth/2D-daysPerMonth*5D/30D))-1)%(daysPerMonth/2)+1;
         int diffSolarIndex = (solarTerm.ordinal()-getSolarTerm().ordinal()+24)%24;
         return (diffSolarIndex!=0)?(daysPerMonth/2*diffSolarIndex-nowSolarDays+1):0;
     }
 
     /**
      * 获取当前月份与目标月份相差的天数
-     * @param month
-     * @return
      */
     public int diffDays(MRMonth month) {
         //设当前月份为2月，目标月份为3月,当月23天，总月共30, diff=(3-2)*30-23=7
@@ -206,8 +191,6 @@ public class MRTimeDot {
 
     /**
      * 获取当前季节与目标季节相差的天数
-     * @param season
-     * @return
      */
     public int diffDays(MRSeason season) {
         int nowSeasonDays = (int)((getAllDays()-1)%(daysPerMonth*3)+1);

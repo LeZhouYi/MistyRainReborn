@@ -14,5 +14,9 @@ public class MRTiles {
             .register("mr_wooden_pot_tileentity", () -> TileEntityType.Builder.of(
                     TileWoodenPot::new, MRBlock.blockWoodenPot.get()
             ).build(null));
+    public static RegistryObject<TileEntityType<TileClayPot>> clayPotTileEntity = TILEENTITY_REGISTER
+            .register("mr_clay_pot_tileentity",()-> TileEntityType.Builder.of(
+                    TileClayPot::new,MRBlock.blockClayPot.get()
+            ).build(null));
 
 }

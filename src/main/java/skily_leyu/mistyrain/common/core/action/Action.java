@@ -12,8 +12,8 @@ import net.minecraft.item.ItemStack;
  */
 public class Action {
     @Nonnull
-    private ActionType actionType;
-    private int amount;
+    private final ActionType actionType;
+    private final int amount;
     @Nonnull
     private List<ItemStack> returnStacks;
 
@@ -43,8 +43,6 @@ public class Action {
 
     /**
      * 设置返还物品
-     *
-     * @param returnStacks
      */
     public void setReturnStacks(List<ItemStack> returnStacks) {
         this.returnStacks = (returnStacks != null) ? returnStacks : new ArrayList<>();
@@ -52,8 +50,6 @@ public class Action {
 
     /**
      * 获得操作后返还的物品
-     *
-     * @return
      */
     @Nonnull
     public List<ItemStack> getReturnStack() {
@@ -62,8 +58,6 @@ public class Action {
 
     /**
      * 获得操作类型
-     *
-     * @return
      */
     @Nonnull
     public ActionType getActionType() {
@@ -72,8 +66,6 @@ public class Action {
 
     /**
      * 获得操作后的整型数，一般指代减少/增加的物品数/流体量/耐久
-     *
-     * @return
      */
     public int getAmount() {
         return this.amount;
@@ -81,8 +73,6 @@ public class Action {
 
     /**
      * 判断当前操作是否为空
-     *
-     * @return
      */
     public boolean isEmpty() {
         return this.actionType == ActionType.EMPTY;

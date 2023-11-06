@@ -6,12 +6,14 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.ItemStackHandler;
 import skily_leyu.mistyrain.common.core.action.Action;
 import skily_leyu.mistyrain.common.core.action.ActionType;
 import skily_leyu.mistyrain.common.core.plant.Plant;
 import skily_leyu.mistyrain.common.core.pot.Pot;
 import skily_leyu.mistyrain.common.core.pot.PotHandler;
+import skily_leyu.mistyrain.common.utility.FluidUtils;
 import skily_leyu.mistyrain.common.utility.ItemUtils;
 import skily_leyu.mistyrain.config.MRSetting;
 import skily_leyu.mistyrain.config.MRConfig;
@@ -29,7 +31,7 @@ public abstract class TilePotBase extends TileBase implements ITickableTileEntit
     private int tickCount; // 计时
     private final String potKey; // 配置文件KeyName
 
-    public TilePotBase(TileEntityType<?> tileEntityType, String potKey) {
+    protected TilePotBase(TileEntityType<?> tileEntityType, String potKey) {
         super(tileEntityType);
         this.potKey = potKey;
         this.tickCount = getTickRate();
@@ -121,7 +123,10 @@ public abstract class TilePotBase extends TileBase implements ITickableTileEntit
             }
             // 添加土壤
             else if (!isSoilFull() && this.getPot().isSuitSoil(itemStack)) {
-                action = this.onSoilAdd(itemStack);
+                action = this.onFluidAdd(itemStack); //添加流体类土壤
+                if(action.isEmpty()){
+                    action = this.onSoilAdd(itemStack); //添加方块类土壤
+                }
             }
             //添加植物
             else if (!isSoilEmpty()){
@@ -132,6 +137,18 @@ public abstract class TilePotBase extends TileBase implements ITickableTileEntit
             syncToTrackingClients();
         }
         return action;
+    }
+
+    public Action onFluidAdd(ItemStack itemStack) {
+        FluidStack fluidStack = FluidUtils.getFluidStack(itemStack);
+        if (!fluidStack.isEmpty()
+                && fluidStack.getAmount() >= 1000) {
+            int amount = ItemUtils.addItemInHandler(this.dirtInv, itemStack, true);
+            if (amount > 0) {
+                return new Action(ActionType.ADD_FLUID, 1000);
+            }
+        }
+        return Action.EMPTY;
     }
 
     /**

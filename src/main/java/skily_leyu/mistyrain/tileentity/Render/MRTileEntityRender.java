@@ -9,9 +9,13 @@ import skily_leyu.mistyrain.tileentity.MRTiles;
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class MRTileEntityRender {
 
+    private MRTileEntityRender() {
+    }
+
     @SubscribeEvent
     public static void onClientEvent(FMLClientSetupEvent event) {
         ClientRegistry.bindTileEntityRenderer(MRTiles.woodenPotTileEntity.get(), WoodenPotTER::new);
+        ClientRegistry.bindTileEntityRenderer(MRTiles.clayPotTileEntity.get(), ClayPotTER::new);
     }
 
 }
