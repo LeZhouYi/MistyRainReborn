@@ -49,7 +49,7 @@
                 }
             ],
             "likeSoils": ["minecraft:farmland"],
-            "suitSoilTypes": ["DIRT"]
+            "suitSoilTypes": ["DIRT","HUMUS"]
         },
         "mistyrain:mr_green_wisteria":{
             "name":"mistyrain:mr_green_wisteria",
@@ -76,7 +76,7 @@
                 }
             ],
             "likeSoils":["minecraft:podzol"],
-            "suitSoilTypes":["HUMUS"]
+            "suitSoilTypes":["DIRT","HUMUS"]
         },
         "mistyrain:mr_candle_rush":{
             "name":"mistyrain:mr_candle_rush",
@@ -120,7 +120,7 @@
                 }
             ],
             "likeSoils":["minecraft:sand"],
-            "suitSoilTypes":["SAND"]
+            "suitSoilTypes":["SAND","DIRT","HUMUS"]
         },
         "mistyrain:mr_homing_plum":{
             "name":"mistyrain:mr_homing_plum",
@@ -171,7 +171,7 @@
                 }
             ],
             "likeSoils":["minecraft:gravel"],
-            "suitSoilTypes":["COBBLE"]
+            "suitSoilTypes":["DIRT","HUMUS"]
         },
         "mistyrain:mr_breeze_rattan":{
             "name":"mistyrain:mr_breeze_rattan",
@@ -215,7 +215,7 @@
                 }
             ],
             "likeSoils":["minecraft:cobble_stone"],
-            "suitSoilTypes":["COBBLE"]
+            "suitSoilTypes":["DIRT","HUMUS"]
         },
         "mistyrain:mr_narcissus":{
             "name":"mistyrain:mr_narcissus",

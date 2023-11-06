@@ -9,13 +9,19 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class MRRenderType {
-    private MRRenderType(){}
+    private MRRenderType() {
+    }
+
     @SubscribeEvent
     public static void onRenderTypeSetup(FMLClientSetupEvent event) {
         RenderTypeLookup.setRenderLayer(MRBlock.blockWoodenPot.get(), RenderType.cutout());
         RenderTypeLookup.setRenderLayer(MRBlock.blockSnowVelvet.get(), RenderType.cutout());
-        RenderTypeLookup.setRenderLayer(MRBlock.blockClayPot.get(),RenderType.cutout());
-        RenderTypeLookup.setRenderLayer(MRBlock.blockNarcissus.get(),RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(MRBlock.blockClayPot.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(MRBlock.blockNarcissus.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(MRBlock.blockHomingPlum.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(MRBlock.blockGreenWisteria.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(MRBlock.blockCandleRush.get(), RenderType.cutout());
+        RenderTypeLookup.setRenderLayer(MRBlock.blockBreezeRattan.get(), RenderType.cutout());
     }
 
 }

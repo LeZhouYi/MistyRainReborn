@@ -1,4 +1,4 @@
-package skily_leyu.mistyrain.block.potplant;
+package skily_leyu.mistyrain.block;
 
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -6,13 +6,12 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer.Builder;
-import skily_leyu.mistyrain.block.BlockPotPlant;
 
-public class BlockCandleRush extends BlockPotPlant {
+public class BlockBreezeRattan extends BlockPotPlant {
 
-    private static IntegerProperty STAGE = IntegerProperty.create("plant_stage", 0, 4);
+    private static final IntegerProperty STAGE = IntegerProperty.create("plant_stage", 0, 4);
 
-    public BlockCandleRush() {
+    public BlockBreezeRattan() {
         super(AbstractBlock.Properties.of(Material.PLANT).noCollission());
         this.registerDefaultState(this.defaultBlockState().setValue(STAGE, 0));
         this.defaultBlockState().setValue(STAGE, 0);
