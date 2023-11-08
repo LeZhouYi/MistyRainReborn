@@ -55,14 +55,7 @@ public abstract class BlockPotBase extends Block {
                     ItemUtils.shrinkItem(playerEntity, itemStack, action.getAmount());
                     break;
                 case ADD_FLUID:
-                    Optional<FluidStack> fluidStackOp = FluidUtil.getFluidContained(itemStack);
-                    if (fluidStackOp.isPresent()) {
-                        FluidStack fluidStack = fluidStackOp.get();
-                        SoundEvent soundFluid = FluidUtils.getEmptyFluidSound(fluidStack);
-                        world.playSound(null, playerEntity.blockPosition(), soundFluid, SoundCategory.NEUTRAL, 1.0F,
-                                1.0F);
-                        FluidUtils.shrink(playerEntity, fluidStack, action.getAmount());
-                    }
+                    onAddFluid(world,playerEntity,itemStack,action);
                     break;
                 case REMOVE_SOIL:
                     world.playSound(null, playerEntity.blockPosition(), SoundEvents.GRAVEL_PLACE,
@@ -82,21 +75,41 @@ public abstract class BlockPotBase extends Block {
                     ItemUtils.hurtItem((ServerPlayerEntity) playerEntity, itemStack, action.getAmount());// 消耗耐久
                     ItemUtils.addItemToPlayer(action.getReturnStack(), playerEntity);// 获得物品返还
                     break;
+                case ADD_FERTI:
+                    ItemUtils.shrinkItem(playerEntity, itemStack, action.getAmount());
+                    break;
                 default:
             }
         } else if (tileEntity.canUseFerti(itemStack)) {
-            //渲染骨粉特效
-            Random rand = world.getRandom();
-            for (int particleCount = 0; particleCount < MRConfig.Client.PARTICLE_AMOUNT
-                    .get(); particleCount++) {
-                double x = blockPos.getX() + 0.1D + rand.nextDouble() * 0.8D;
-                double y = blockPos.getY() + 0.4D + rand.nextDouble() * 0.5D;
-                double z = blockPos.getZ() + 0.1D + rand.nextDouble() * 0.8D;
-                world.addParticle(ParticleTypes.HAPPY_VILLAGER, x, y, z, rand.nextGaussian(), 0.0D,
-                        rand.nextGaussian());
-            }
+            renderBoneParticle(world,blockPos);
         }
         return ActionResultType.SUCCESS;
+    }
+
+    protected void onAddFluid(World world, PlayerEntity playerEntity, ItemStack itemStack, Action action){
+        Optional<FluidStack> fluidStackOp = FluidUtil.getFluidContained(itemStack);
+        if (fluidStackOp.isPresent()) {
+            FluidStack fluidStack = fluidStackOp.get();
+            SoundEvent soundFluid = FluidUtils.getEmptyFluidSound(fluidStack);
+            world.playSound(null, playerEntity.blockPosition(), soundFluid, SoundCategory.NEUTRAL, 1.0F,
+                    1.0F);
+            FluidUtils.shrink(playerEntity, fluidStack, action.getAmount());
+        }
+    }
+
+    /**
+     * 渲染骨粉特效
+     */
+    protected void renderBoneParticle(World world,BlockPos blockPos){
+        Random rand = world.getRandom();
+        for (int particleCount = 0; particleCount < MRConfig.Client.PARTICLE_AMOUNT
+                .get(); particleCount++) {
+            double x = blockPos.getX() + 0.1D + rand.nextDouble() * 0.8D;
+            double y = blockPos.getY() + 0.4D + rand.nextDouble() * 0.5D;
+            double z = blockPos.getZ() + 0.1D + rand.nextDouble() * 0.8D;
+            world.addParticle(ParticleTypes.HAPPY_VILLAGER, x, y, z, rand.nextGaussian(), 0.0D,
+                    rand.nextGaussian());
+        }
     }
 
     @Override

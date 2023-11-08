@@ -11,6 +11,8 @@ public enum ActionType {
     ADD_SOIL, // 添加土壤
     ADD_FLUID, // 添加流体
     ADD_PLANT, // 添加植物
-    HARVEST // 收获
+    HARVEST, // 收获
+
+    ADD_FERTI //添加肥料
 
 }

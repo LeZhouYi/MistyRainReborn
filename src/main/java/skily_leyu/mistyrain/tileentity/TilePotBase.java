@@ -132,11 +132,22 @@ public abstract class TilePotBase extends TileBase implements ITickableTileEntit
             else if (!isSoilEmpty()){
                 action = this.onPlantAdd(itemStack);
             }
+            else if (canUseFerti(itemStack)){
+                action = this.onFertiAdd(itemStack);
+            }
         }
         if (!action.isEmpty()) {
             syncToTrackingClients();
         }
         return action;
+    }
+
+    public Action onFertiAdd(ItemStack itemStack) {
+        if(!itemStack.isEmpty()){
+            this.potHandler.tick(this);
+            return new Action(ActionType.ADD_FERTI,1);
+        }
+        return Action.EMPTY;
     }
 
     public Action onFluidAdd(ItemStack itemStack) {
