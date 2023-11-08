@@ -1,4 +1,4 @@
-package skily_leyu.mistyrain.common.utility;
+package skily_leyu.mistyrain.common;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -13,6 +13,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.wrappers.FluidBucketWrapper;
 
 public class FluidUtils {
+
+    private FluidUtils(){}
 
     /**
      * 返体清空流体的声音

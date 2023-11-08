@@ -1,4 +1,4 @@
-package skily_leyu.mistyrain.common.utility;
+package skily_leyu.mistyrain.common;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -14,6 +14,10 @@ import net.minecraft.world.biome.BiomeColors;
 import net.minecraftforge.fluids.FluidStack;
 
 public class RenderUtils {
+
+    public static float[] getRGBA(int color){
+        return new float[]{getRed(color),getGreen(color),getBlue(color),getAlpha(color)};
+    }
 
     public static float getRed(int color) {
         return (color >> 16 & 0xFF) / 255.0F;

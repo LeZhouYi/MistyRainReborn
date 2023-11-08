@@ -13,8 +13,8 @@ import skily_leyu.mistyrain.common.core.action.ActionType;
 import skily_leyu.mistyrain.common.core.plant.Plant;
 import skily_leyu.mistyrain.common.core.pot.Pot;
 import skily_leyu.mistyrain.common.core.pot.PotHandler;
-import skily_leyu.mistyrain.common.utility.FluidUtils;
-import skily_leyu.mistyrain.common.utility.ItemUtils;
+import skily_leyu.mistyrain.common.FluidUtils;
+import skily_leyu.mistyrain.common.ItemUtils;
 import skily_leyu.mistyrain.config.MRSetting;
 import skily_leyu.mistyrain.config.MRConfig;
 

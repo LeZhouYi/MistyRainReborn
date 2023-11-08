@@ -1,4 +1,4 @@
-package skily_leyu.mistyrain.tileentity.Render;
+package skily_leyu.mistyrain.tileentity.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
@@ -14,20 +14,24 @@ import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.model.data.EmptyModelData;
 import net.minecraftforge.fluids.FluidStack;
-import skily_leyu.mistyrain.common.utility.FluidUtils;
-import skily_leyu.mistyrain.common.utility.RenderUtils;
+import skily_leyu.mistyrain.common.FluidUtils;
+import skily_leyu.mistyrain.common.RenderUtils;
+import skily_leyu.mistyrain.common.math.Pos3;
 import skily_leyu.mistyrain.tileentity.TileClayPot;
 
-public class ClayPotTER extends TileEntityRenderer<TileClayPot> {
+import javax.annotation.ParametersAreNonnullByDefault;
 
-    public ClayPotTER(TileEntityRendererDispatcher rendererDispatcherIn) {
+@ParametersAreNonnullByDefault
+public class TERClayPot extends TileEntityRenderer<TileClayPot> {
+
+    public TERClayPot(TileEntityRendererDispatcher rendererDispatcherIn) {
         super(rendererDispatcherIn);
     }
 
-    private void add(IVertexBuilder renderer, MatrixStack stack, float x, float y, float z, float u, float v,
-            float r, float g, float b, float a) {
-        renderer.vertex(stack.last().pose(), x, y, z)
-                .color(r, g, b, a)
+    private void add(IVertexBuilder renderer, MatrixStack stack, Pos3 pos3, float u, float v,
+                     float[] argb) {
+        renderer.vertex(stack.last().pose(), pos3.getX(), pos3.getY(), pos3.getZ())
+                .color(argb[0], argb[1], argb[2], argb[3])
                 .uv(u, v)
                 .uv2(0, 240)
                 .normal(1, 0, 0)
@@ -36,7 +40,7 @@ public class ClayPotTER extends TileEntityRenderer<TileClayPot> {
 
     @Override
     public void render(TileClayPot tileEntityIn, float partialTicks, MatrixStack matrixStackIn,
-            IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
+                       IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
         // 流体
         ItemStack dirtStack = tileEntityIn.getDirtStack(0);
         if (!dirtStack.isEmpty()) {
@@ -45,22 +49,16 @@ public class ClayPotTER extends TileEntityRenderer<TileClayPot> {
             if (texture != null) {
                 IVertexBuilder builder = bufferIn.getBuffer(RenderType.translucent());
                 int color = RenderUtils.getLiquidColor(fluidStack, tileEntityIn);
+                float[] argb = RenderUtils.getRGBA(color);
 
-                float r = RenderUtils.getRed(color);
-                float g = RenderUtils.getGreen(color);
-                float b = RenderUtils.getBlue(color);
-                float a = RenderUtils.getAlpha(color);
-
-                float min = 0.15625F;
-                float max = 0.84375F;
-                float y = 0.15625F;
+                Pos3 pos = new Pos3(0.15625F,0.15625F,0.84375F);
 
                 matrixStackIn.pushPose();
-                // 顶面
-                add(builder, matrixStackIn, min, y, max, texture.getU0(), texture.getV1(), r, g, b, a);
-                add(builder, matrixStackIn, max, y, max, texture.getU1(), texture.getV1(), r, g, b, a);
-                add(builder, matrixStackIn, max, y, min, texture.getU1(), texture.getV0(), r, g, b, a);
-                add(builder, matrixStackIn, min, y, min, texture.getU0(), texture.getV0(), r, g, b, a);
+                //顶面
+                add(builder, matrixStackIn, pos, texture.getU0(), texture.getV1(), argb);
+                add(builder, matrixStackIn, pos.getZYZ(), texture.getU1(), texture.getV1(), argb);
+                add(builder, matrixStackIn, pos.getZYX(), texture.getU1(), texture.getV0(), argb);
+                add(builder, matrixStackIn, pos.getXYX(), texture.getU0(), texture.getV0(), argb);
 
                 matrixStackIn.popPose();
             }

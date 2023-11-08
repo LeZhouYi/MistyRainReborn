@@ -1,4 +1,4 @@
-package skily_leyu.mistyrain.tileentity.Render;
+package skily_leyu.mistyrain.tileentity.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 
@@ -15,9 +15,9 @@ import skily_leyu.mistyrain.tileentity.TileWoodenPot;
 
 import javax.annotation.Nonnull;
 
-public class WoodenPotTER extends TileEntityRenderer<TileWoodenPot>{
+public class TERWoodenPot extends TileEntityRenderer<TileWoodenPot>{
 
-    public WoodenPotTER(TileEntityRendererDispatcher rendererDispatcherIn) {
+    public TERWoodenPot(TileEntityRendererDispatcher rendererDispatcherIn) {
         super(rendererDispatcherIn);
     }
 

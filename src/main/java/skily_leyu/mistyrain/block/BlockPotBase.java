@@ -13,8 +13,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import skily_leyu.mistyrain.common.core.action.Action;
-import skily_leyu.mistyrain.common.utility.FluidUtils;
-import skily_leyu.mistyrain.common.utility.ItemUtils;
+import skily_leyu.mistyrain.common.FluidUtils;
+import skily_leyu.mistyrain.common.ItemUtils;
 import skily_leyu.mistyrain.config.MRConfig;
 import skily_leyu.mistyrain.tileentity.TilePotBase;
 

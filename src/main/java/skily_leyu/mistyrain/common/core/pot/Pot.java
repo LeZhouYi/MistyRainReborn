@@ -5,8 +5,8 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import skily_leyu.mistyrain.common.core.soil.SoilType;
-import skily_leyu.mistyrain.common.utility.FluidUtils;
-import skily_leyu.mistyrain.common.utility.ItemUtils;
+import skily_leyu.mistyrain.common.FluidUtils;
+import skily_leyu.mistyrain.common.ItemUtils;
 import skily_leyu.mistyrain.config.MRSetting;
 
 public class Pot {

@@ -6,11 +6,10 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer.Builder;
-import skily_leyu.mistyrain.block.BlockPotPlant;
 
 public class BlockNarcissus extends BlockPotPlant {
 
-    private static IntegerProperty STAGE = IntegerProperty.create("plant_stage", 0, 5);
+    private static final IntegerProperty STAGE = IntegerProperty.create("plant_stage", 0, 5);
 
     public BlockNarcissus() {
         super(AbstractBlock.Properties.of(Material.PLANT).noCollission());

@@ -1,4 +1,4 @@
-package skily_leyu.mistyrain.common.utility;
+package skily_leyu.mistyrain.common;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +13,8 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 
 public class ItemUtils {
+
+    private ItemUtils(){}
 
     /**
      * 添加物品给玩家
@@ -114,10 +116,10 @@ public class ItemUtils {
     public static ItemStack clearStackInHandler(ItemStackHandler handler, int slot) {
         if (handler != null && handler.getSlots() >= slot) {
             ItemStack backStack = handler.getStackInSlot(slot);
-            handler.setStackInSlot(slot, new ItemStack(null));
+            handler.setStackInSlot(slot, ItemStack.EMPTY);
             return backStack;
         }
-        return new ItemStack(null);
+        return ItemStack.EMPTY;
     }
 
     /**

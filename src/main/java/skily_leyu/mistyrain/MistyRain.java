@@ -1,20 +1,18 @@
 package skily_leyu.mistyrain;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import skily_leyu.mistyrain.block.MRBlock;
+import skily_leyu.mistyrain.block.MRBlocks;
 import skily_leyu.mistyrain.config.MRConfig;
 import skily_leyu.mistyrain.config.MRSetting;
-import skily_leyu.mistyrain.item.MRItem;
+import skily_leyu.mistyrain.item.MRItems;
 import skily_leyu.mistyrain.tileentity.MRTiles;
 
 import org.apache.logging.log4j.LogManager;
@@ -28,13 +26,12 @@ public class MistyRain {
     private static final Logger LOGGER = LogManager.getLogger();
 
     public MistyRain() {
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
+        IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
+        modBus.addListener(this::setup);
+        modBus.addGenericListener(Block.class,MRBlocks::registerBlocks);
+        modBus.addGenericListener(Item.class,MRItems::registerItems);
+
         MinecraftForge.EVENT_BUS.register(this);
-        MRBlock.BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
-        MRItem.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
         MRTiles.TILEENTITY_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, MRConfig.COMMON_CONFIG);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, MRConfig.CLIENT_CONFIG);
@@ -42,23 +39,6 @@ public class MistyRain {
 
     private void setup(final FMLCommonSetupEvent event){
         MRSetting.load();
-    }
-
-    private void doClientStuff(final FMLClientSetupEvent event) {
-        //PASS
-    }
-
-    private void enqueueIMC(final InterModEnqueueEvent event){
-        //PASS
-    }
-
-    private void processIMC(final InterModProcessEvent event){
-        //PASS
-    }
-
-    @SubscribeEvent
-    public void onServerStarting(FMLServerStartingEvent event) {
-        //PASS
     }
 
     public static Logger getLogger(){

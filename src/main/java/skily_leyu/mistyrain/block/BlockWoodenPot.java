@@ -5,7 +5,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.DyeColor;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTier;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -13,8 +12,6 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
-import skily_leyu.mistyrain.tileentity.TilePotBase;
 import skily_leyu.mistyrain.tileentity.TileWoodenPot;
 
 import javax.annotation.Nonnull;
@@ -29,7 +26,7 @@ public class BlockWoodenPot extends BlockPotBase {
         super(AbstractBlock.Properties.of(Material.WOOD, DyeColor.BROWN)
                 .harvestLevel(ItemTier.WOOD.getLevel()) //挖掘等级
                 .sound(SoundType.WOOD) //音效
-                .strength(2.0F, 3.0F)); //硬度，抗性
+                .strength(2.0F, 3.0F)); //硬度，抗性)
     }
 
     @Override
