@@ -12,7 +12,7 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
-import skily_leyu.mistyrain.common.core.action.Action;
+import skily_leyu.mistyrain.common.action.Action;
 import skily_leyu.mistyrain.common.FluidUtils;
 import skily_leyu.mistyrain.common.ItemUtils;
 import skily_leyu.mistyrain.config.MRConfig;

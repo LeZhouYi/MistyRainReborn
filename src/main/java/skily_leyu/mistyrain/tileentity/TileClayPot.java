@@ -7,8 +7,8 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-import skily_leyu.mistyrain.common.core.action.Action;
-import skily_leyu.mistyrain.common.core.action.ActionType;
+import skily_leyu.mistyrain.common.action.Action;
+import skily_leyu.mistyrain.common.action.ActionType;
 import skily_leyu.mistyrain.common.FluidUtils;
 import skily_leyu.mistyrain.common.ItemUtils;
 

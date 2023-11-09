@@ -7,10 +7,10 @@ import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.server.ServerWorld;
-import skily_leyu.mistyrain.common.core.time.MRMonth;
-import skily_leyu.mistyrain.common.core.time.MRSeason;
-import skily_leyu.mistyrain.common.core.time.MRSolarTerm;
-import skily_leyu.mistyrain.common.core.time.MRTimeDot;
+import skily_leyu.mistyrain.common.time.MRMonth;
+import skily_leyu.mistyrain.common.time.MRSeason;
+import skily_leyu.mistyrain.common.time.MRSolarTerm;
+import skily_leyu.mistyrain.common.time.MRTimeDot;
 import skily_leyu.mistyrain.config.MRConfig;
 
 public class MRCmdTime {

@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.PlantType;
 import net.minecraftforge.common.util.Constants;
-import skily_leyu.mistyrain.common.core.plant.IMRPlant;
+import skily_leyu.mistyrain.common.plant.IMRPlant;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;

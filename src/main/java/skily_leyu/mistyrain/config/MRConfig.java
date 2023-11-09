@@ -4,7 +4,7 @@ import java.util.Random;
 
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeConfigSpec;
-import skily_leyu.mistyrain.common.core.time.MRTimeDot;
+import skily_leyu.mistyrain.common.time.MRTimeDot;
 
 public class MRConfig {
 
