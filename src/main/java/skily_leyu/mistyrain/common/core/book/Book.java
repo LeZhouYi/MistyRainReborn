@@ -1,5 +1,7 @@
 package skily_leyu.mistyrain.common.core.book;
 
+import net.minecraft.util.text.TranslationTextComponent;
+
 import java.util.List;
 
 public class Book {
@@ -33,4 +35,9 @@ public class Book {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public TranslationTextComponent getName(){
+        return new TranslationTextComponent(key+"."+name);
+    }
+
 }

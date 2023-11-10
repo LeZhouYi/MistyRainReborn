@@ -60,5 +60,6 @@
   "block.mistyrain.mr_wooden_pot": "木盆",
   "block.mistyrain.mr_clay_pot": "粘土盆",
   "itemGroup.misty_main_group": "烟雨",
-  "item.mistyrain.mr_herbals_book": "百草书"
+  "item.mistyrain.mr_herbals_book": "百草书",
+  "herbals_book.name": "百草书"
 }

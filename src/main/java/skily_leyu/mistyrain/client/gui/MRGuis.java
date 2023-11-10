@@ -1,14 +1,14 @@
 package skily_leyu.mistyrain.client.gui;
 
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.network.NetworkRegistry;
-import net.minecraftforge.registries.ForgeRegistry;
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.text.TranslationTextComponent;
+import skily_leyu.mistyrain.common.MistyRain;
+import skily_leyu.mistyrain.data.MRSetting;
 
 public class MRGuis{
 
-    public static final int GUI_HERBALS_BOOK = 1;
-
     public MRGuis(){
+        Minecraft.getInstance().setScreen(new GuiMRBook(new TranslationTextComponent(MistyRain.MOD_ID+".test"),MRSetting.getHerbalsBook()));
     }
 
 }
