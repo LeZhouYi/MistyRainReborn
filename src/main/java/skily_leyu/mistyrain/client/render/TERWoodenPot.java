@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.model.data.EmptyModelData;
-import skily_leyu.mistyrain.tileentity.TileWoodenPot;
+import skily_leyu.mistyrain.common.tileentity.TileWoodenPot;
 
 import javax.annotation.Nonnull;
 

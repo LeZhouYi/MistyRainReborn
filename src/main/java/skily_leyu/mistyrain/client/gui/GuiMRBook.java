@@ -5,9 +5,9 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import skily_leyu.mistyrain.MistyRain;
-import skily_leyu.mistyrain.common.book.Book;
-import skily_leyu.mistyrain.common.book.PageStage;
+import skily_leyu.mistyrain.common.MistyRain;
+import skily_leyu.mistyrain.common.core.book.Book;
+import skily_leyu.mistyrain.common.core.book.PageStage;
 
 public class GuiMRBook extends Screen {
 

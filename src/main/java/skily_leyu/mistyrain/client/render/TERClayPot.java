@@ -14,10 +14,10 @@ import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.model.data.EmptyModelData;
 import net.minecraftforge.fluids.FluidStack;
-import skily_leyu.mistyrain.common.FluidUtils;
-import skily_leyu.mistyrain.common.RenderUtils;
-import skily_leyu.mistyrain.common.math.Pos3;
-import skily_leyu.mistyrain.tileentity.TileClayPot;
+import skily_leyu.mistyrain.common.core.FluidUtils;
+import skily_leyu.mistyrain.common.core.RenderUtils;
+import skily_leyu.mistyrain.common.core.math.Pos3;
+import skily_leyu.mistyrain.common.tileentity.TileClayPot;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
