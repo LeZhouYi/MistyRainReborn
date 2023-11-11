@@ -9,6 +9,9 @@ import java.nio.charset.StandardCharsets;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.fonts.Font;
+import net.minecraft.util.ResourceLocation;
 import skily_leyu.mistyrain.common.MistyRain;
 import skily_leyu.mistyrain.common.core.book.Book;
 import skily_leyu.mistyrain.common.core.plant.PlantMap;
@@ -21,6 +24,8 @@ public class MRSetting {
     private static PlantMap potPlants;
     private static PotMap potMap;
     private static Book herbalsBook;
+
+    private static final ResourceLocation FONT_ZH = new ResourceLocation(MistyRain.MOD_ID,"/font/HongLeiXingShuJianTi-2.otf");
 
     private MRSetting() {
     }

@@ -8,14 +8,18 @@ import skily_leyu.mistyrain.common.core.time.MRTimeDot;
 
 public class MRConfig {
 
+    private MRConfig(){}
+
     public static ForgeConfigSpec COMMON_CONFIG;
     public static ForgeConfigSpec CLIENT_CONFIG;
 
     public static class Client{
+        private Client(){}
         public static ForgeConfigSpec.IntValue PARTICLE_AMOUNT; //粒子特效数量
     }
 
     public static class TimeRule{
+        private TimeRule(){}
         public static ForgeConfigSpec.IntValue MONTH_START; //第一次进入游戏时的起始月份
         public static ForgeConfigSpec.IntValue DAYS_PER_MONTH; //多少天一个月
         public static ForgeConfigSpec.DoubleValue TEMPER_CHANGE_FACTOR; //节气对温度影响因子，数值越大影响越大
