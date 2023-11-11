@@ -25,8 +25,6 @@ public class MRSetting {
     private static PotMap potMap;
     private static Book herbalsBook;
 
-    private static final ResourceLocation FONT_ZH = new ResourceLocation(MistyRain.MOD_ID,"/font/HongLeiXingShuJianTi-2.otf");
-
     private MRSetting() {
     }
 
