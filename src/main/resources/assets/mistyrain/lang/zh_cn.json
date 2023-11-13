@@ -61,5 +61,8 @@
   "block.mistyrain.mr_clay_pot": "粘土盆",
   "itemGroup.misty_main_group": "烟雨",
   "item.mistyrain.mr_herbals_book": "百草书",
-  "herbals_book.name": "百草书"
+  "herbals_book.name": "百草书",
+  "herbals_book.author": "——乐语",
+  "herbals_book.description": "绿染桃红，风迟日慢，江南烟雨中。",
+  "chapter.plant.name": "草木"
 }

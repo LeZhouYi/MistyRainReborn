@@ -4,7 +4,13 @@
   "author": "author",
   "description": "description",
   "chapters": [
-
+    {
+      "key": "chapter.plants",
+      "name": "草木",
+      "icon": "mistyrain:mr_snow_velvet",
+      "parentNode": null,
+      "description": "晴川历历，芳草萋萋。"
+    }
   ],
   "contents": [
 
