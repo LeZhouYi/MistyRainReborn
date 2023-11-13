@@ -6,15 +6,16 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.ImageButton;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import skily_leyu.mistyrain.common.MistyRain;
 import skily_leyu.mistyrain.common.core.book.Book;
+import skily_leyu.mistyrain.common.core.book.Chapter;
 import skily_leyu.mistyrain.common.core.book.PageStage;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.ArrayList;
+import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
 @ParametersAreNonnullByDefault
@@ -30,6 +31,8 @@ public class GuiMRBook extends Screen {
     private ImageButton nextPageBtn;
     private ImageButton previousPageBtn;
     private ImageButton upperPageBtn;
+
+    private List<ChapterButton> chapterButtons;
 
     protected GuiMRBook(ITextComponent title, Book book) {
         super(title);
@@ -50,7 +53,30 @@ public class GuiMRBook extends Screen {
         this.addButton(previousPageBtn);
         this.addButton(upperPageBtn);
         this.addButton(nextPageBtn);
+        this.initChapter();
         super.init();
+    }
+
+    protected void initChapter(){
+        this.chapterButtons = new ArrayList<>();
+        if(pageStage.isRoot()){
+            //根目录
+            List<Chapter> rootChapter = this.book.getRootChapter();
+            int page = pageStage.getPage();
+            if(page==0){
+                //第一页，有封面
+                for(int i = 0;i<9;i++){
+                    if(i>=rootChapter.size()){
+                        break;
+                    }
+                    int tempX = i/3;
+                    int tempY = i%3;
+                    ChapterButton button = new ChapterButton(x+120+tempX+20*i,y+20+tempY*20,16,16,rootChapter.get(i));
+                    this.chapterButtons.add(button);
+                    this.addButton(button);
+                }
+            }
+        }
     }
 
     @Override
@@ -81,10 +107,11 @@ public class GuiMRBook extends Screen {
     public void renderCover(MatrixStack matrixStack) {
         if (pageStage.isRoot()) {
             float scale = 2.0F;
-            TranslationTextComponent name = this.book.getName();
             matrixStack.pushPose();
+            this.font.drawWordWrap(this.book.getDescription(),this.x+12,this.y+60,100,0x473C26);
+            this.font.draw(matrixStack,this.book.getAuthor(),this.x+70F,this.y+78F,0x473C26);
             matrixStack.scale(scale, scale, scale);
-            this.font.draw(matrixStack, name, (this.x + 20) / scale, (this.y + 20) / scale, 0x473C26);
+            this.font.draw(matrixStack, this.book.getName(), (this.x + 32) / scale, (this.y + 20) / scale, 0x473C26);
             matrixStack.popPose();
         }
     }

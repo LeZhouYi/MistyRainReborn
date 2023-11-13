@@ -2,6 +2,7 @@ package skily_leyu.mistyrain.common.core.book;
 
 import net.minecraft.util.text.TranslationTextComponent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Book {
@@ -38,6 +39,24 @@ public class Book {
 
     public TranslationTextComponent getName(){
         return new TranslationTextComponent(key+"."+name);
+    }
+
+    public TranslationTextComponent getAuthor(){
+        return new TranslationTextComponent(key+"."+author);
+    }
+
+    public TranslationTextComponent getDescription(){
+        return new TranslationTextComponent(key+"."+description);
+    }
+
+    public List<Chapter> getRootChapter(){
+        List<Chapter> rootChapter = new ArrayList<>();
+        for(Chapter chapter: this.chapters){
+            if(chapter.isRoot()){
+                rootChapter.add(chapter);
+            }
+        }
+        return rootChapter;
     }
 
 }

@@ -17,4 +17,7 @@ public class PageStage {
         return this.isChapter && this.page == 0;
     }
 
+    public int getPage() {
+        return page;
+    }
 }
