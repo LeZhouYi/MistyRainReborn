@@ -40,7 +40,7 @@ public class ButtonChapter extends Button {
     @Override
     public void renderButton(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         Minecraft minecraft = Minecraft.getInstance();
-        ItemStack itemIcon = this.chapter.getItemstack();
+        ItemStack itemIcon = this.chapter.getItemStack();
         minecraft.getItemRenderer().renderGuiItem(itemIcon,this.x,this.y);
         if(this.isHovered()){
             minecraft.getTextureManager().bind(BOOK_GUI_TEXTURES);

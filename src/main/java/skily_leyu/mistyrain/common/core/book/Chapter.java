@@ -27,7 +27,7 @@ public class Chapter {
         return new TranslationTextComponent(this.key+".description");
     }
 
-    public ItemStack getItemstack(){
+    public ItemStack getItemStack(){
         if(this.icon.isEmpty()){
             return ItemStack.EMPTY;
         }
@@ -36,5 +36,13 @@ public class Chapter {
 
     public String getKey() {
         return this.key;
+    }
+
+    public boolean isParentEqual(String parentNode) {
+        return this.parentNode!=null&&!this.parentNode.isEmpty()&&this.parentNode.equals(parentNode);
+    }
+
+    public String getParentNode() {
+        return this.parentNode;
     }
 }

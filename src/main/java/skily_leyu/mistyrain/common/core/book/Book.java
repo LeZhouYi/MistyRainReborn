@@ -57,14 +57,31 @@ public class Book {
         return teContents;
     }
 
+    public List<Chapter> getChapters(String parentNode){
+        List<Chapter> teChapters = new ArrayList<>();
+        if(parentNode!=null&&!parentNode.isEmpty()){
+            for(Chapter chapter:this.chapters){
+                if(chapter.isParentEqual(parentNode)){
+                    teChapters.add(chapter);
+                }
+            }
+        }
+        return teChapters;
+    }
+
     public boolean hasNext(PageStage pageStage) {
         if (pageStage.isRoot()) {
             int size = this.getRootChapter().size();
             int page = pageStage.getPage();
             return (page==0 && 16<size-1)||(page!=0 && (page+1)*16<size-1);
         } else if (pageStage.isChapter()) {
-            int size = this.getContents(pageStage.getUpper()).size();
-            return pageStage.getPage() * 16 < size - 1;
+            int index = pageStage.getIndex();
+            if(index<this.chapters.size()){
+                Chapter chapter = this.chapters.get(pageStage.getIndex());
+                int size = this.getChapters(chapter.getParentNode()).size();
+                return pageStage.getPage() * 16 < size - 1;
+            }
+            return false;
         } else {
             Content content = this.getContent(pageStage.getIndex());
             return content != null && content.getPage()+2 < pageStage.getPage();

@@ -8,7 +8,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.apache.logging.log4j.Level;
 import skily_leyu.mistyrain.common.MistyRain;
 import skily_leyu.mistyrain.common.core.RenderUtils;
 import skily_leyu.mistyrain.common.core.book.Book;
@@ -26,24 +25,26 @@ public class GuiMRBook extends Screen {
     private static final ResourceLocation BOOK_GUI_TEXTURES = new ResourceLocation(MistyRain.MOD_ID, "textures/gui/gui_mr_book.png");
     private static final ResourceLocation PAGE_GUI_TEXTURES = new ResourceLocation(MistyRain.MOD_ID, "textures/gui/gui_mr_book_page.png");
 
-    private final Book book;
-    private PageStage pageStage;
+    private final Book book; //书相关设置
+    private PageStage pageStage; //当前页
+    private List<PageStage> historiesPage; //历史翻页
     private int x;
     private int y;
-    private ImageButton nextPageBtn;
-    private ImageButton previousPageBtn;
-    private ImageButton upperPageBtn;
+    private ImageButton nextPageBtn; //下一页
+    private ImageButton previousPageBtn; //上一页
+    private ImageButton upperPageBtn; //返回上一级目录
 
-    private List<ButtonChapter> buttonChapters;
+    private List<ButtonChapter> buttonChapters; //动态缓存目录按钮
 
     protected GuiMRBook(ITextComponent title, Book book) {
         super(title);
         this.book = book;
         this.pageStage = new PageStage();
+        this.initHistories();
     }
 
-    public void setPageStage(PageStage pageStage) {
-        this.pageStage = pageStage;
+    public void initHistories(){
+        this.historiesPage = new ArrayList<>();
     }
 
     @Override
@@ -51,13 +52,20 @@ public class GuiMRBook extends Screen {
         updateXY();
         this.getMinecraft().keyboardHandler.setSendRepeatsToGui(true);
         this.previousPageBtn = new ImageButton(x + 89, y + 153, 16, 16, 0, 240, -16, BOOK_GUI_TEXTURES, button -> {
+            if(this.pageStage.getPage()>=2){
+                this.pageStage.addPage(-2);
+                this.updateChapter();
+            }
         });
         this.upperPageBtn = new ImageButton(x + 106, y + 153, 16, 16, 16, 240, -16, BOOK_GUI_TEXTURES, button -> {
+            if(!this.pageStage.isRoot()&&!this.historiesPage.isEmpty()){
+                this.pageStage = this.historiesPage.remove(this.historiesPage.size()-1);
+                this.updateChapter();
+            }
         });
         this.nextPageBtn = new ImageButton(x + 123, y + 153, 16, 16, 32, 240, -16, BOOK_GUI_TEXTURES, button -> {
             if(this.book.hasNext(this.pageStage)){
                 this.pageStage.addPage(2);
-                MistyRain.getLogger().log(Level.DEBUG,this.pageStage.getPage());
                 this.updateChapter();
             }
         });
@@ -72,7 +80,7 @@ public class GuiMRBook extends Screen {
     protected  void updateRootChapter(){
         List<Chapter> rootChapter = this.book.getRootChapter();//获取根目录
         int page = pageStage.getPage(); //所在页数
-        if(page<0){
+        if(page<0||!this.pageStage.isRoot()){
             return;//非法
         }
         for(int i = 0;i<16;i++){
@@ -82,8 +90,11 @@ public class GuiMRBook extends Screen {
                 //数量满足，添加按钮
                 int tempX = i%4;
                 int tempY = i/4;
-                ButtonChapter buttonChapter = new ButtonChapter(x+124+tempX*26,y+2+tempY*34,16,16,rootChapter.get(i),
-                        button-> this.setPageStage(new PageStage(true,false,0, chapterRight)));
+                ButtonChapter buttonChapter = new ButtonChapter(x+124+tempX*26,y+2+tempY*34,16,16,rootChapter.get(i), button-> {
+                            this.historiesPage.add(this.pageStage);
+                            this.pageStage = new PageStage(true,false,0,chapterRight);
+                            this.updateChapter();
+                        });
                 this.buttonChapters.add(buttonChapter);
                 this.addButton(buttonChapter);
             }
@@ -95,8 +106,11 @@ public class GuiMRBook extends Screen {
                 //数量满足，添加按钮
                 int tempX = i%4;
                 int tempY = i/4;
-                ButtonChapter buttonChapter = new ButtonChapter(x+12+tempX*26,y+2+tempY*34,16,16,rootChapter.get(i),
-                        button-> this.setPageStage(new PageStage(true,false,0, chapterLeft)));
+                ButtonChapter buttonChapter = new ButtonChapter(x+12+tempX*26,y+2+tempY*34,16,16,rootChapter.get(i), button-> {
+                    this.historiesPage.add(this.pageStage);
+                    this.pageStage =new PageStage(true,false,0,chapterLeft);
+                    this.updateChapter();
+                });
                 this.buttonChapters.add(buttonChapter);
                 this.addButton(buttonChapter);
             }
@@ -111,9 +125,7 @@ public class GuiMRBook extends Screen {
         if(!pageStage.isChapter()){
             return;
         }
-        if(pageStage.isRoot()){
-            this.updateRootChapter();
-        }
+        this.updateRootChapter();
     }
 
     @Override
