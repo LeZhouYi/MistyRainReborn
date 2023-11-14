@@ -1,18 +1,115 @@
 {
   "key": "herbals_book",
-  "name": "name",
-  "author": "author",
-  "description": "description",
   "chapters": [
     {
       "key": "chapter.plants",
-      "name": "草木",
       "icon": "mistyrain:mr_snow_velvet",
-      "parentNode": null,
-      "description": "晴川历历，芳草萋萋。"
+      "parentNode": null
+    },
+    {
+      "key": "chapter.plants",
+      "icon": "mistyrain:mr_snow_velvet",
+      "parentNode": null
+    },
+    {
+      "key": "chapter.plants",
+      "icon": "mistyrain:mr_snow_velvet",
+      "parentNode": null
+    },
+    {
+      "key": "chapter.plants",
+      "icon": "mistyrain:mr_snow_velvet",
+      "parentNode": null
+    },
+    {
+      "key": "chapter.plants",
+      "icon": "mistyrain:mr_snow_velvet",
+      "parentNode": null
+    },
+    {
+      "key": "chapter.plants",
+      "icon": "mistyrain:mr_snow_velvet",
+      "parentNode": null
+    },
+    {
+      "key": "chapter.plants",
+      "icon": "mistyrain:mr_snow_velvet",
+      "parentNode": null
+    },
+    {
+      "key": "chapter.plants",
+      "icon": "mistyrain:mr_snow_velvet",
+      "parentNode": null
+    },
+    {
+      "key": "chapter.plants",
+      "icon": "mistyrain:mr_snow_velvet",
+      "parentNode": null
+    },
+    {
+      "key": "chapter.plants",
+      "icon": "mistyrain:mr_snow_velvet",
+      "parentNode": null
+    },
+    {
+      "key": "chapter.plants",
+      "icon": "mistyrain:mr_snow_velvet",
+      "parentNode": null
+    },
+    {
+      "key": "chapter.plants",
+      "icon": "mistyrain:mr_snow_velvet",
+      "parentNode": null
+    },
+    {
+      "key": "chapter.plants",
+      "icon": "mistyrain:mr_snow_velvet",
+      "parentNode": null
+    },
+    {
+      "key": "chapter.plants",
+      "icon": "mistyrain:mr_snow_velvet",
+      "parentNode": null
+    },
+    {
+      "key": "chapter.plants",
+      "icon": "mistyrain:mr_snow_velvet",
+      "parentNode": null
+    },
+    {
+      "key": "chapter.plants",
+      "icon": "mistyrain:mr_snow_velvet",
+      "parentNode": null
+    },
+    {
+      "key": "chapter.plants",
+      "icon": "mistyrain:mr_snow_velvet",
+      "parentNode": null
+    },
+    {
+      "key": "chapter.plants",
+      "icon": "mistyrain:mr_snow_velvet",
+      "parentNode": null
+    },
+    {
+      "key": "chapter.plants",
+      "icon": "mistyrain:mr_snow_velvet",
+      "parentNode": null
+    },
+    {
+      "key": "chapter.plants",
+      "icon": "mistyrain:mr_snow_velvet",
+      "parentNode": null
     }
   ],
   "contents": [
+    {
+      "key": "content.snow_velvet",
+      "parentNode": "chapter.plants",
+      "itemKey": "mistyrain:mr_snow_velvet",
+      "texts": [
 
+      ]
+    }
   ]
 }

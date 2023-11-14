@@ -8,25 +8,11 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class Chapter {
 
     private String key; //关键字
-    private String name; //章名
     private String icon; //图标路径
     private String parentNode; //所属目录
-    private String description; //描述
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public void setIcon(String icon) {
         this.icon = icon;
-    }
-
-    public void setParentNode(String parentNode) {
-        this.parentNode = parentNode;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public boolean isRoot(){
@@ -34,14 +20,21 @@ public class Chapter {
     }
 
     public TranslationTextComponent getName(){
-        return new TranslationTextComponent(this.key+"."+this.name);
+        return new TranslationTextComponent(this.key+".name");
+    }
+
+    public TranslationTextComponent getDescription(){
+        return new TranslationTextComponent(this.key+".description");
     }
 
     public ItemStack getItemstack(){
-        if(this.name.isEmpty()){
+        if(this.icon.isEmpty()){
             return ItemStack.EMPTY;
         }
         return new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(icon)));
     }
 
+    public String getKey() {
+        return this.key;
+    }
 }

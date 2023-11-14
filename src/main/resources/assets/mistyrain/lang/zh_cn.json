@@ -64,5 +64,6 @@
   "herbals_book.name": "百草书",
   "herbals_book.author": "——乐语",
   "herbals_book.description": "绿染桃红，风迟日慢，江南烟雨中。",
-  "chapter.plant.name": "草木"
+  "chapter.plants.name": "草木",
+  "chapter.plants.description": "晴川历历，芳草萋萋。"
 }
