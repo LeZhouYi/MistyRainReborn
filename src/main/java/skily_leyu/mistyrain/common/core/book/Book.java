@@ -2,6 +2,7 @@ package skily_leyu.mistyrain.common.core.book;
 
 import net.minecraft.util.text.TranslationTextComponent;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,12 +58,15 @@ public class Book {
         return teContents;
     }
 
-    public List<Chapter> getChapters(String parentNode){
+    public List<Chapter> getChapters(Chapter chapter){
         List<Chapter> teChapters = new ArrayList<>();
-        if(parentNode!=null&&!parentNode.isEmpty()){
-            for(Chapter chapter:this.chapters){
-                if(chapter.isParentEqual(parentNode)){
-                    teChapters.add(chapter);
+        if(chapter!=null){
+            String parentNode = chapter.getParentNode();
+            if(parentNode!=null&&!parentNode.isEmpty()){
+                for(Chapter teChapter:this.chapters){
+                    if(teChapter.isParentEqual(parentNode)){
+                        teChapters.add(teChapter);
+                    }
                 }
             }
         }
@@ -78,7 +82,7 @@ public class Book {
             int index = pageStage.getIndex();
             if(index<this.chapters.size()){
                 Chapter chapter = this.chapters.get(pageStage.getIndex());
-                int size = this.getChapters(chapter.getParentNode()).size();
+                int size = this.getChapters(chapter).size();
                 return pageStage.getPage() * 16 < size - 1;
             }
             return false;
@@ -88,9 +92,18 @@ public class Book {
         }
     }
 
+    @Nullable
     public Content getContent(int index) {
         if (index >= 0 && index < this.contents.size()) {
             return this.contents.get(index);
+        }
+        return null;
+    }
+
+    @Nullable
+    public Chapter getChapter(int index) {
+        if(index>=0&&index<this.chapters.size()){
+            return this.chapters.get(index);
         }
         return null;
     }

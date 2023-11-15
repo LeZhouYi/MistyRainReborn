@@ -1,5 +1,8 @@
 package skily_leyu.mistyrain.common.core.book;
 
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
+
 import java.util.List;
 
 public class Content {
@@ -35,5 +38,9 @@ public class Content {
 
     public int getPage() {
         return this.texts.size();
+    }
+
+    public TranslationTextComponent getName() {
+        return new TranslationTextComponent(this.key+".name");
     }
 }

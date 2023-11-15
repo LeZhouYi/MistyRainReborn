@@ -78,11 +78,11 @@ public class GuiMRBook extends Screen {
     }
 
     protected  void updateRootChapter(){
-        List<Chapter> rootChapter = this.book.getRootChapter();//获取根目录
-        int page = pageStage.getPage(); //所在页数
-        if(page<0||!this.pageStage.isRoot()){
+        if(!this.pageStage.isChapter()||!this.pageStage.isRoot()){
             return;//非法
         }
+        List<Chapter> rootChapter = this.book.getRootChapter();//获取根目录
+        int page = this.pageStage.getPage(); //所在页数
         for(int i = 0;i<16;i++){
             //渲染右侧目录
             int chapterRight = page*16+i;
@@ -117,15 +117,25 @@ public class GuiMRBook extends Screen {
         }
     }
 
+    protected void updateChildChapter(){
+        if(!this.pageStage.isChapter()||this.pageStage.isRoot()){
+            return; //非法
+        }
+        int index = this.pageStage.getIndex();
+        Chapter chapter = this.book.getChapter(index);
+        List<Chapter> chapters = this.book.getChapters(chapter);
+        if(!chapters.isEmpty()){
+
+        }
+    }
+
     protected void updateChapter(){
         if(!this.buttonChapters.isEmpty()){
             this.buttons.removeAll(this.buttonChapters);
             this.buttonChapters.clear();
         }
-        if(!pageStage.isChapter()){
-            return;
-        }
         this.updateRootChapter();
+        this.updateChildChapter();
     }
 
     @Override
