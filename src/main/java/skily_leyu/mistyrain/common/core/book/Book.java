@@ -58,13 +58,13 @@ public class Book {
         return teContents;
     }
 
-    public List<Chapter> getChapters(Chapter chapter){
+    public List<Chapter> getChapters(Chapter chapter) {
         List<Chapter> teChapters = new ArrayList<>();
-        if(chapter!=null){
+        if (chapter != null) {
             String parentNode = chapter.getParentNode();
-            if(parentNode!=null&&!parentNode.isEmpty()){
-                for(Chapter teChapter:this.chapters){
-                    if(teChapter.isParentEqual(parentNode)){
+            if (parentNode != null && !parentNode.isEmpty()) {
+                for (Chapter teChapter : this.chapters) {
+                    if (teChapter.isParentEqual(parentNode)) {
                         teChapters.add(teChapter);
                     }
                 }
@@ -77,10 +77,10 @@ public class Book {
         if (pageStage.isRoot()) {
             int size = this.getRootChapter().size();
             int page = pageStage.getPage();
-            return (page==0 && 16<size-1)||(page!=0 && (page+1)*16<size-1);
+            return (page == 0 && 16 < size - 1) || (page != 0 && (page + 1) * 16 < size - 1);
         } else if (pageStage.isChapter()) {
             int index = pageStage.getIndex();
-            if(index<this.chapters.size()){
+            if (index < this.chapters.size()) {
                 Chapter chapter = this.chapters.get(pageStage.getIndex());
                 int size = this.getChapters(chapter).size();
                 return pageStage.getPage() * 16 < size - 1;
@@ -88,7 +88,7 @@ public class Book {
             return false;
         } else {
             Content content = this.getContent(pageStage.getIndex());
-            return content != null && content.getPage()+2 < pageStage.getPage();
+            return content != null && content.getPage() + 2 < pageStage.getPage();
         }
     }
 
@@ -102,7 +102,7 @@ public class Book {
 
     @Nullable
     public Chapter getChapter(int index) {
-        if(index>=0&&index<this.chapters.size()){
+        if (index >= 0 && index < this.chapters.size()) {
             return this.chapters.get(index);
         }
         return null;

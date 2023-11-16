@@ -15,20 +15,20 @@ public class Chapter {
         this.icon = icon;
     }
 
-    public boolean isRoot(){
+    public boolean isRoot() {
         return parentNode == null;
     }
 
-    public TranslationTextComponent getName(){
-        return new TranslationTextComponent(this.key+".name");
+    public TranslationTextComponent getName() {
+        return new TranslationTextComponent(this.key + ".name");
     }
 
-    public TranslationTextComponent getDescription(){
-        return new TranslationTextComponent(this.key+".description");
+    public TranslationTextComponent getDescription() {
+        return new TranslationTextComponent(this.key + ".description");
     }
 
-    public ItemStack getItemStack(){
-        if(this.icon.isEmpty()){
+    public ItemStack getItemStack() {
+        if (this.icon == null || this.icon.isEmpty()) {
             return ItemStack.EMPTY;
         }
         return new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(icon)));
@@ -39,7 +39,7 @@ public class Chapter {
     }
 
     public boolean isParentEqual(String parentNode) {
-        return this.parentNode!=null&&!this.parentNode.isEmpty()&&this.parentNode.equals(parentNode);
+        return this.parentNode != null && !this.parentNode.isEmpty() && this.parentNode.equals(parentNode);
     }
 
     public String getParentNode() {

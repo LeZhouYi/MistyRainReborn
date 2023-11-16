@@ -3,6 +3,7 @@ package skily_leyu.mistyrain.client.gui;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.widget.button.ImageButton;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
@@ -12,6 +13,7 @@ import skily_leyu.mistyrain.common.MistyRain;
 import skily_leyu.mistyrain.common.core.RenderUtils;
 import skily_leyu.mistyrain.common.core.book.Book;
 import skily_leyu.mistyrain.common.core.book.Chapter;
+import skily_leyu.mistyrain.common.core.book.Content;
 import skily_leyu.mistyrain.common.core.book.PageStage;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -34,7 +36,7 @@ public class GuiMRBook extends Screen {
     private ImageButton previousPageBtn; //上一页
     private ImageButton upperPageBtn; //返回上一级目录
 
-    private List<ButtonChapter> buttonChapters; //动态缓存目录按钮
+    private List<Button> buttonChapters; //动态缓存目录按钮
 
     protected GuiMRBook(ITextComponent title, Book book) {
         super(title);
@@ -43,7 +45,7 @@ public class GuiMRBook extends Screen {
         this.initHistories();
     }
 
-    public void initHistories(){
+    public void initHistories() {
         this.historiesPage = new ArrayList<>();
     }
 
@@ -52,19 +54,19 @@ public class GuiMRBook extends Screen {
         updateXY();
         this.getMinecraft().keyboardHandler.setSendRepeatsToGui(true);
         this.previousPageBtn = new ImageButton(x + 89, y + 153, 16, 16, 0, 240, -16, BOOK_GUI_TEXTURES, button -> {
-            if(this.pageStage.getPage()>=2){
+            if (this.pageStage.getPage() >= 2) {
                 this.pageStage.addPage(-2);
                 this.updateChapter();
             }
         });
         this.upperPageBtn = new ImageButton(x + 106, y + 153, 16, 16, 16, 240, -16, BOOK_GUI_TEXTURES, button -> {
-            if(!this.pageStage.isRoot()&&!this.historiesPage.isEmpty()){
-                this.pageStage = this.historiesPage.remove(this.historiesPage.size()-1);
+            if (!this.pageStage.isRoot() && !this.historiesPage.isEmpty()) {
+                this.pageStage = this.historiesPage.remove(this.historiesPage.size() - 1);
                 this.updateChapter();
             }
         });
         this.nextPageBtn = new ImageButton(x + 123, y + 153, 16, 16, 32, 240, -16, BOOK_GUI_TEXTURES, button -> {
-            if(this.book.hasNext(this.pageStage)){
+            if (this.book.hasNext(this.pageStage)) {
                 this.pageStage.addPage(2);
                 this.updateChapter();
             }
@@ -77,38 +79,41 @@ public class GuiMRBook extends Screen {
         super.init();
     }
 
-    protected  void updateRootChapter(){
-        if(!this.pageStage.isChapter()||!this.pageStage.isRoot()){
+    protected void updateRootChapter() {
+        if (!this.pageStage.isChapter() || !this.pageStage.isRoot()) {
             return;//非法
         }
         List<Chapter> rootChapter = this.book.getRootChapter();//获取根目录
+        if (rootChapter.isEmpty()) {
+            return;
+        }
         int page = this.pageStage.getPage(); //所在页数
-        for(int i = 0;i<16;i++){
+        for (int i = 0; i < 16; i++) {
             //渲染右侧目录
-            int chapterRight = page*16+i;
-            if(chapterRight<rootChapter.size()){
+            int chapterRight = page * 16 + i;
+            if (chapterRight < rootChapter.size()) {
                 //数量满足，添加按钮
-                int tempX = i%4;
-                int tempY = i/4;
-                ButtonChapter buttonChapter = new ButtonChapter(x+124+tempX*26,y+2+tempY*34,16,16,rootChapter.get(i), button-> {
-                            this.historiesPage.add(this.pageStage);
-                            this.pageStage = new PageStage(true,false,0,chapterRight);
-                            this.updateChapter();
-                        });
+                int tempX = i % 4;
+                int tempY = i / 4;
+                ButtonChapter buttonChapter = new ButtonChapter(x + 124 + tempX * 26, y + 2 + tempY * 34, 16, 16, rootChapter.get(i), button -> {
+                    this.historiesPage.add(this.pageStage);
+                    this.pageStage = new PageStage(true, false, 0, chapterRight);
+                    this.updateChapter();
+                });
                 this.buttonChapters.add(buttonChapter);
                 this.addButton(buttonChapter);
             }
-            if(page==0){
+            if (page == 0) {
                 continue;//第一页为目录，不渲染按钮
             }
-            int chapterLeft = (page-1)*16+i;
-            if(chapterLeft<rootChapter.size()){
+            int chapterLeft = (page - 1) * 16 + i;
+            if (chapterLeft < rootChapter.size()) {
                 //数量满足，添加按钮
-                int tempX = i%4;
-                int tempY = i/4;
-                ButtonChapter buttonChapter = new ButtonChapter(x+12+tempX*26,y+2+tempY*34,16,16,rootChapter.get(i), button-> {
+                int tempX = i % 4;
+                int tempY = i / 4;
+                ButtonChapter buttonChapter = new ButtonChapter(x + 12 + tempX * 26, y + 2 + tempY * 34, 16, 16, rootChapter.get(i), button -> {
                     this.historiesPage.add(this.pageStage);
-                    this.pageStage =new PageStage(true,false,0,chapterLeft);
+                    this.pageStage = new PageStage(true, false, 0, chapterLeft);
                     this.updateChapter();
                 });
                 this.buttonChapters.add(buttonChapter);
@@ -117,20 +122,29 @@ public class GuiMRBook extends Screen {
         }
     }
 
-    protected void updateChildChapter(){
-        if(!this.pageStage.isChapter()||this.pageStage.isRoot()){
+    protected void updateChildChapter() {
+        if (!this.pageStage.isChapter() || this.pageStage.isRoot()) {
             return; //非法
         }
         int index = this.pageStage.getIndex();
-        Chapter chapter = this.book.getChapter(index);
-        List<Chapter> chapters = this.book.getChapters(chapter);
-        if(!chapters.isEmpty()){
+        List<Content> contents = this.book.getContents(index);
+        if (contents.isEmpty()) {
+            return;
+        }
+        for (int i = 0; i < 4; i++) {
+            int teIndex = this.pageStage.getPage() * 4 + i;
+            if (teIndex < contents.size()) {
+                ButtonContent buttonContent = new ButtonContent(x + 14, y + 2 + i * 34, 90, 16, contents.get(teIndex), button -> {
 
+                });
+                this.buttonChapters.add(buttonContent);
+                this.addButton(buttonContent);
+            }
         }
     }
 
-    protected void updateChapter(){
-        if(!this.buttonChapters.isEmpty()){
+    protected void updateChapter() {
+        if (!this.buttonChapters.isEmpty()) {
             this.buttons.removeAll(this.buttonChapters);
             this.buttonChapters.clear();
         }
@@ -151,11 +165,14 @@ public class GuiMRBook extends Screen {
         super.render(matrixStack, mouseX, mouseY, partialTicks);
     }
 
+    public void renderContent(MatrixStack matrixStack){
+    }
+
     /**
      * 渲染书页背景
      */
     public void renderPaper(MatrixStack matrixStack) {
-        if (pageStage.isRoot()&&pageStage.getPage()==0) {
+        if (pageStage.isRoot() && pageStage.getPage() == 0) {
             this.getMinecraft().getTextureManager().bind(BOOK_GUI_TEXTURES);
         } else {
             this.getMinecraft().getTextureManager().bind(PAGE_GUI_TEXTURES);
@@ -164,13 +181,13 @@ public class GuiMRBook extends Screen {
     }
 
     public void renderCover(MatrixStack matrixStack) {
-        if (pageStage.isRoot()&&pageStage.getPage()==0) {
+        if (pageStage.isRoot() && pageStage.getPage() == 0) {
             float scale = 2.0F;
             matrixStack.pushPose();
-            this.font.drawWordWrap(this.book.getDescription(),this.x+12,this.y+60,100,0x473C26);
-            RenderUtils.drawRightString(matrixStack,this.font,this.book.getAuthor(),this.x+105F,this.y+78F,0x473C26);
+            this.font.drawWordWrap(this.book.getDescription(), this.x + 12, this.y + 60, 100, 0x473C26);
+            RenderUtils.drawRightString(matrixStack, this.font, this.book.getAuthor(), this.x + 105F, this.y + 78F, 0x473C26);
             matrixStack.scale(scale, scale, scale);
-            RenderUtils.drawCenterString(matrixStack,this.font,this.book.getName(),(this.x + 60) / scale, (this.y + 20) / scale,0x473C26);
+            RenderUtils.drawCenterString(matrixStack, this.font, this.book.getName(), (this.x + 60) / scale, (this.y + 20) / scale, 0x473C26);
             matrixStack.popPose();
         }
     }

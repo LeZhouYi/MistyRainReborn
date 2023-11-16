@@ -106,9 +106,25 @@
     {
       "key": "content.snow_velvet",
       "parentNode": "chapter.plants",
-      "itemKey": "mistyrain:mr_snow_velvet",
+      "itemIcon": "mistyrain:mr_snow_velvet",
       "texts": [
-
+          "content.snow_velvet.1"
+      ]
+    },
+    {
+      "key": "content.snow_velvet",
+      "parentNode": "chapter.plants",
+      "itemIcon": "mistyrain:mr_snow_velvet",
+      "texts": [
+        "content.snow_velvet.1"
+      ]
+    },
+    {
+      "key": "content.snow_velvet",
+      "parentNode": "chapter.plants",
+      "itemIcon": "mistyrain:mr_snow_velvet",
+      "texts": [
+        "content.snow_velvet.1"
       ]
     }
   ]
