@@ -6,13 +6,13 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class Content {
     private String key; //关键字
     private String parentNode; //所属目录
     private String itemIcon; //物品图标
-    private String imagePath; //图标资源路径
     private List<String> texts; //文本
 
     public void setKey(String key) {
@@ -25,10 +25,6 @@ public class Content {
 
     public void setItemIcon(String itemIcon) {
         this.itemIcon = itemIcon;
-    }
-
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
     }
 
     public void setTexts(List<String> texts) {
@@ -57,4 +53,13 @@ public class Content {
     public TranslationTextComponent getDescription() {
         return new TranslationTextComponent(this.key+".description");
     }
+
+    @Nullable
+    public TranslationTextComponent getText(int index){
+        if(index>=0&&index<this.texts.size()){
+            return new TranslationTextComponent(this.texts.get(index));
+        }
+        return null;
+    }
+
 }

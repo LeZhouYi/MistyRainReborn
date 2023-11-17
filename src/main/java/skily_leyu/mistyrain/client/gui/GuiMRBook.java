@@ -5,6 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.widget.button.ImageButton;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
@@ -134,7 +135,7 @@ public class GuiMRBook extends Screen {
         if (contents.isEmpty()) {
             return;
         }
-        MistyRain.getLogger().log(Level.DEBUG,"test");
+        MistyRain.getLogger().log(Level.DEBUG, "test");
         for (int i = 0; i < 8; i++) {
             int leftIndex = this.pageStage.getPage() * 8 + i;
             if (leftIndex < contents.size()) {
@@ -182,6 +183,18 @@ public class GuiMRBook extends Screen {
     }
 
     public void renderContent(MatrixStack matrixStack) {
+        if (this.pageStage.isChapter()) {
+            return;
+        }
+        int index = this.pageStage.getIndex();
+        Content content = this.book.getContent(index);
+        int page = this.pageStage.getPage();
+        if (page < content.getPage()) {
+            ItemStack itemStack = content.getItemStack();
+            if(!itemStack.isEmpty()){
+                minecraft.getItemRenderer().renderGuiItem(itemStack,this.x,this.y);
+            }
+        }
     }
 
     /**
