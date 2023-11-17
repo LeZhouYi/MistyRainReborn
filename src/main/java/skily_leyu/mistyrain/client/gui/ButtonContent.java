@@ -40,6 +40,13 @@ public class ButtonContent extends Button {
             this.blit(matrixStack,(int)((this.x-3)/scale),(int)((this.y-2)/scale),235,235,21,21);
         }
         RenderSystem.scalef(rescale,rescale,rescale);
+        if(this.isHovered()){
+            List<TranslationTextComponent> tooltip = new ArrayList<>();
+            tooltip.add(this.content.getDescription());
+            if (minecraft.screen != null) {
+                GuiUtils.drawHoveringText(matrixStack, tooltip, this.x + 8, this.y - 2, minecraft.screen.width, minecraft.screen.height, 100, minecraft.font);
+            }
+        }
         minecraft.font.draw(matrixStack,this.content.getName(),this.x+16,this.y+3,0x473C26);
     }
 

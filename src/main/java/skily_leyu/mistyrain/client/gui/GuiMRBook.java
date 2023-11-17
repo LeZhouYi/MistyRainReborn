@@ -9,6 +9,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.apache.logging.log4j.Level;
 import skily_leyu.mistyrain.common.MistyRain;
 import skily_leyu.mistyrain.common.core.RenderUtils;
 import skily_leyu.mistyrain.common.core.book.Book;
@@ -103,9 +104,11 @@ public class GuiMRBook extends Screen {
                 this.buttonChapters.add(buttonChapter);
                 this.addButton(buttonChapter);
             }
-            if (page == 0) {
-                continue;//第一页为目录，不渲染按钮
-            }
+        }
+        if (page == 0) {
+            return;//第一页为目录，不渲染按钮
+        }
+        for (int i = 0; i < 16; i++) {
             int chapterLeft = (page - 1) * 16 + i;
             if (chapterLeft < rootChapter.size()) {
                 //数量满足，添加按钮
@@ -131,11 +134,24 @@ public class GuiMRBook extends Screen {
         if (contents.isEmpty()) {
             return;
         }
-        for (int i = 0; i < 4; i++) {
-            int teIndex = this.pageStage.getPage() * 4 + i;
-            if (teIndex < contents.size()) {
-                ButtonContent buttonContent = new ButtonContent(x + 14, y + 2 + i * 34, 90, 16, contents.get(teIndex), button -> {
-
+        MistyRain.getLogger().log(Level.DEBUG,"test");
+        for (int i = 0; i < 8; i++) {
+            int leftIndex = this.pageStage.getPage() * 8 + i;
+            if (leftIndex < contents.size()) {
+                ButtonContent buttonContent = new ButtonContent(x + 14, y + i * 17, 45, 16, contents.get(leftIndex), button -> {
+                    this.historiesPage.add(this.pageStage);
+                    this.pageStage = new PageStage(false, false, 0, leftIndex);
+                    this.updateChapter();
+                });
+                this.buttonChapters.add(buttonContent);
+                this.addButton(buttonContent);
+            }
+            int rightIndex = (this.pageStage.getPage() + 1) * 8 + i;
+            if (rightIndex < contents.size()) {
+                ButtonContent buttonContent = new ButtonContent(x + 126, y + i * 17, 45, 16, contents.get(leftIndex), button -> {
+                    this.historiesPage.add(this.pageStage);
+                    this.pageStage = new PageStage(false, false, 0, rightIndex);
+                    this.updateChapter();
                 });
                 this.buttonChapters.add(buttonContent);
                 this.addButton(buttonContent);
@@ -154,8 +170,8 @@ public class GuiMRBook extends Screen {
 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(matrixStack);
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        this.renderBackground(matrixStack);
         updateXY();
         this.renderPaper(matrixStack);
         this.renderCover(matrixStack);
@@ -165,7 +181,7 @@ public class GuiMRBook extends Screen {
         super.render(matrixStack, mouseX, mouseY, partialTicks);
     }
 
-    public void renderContent(MatrixStack matrixStack){
+    public void renderContent(MatrixStack matrixStack) {
     }
 
     /**

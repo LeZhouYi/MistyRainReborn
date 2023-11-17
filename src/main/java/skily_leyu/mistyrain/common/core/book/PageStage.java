@@ -16,7 +16,7 @@ public class PageStage {
 
 
     public PageStage(boolean isChapter, boolean isRoot, int page, int index) {
-        this.isChapter = true;
+        this.isChapter = isChapter;
         this.page = 0;
         this.isRoot = isRoot;
         this.index = index;
