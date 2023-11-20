@@ -43,6 +43,10 @@ public class Content {
         return new TranslationTextComponent(this.key + ".name");
     }
 
+    public TranslationTextComponent getProperty(){
+        return new TranslationTextComponent(this.key+".property");
+    }
+
     public ItemStack getItemStack() {
         if (this.itemIcon == null && !this.itemIcon.isEmpty()) {
             return ItemStack.EMPTY;

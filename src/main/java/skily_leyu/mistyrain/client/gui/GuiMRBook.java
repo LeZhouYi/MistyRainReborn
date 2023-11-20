@@ -176,6 +176,7 @@ public class GuiMRBook extends Screen {
         updateXY();
         this.renderPaper(matrixStack);
         this.renderCover(matrixStack);
+        this.renderContent(matrixStack);
         this.previousPageBtn.render(matrixStack, mouseX, mouseY, partialTicks);
         this.upperPageBtn.render(matrixStack, mouseX, mouseY, partialTicks);
         this.nextPageBtn.render(matrixStack, mouseX, mouseY, partialTicks);
@@ -189,11 +190,25 @@ public class GuiMRBook extends Screen {
         int index = this.pageStage.getIndex();
         Content content = this.book.getContent(index);
         int page = this.pageStage.getPage();
-        if (page < content.getPage()) {
+        if (page == 0) {
             ItemStack itemStack = content.getItemStack();
-            if(!itemStack.isEmpty()){
-                minecraft.getItemRenderer().renderGuiItem(itemStack,this.x,this.y);
+            if (!itemStack.isEmpty()) {
+                RenderSystem.scalef(2.0F,2.0F,2.0F);
+                minecraft.getItemRenderer().renderGuiItem(itemStack, (this.x+76)/2, (this.y-4)/2);
+                RenderSystem.scalef(0.5F,0.5F,0.5F);
             }
+            this.font.draw(matrixStack, content.getName(), this.x + 12F, this.y + 4F, 0x473C26);
+            this.font.draw(matrixStack, content.getProperty(), this.x + 12F, this.y + 16F, 0x473C26);
+            if (content.getPage() > 0) {
+                this.font.drawWordWrap(content.getText(0), this.x + 12, this.y + 28, 100, 0x473C26);
+            }
+        } else {
+            if (content.getPage() > 0 && page < content.getPage()) {
+                this.font.drawWordWrap(content.getText(page), this.x + 4, this.y + 4, 100, 0x473C26);
+            }
+        }
+        if (content.getPage() > 0 && page + 1 < content.getPage()) {
+            this.font.drawWordWrap(content.getText(page+1),this.x+124,this.y+4,100,0x473C26);
         }
     }
 
@@ -214,7 +229,7 @@ public class GuiMRBook extends Screen {
             float scale = 2.0F;
             matrixStack.pushPose();
             this.font.drawWordWrap(this.book.getDescription(), this.x + 12, this.y + 60, 100, 0x473C26);
-            RenderUtils.drawRightString(matrixStack, this.font, this.book.getAuthor(), this.x + 105F, this.y + 78F, 0x473C26);
+            RenderUtils.drawRightString(matrixStack, this.font, this.book.getAuthor(), this.x + 106F, this.y + 78F, 0x473C26);
             matrixStack.scale(scale, scale, scale);
             RenderUtils.drawCenterString(matrixStack, this.font, this.book.getName(), (this.x + 60) / scale, (this.y + 20) / scale, 0x473C26);
             matrixStack.popPose();

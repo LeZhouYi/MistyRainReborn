@@ -67,6 +67,7 @@
   "chapter.plants.name": "草木",
   "chapter.plants.description": "晴川历历，芳草萋萋。",
   "content.snow_velvet.name": "雪绒花",
+  "content.snow_velvet.property": "属性：植物、冰",
   "content.snow_velvet.description": "雪花飘飘，北风萧萧。",
-  "content.snow_velvet.1": ""
+  "content.snow_velvet.1": "雪崩的时候，没有一片雪花是无辜的。"
 }
