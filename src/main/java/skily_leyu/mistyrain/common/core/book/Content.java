@@ -1,19 +1,15 @@
 package skily_leyu.mistyrain.common.core.book;
 
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.registries.ForgeRegistries;
-
-import javax.annotation.Nullable;
-import java.util.List;
 
 public class Content {
     private String key; //关键字
     private String parentNode; //所属目录
     private String itemIcon; //物品图标
-    private List<String> texts; //文本
 
     public void setKey(String key) {
         this.key = key;
@@ -27,16 +23,17 @@ public class Content {
         this.itemIcon = itemIcon;
     }
 
-    public void setTexts(List<String> texts) {
-        this.texts = texts;
-    }
-
     public boolean isParentNode(String chapterKey) {
         return this.parentNode != null && !chapterKey.isEmpty() && this.parentNode.equals(chapterKey);
     }
 
-    public int getPage() {
-        return this.texts.size();
+    public int getPage(FontRenderer fontRenderer, BookProperty bookProperty) {
+        if(fontRenderer==null||bookProperty==null){
+            return 0;
+        }
+        TranslationTextComponent textComponent = this.getText();
+        int heightMax = fontRenderer.wordWrapHeight(textComponent.getString(),bookProperty.getTextWidth())+bookProperty.getTextOffset();
+        return (int) Math.ceil(heightMax/(double)bookProperty.getTextHeight());
     }
 
     public TranslationTextComponent getName() {
@@ -48,22 +45,18 @@ public class Content {
     }
 
     public ItemStack getItemStack() {
-        if (this.itemIcon == null && !this.itemIcon.isEmpty()) {
-            return ItemStack.EMPTY;
+        if (this.itemIcon != null && !this.itemIcon.isEmpty()) {
+            return new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(this.itemIcon)));
         }
-        return new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(this.itemIcon)));
+        return ItemStack.EMPTY;
     }
 
     public TranslationTextComponent getDescription() {
         return new TranslationTextComponent(this.key+".description");
     }
 
-    @Nullable
-    public TranslationTextComponent getText(int index){
-        if(index>=0&&index<this.texts.size()){
-            return new TranslationTextComponent(this.texts.get(index));
-        }
-        return null;
+    public TranslationTextComponent getText(){
+        return new TranslationTextComponent(this.key+".text");
     }
 
 }

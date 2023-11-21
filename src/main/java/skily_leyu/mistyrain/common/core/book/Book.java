@@ -1,5 +1,6 @@
 package skily_leyu.mistyrain.common.core.book;
 
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import javax.annotation.Nullable;
@@ -73,7 +74,7 @@ public class Book {
         return teChapters;
     }
 
-    public boolean hasNext(PageStage pageStage) {
+    public boolean hasNext(PageStage pageStage, FontRenderer fontRenderer, BookProperty bookProperty) {
         if (pageStage.isRoot()) {
             int size = this.getRootChapter().size();
             int page = pageStage.getPage();
@@ -88,7 +89,7 @@ public class Book {
             return false;
         } else {
             Content content = this.getContent(pageStage.getIndex());
-            return content != null && content.getPage() + 2 < pageStage.getPage();
+            return content != null && content.getPage(fontRenderer,bookProperty) + 2 > pageStage.getPage();
         }
     }
 

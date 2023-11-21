@@ -7,9 +7,17 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class Chapter {
 
-    private String key; //关键字
+    private final String key; //关键字
     private String icon; //图标路径
     private String parentNode; //所属目录
+
+    public void setParentNode(String parentNode) {
+        this.parentNode = parentNode;
+    }
+
+    public Chapter(String key) {
+        this.key = key;
+    }
 
     public void setIcon(String icon) {
         this.icon = icon;

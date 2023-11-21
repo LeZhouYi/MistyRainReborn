@@ -73,5 +73,4 @@ public class RenderUtils {
         int width = fontRenderer.width(component);
         fontRenderer.draw(matrixStack,component,x-width,y,color);
     }
-
 }

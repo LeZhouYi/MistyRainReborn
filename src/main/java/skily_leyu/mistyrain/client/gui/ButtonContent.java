@@ -47,7 +47,7 @@ public class ButtonContent extends Button {
                 GuiUtils.drawHoveringText(matrixStack, tooltip, this.x + 8, this.y - 2, minecraft.screen.width, minecraft.screen.height, 100, minecraft.font);
             }
         }
-        minecraft.font.draw(matrixStack,this.content.getName(),this.x+16,this.y+3,0x473C26);
+        minecraft.font.draw(matrixStack,this.content.getName(),this.x+16F,this.y+3F,0x473C26);
     }
 
 }
