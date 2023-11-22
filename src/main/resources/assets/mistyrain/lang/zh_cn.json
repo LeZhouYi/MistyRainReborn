@@ -70,10 +70,18 @@
 
   "chapter.plants.name": "草木",
   "chapter.plants.description": "晴川历历，芳草萋萋。",
-  "content.snow_velvet.name": "雪绒花",
+  "content.snow_velvet.name": "雪绒菊",
   "content.snow_velvet.property": "属性：植物、冰",
   "content.snow_velvet.description": "雪花飘飘，北风萧萧。",
   "content.snow_velvet.text": "盆栽植物，喜欢雪。\n花开烂漫时可以使用剪刀收获。",
+  "content.narcissus.name": "水仙花",
+  "content.narcissus.property": "属性：植物、水",
+  "content.narcissus.description": "白玉断笄金晕顶，幻成痴绝女儿花。",
+  "content.narcissus.text": "盆栽植物，喜欢水。\n花开烂漫时可以使用剪刀收获。",
+  "content.homing_plum.name": "落红梅",
+  "content.homing_plum.property": "属性：植物、土",
+  "content.homing_plum.description": "落红不是无情物，化作春泥更护花。",
+  "content.homing_plum.text": "盆栽植物，喜欢泥土。花开烂漫时可以使用剪刀收获。",
 
   "chapter.tools.name": "工具",
   "chapter.tools.description": "天工，开物。",
@@ -84,5 +92,5 @@
   "content.clay_pot.name": "粘土盆",
   "content.clay_pot.property": "属性：工具、土",
   "content.clay_pot.description": "手工捏造的粘土花盆。",
-  "content.clay_pot.text": "使用粘土制作的花盆，适合装一些流体（但不适合岩浆），并可以在上述方块种植喜欢该流体的植物。\n使用桶移除液体时会消耗该液体，没有返回。\n其余用法与木盆一样。"
+  "content.clay_pot.text": "使用粘土制作的花盆，适合装一些流体（但不适合岩浆），并可以在上述方块种植喜欢该流体的植物。\n使用桶可以移除液体。\n其余用法与木盆一样。"
 }

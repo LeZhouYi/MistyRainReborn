@@ -19,6 +19,16 @@
       "itemIcon": "mistyrain:mr_snow_velvet"
     },
     {
+      "key": "content.narcissus",
+      "parentNode": "chapter.plants",
+      "itemIcon": "mistyrain:mr_narcissus"
+    },
+    {
+      "key": "content.homing_plum",
+      "parentNode": "chapter.plants",
+      "itemIcon": "mistyrain:mr_homing_plum"
+    },
+    {
       "key": "content.wooden_pot",
       "parentNode": "chapter.tools",
       "itemIcon": "mistyrain:mr_wooden_pot"

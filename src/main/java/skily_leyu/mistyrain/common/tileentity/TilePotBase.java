@@ -8,8 +8,6 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.ItemStackHandler;
-import org.apache.logging.log4j.Level;
-import skily_leyu.mistyrain.common.MistyRain;
 import skily_leyu.mistyrain.common.core.action.Action;
 import skily_leyu.mistyrain.common.core.action.ActionType;
 import skily_leyu.mistyrain.common.core.plant.Plant;
@@ -110,7 +108,6 @@ public abstract class TilePotBase extends TileBase implements ITickableTileEntit
      */
     @Nonnull
     public Action onItemInteract(ItemStack itemStack) {
-        MistyRain.getLogger().log(Level.DEBUG,"test");
         Action action = Action.EMPTY;
         if (!itemStack.isEmpty()) {
             // 移除泥土/植物
@@ -126,7 +123,6 @@ public abstract class TilePotBase extends TileBase implements ITickableTileEntit
             }
             // 添加土壤
             else if (!isSoilFull() && this.getPot().isSuitSoil(itemStack)) {
-                MistyRain.getLogger().log(Level.DEBUG,"test2");
                 action = this.onFluidAdd(itemStack); //添加流体类土壤
                 if(action.isEmpty()){
                     action = this.onSoilAdd(itemStack); //添加方块类土壤

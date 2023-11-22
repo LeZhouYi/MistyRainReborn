@@ -78,4 +78,9 @@ public class Action {
         return this.actionType == ActionType.EMPTY;
     }
 
+    @Override
+    public String toString() {
+        return String.format("type:%s;amount:%d;return:%s",this.actionType,this.amount,this.returnStacks);
+    }
+
 }

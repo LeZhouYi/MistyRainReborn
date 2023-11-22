@@ -146,15 +146,13 @@ public class ItemUtils {
                 inputCount = Math.min(limit - slotStack.getCount(), itemNowCount);
             }
             // 输入物品
-            if (inputCount > 0 && !slotStack.isEmpty()) {
+            if (inputCount > 0 ) {
                 ItemStack splitStack = itemStack.copy();// 不减少原物品数量
-                if (!splitStack.isEmpty()) {
-                    splitStack.setCount(inputCount + slotStack.getCount());// 物品叠加
-                    handler.setStackInSlot(i, splitStack);
-                    itemNowCount -= inputCount;// 计算已用物品数
-                    if (once) {
-                        break;
-                    }
+                splitStack.setCount(inputCount + slotStack.getCount());// 物品叠加
+                handler.setStackInSlot(i, splitStack);
+                itemNowCount -= inputCount;// 计算已用物品数
+                if (once) {
+                    break;
                 }
             }
         }
