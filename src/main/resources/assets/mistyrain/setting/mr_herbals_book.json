@@ -7,98 +7,8 @@
       "parentNode": null
     },
     {
-      "key": "chapter.plants",
-      "icon": "mistyrain:mr_snow_velvet",
-      "parentNode": null
-    },
-    {
-      "key": "chapter.plants",
-      "icon": "mistyrain:mr_snow_velvet",
-      "parentNode": null
-    },
-    {
-      "key": "chapter.plants",
-      "icon": "mistyrain:mr_snow_velvet",
-      "parentNode": null
-    },
-    {
-      "key": "chapter.plants",
-      "icon": "mistyrain:mr_snow_velvet",
-      "parentNode": null
-    },
-    {
-      "key": "chapter.plants",
-      "icon": "mistyrain:mr_snow_velvet",
-      "parentNode": null
-    },
-    {
-      "key": "chapter.plants",
-      "icon": "mistyrain:mr_snow_velvet",
-      "parentNode": null
-    },
-    {
-      "key": "chapter.plants",
-      "icon": "mistyrain:mr_snow_velvet",
-      "parentNode": null
-    },
-    {
-      "key": "chapter.plants",
-      "icon": "mistyrain:mr_snow_velvet",
-      "parentNode": null
-    },
-    {
-      "key": "chapter.plants",
-      "icon": "mistyrain:mr_snow_velvet",
-      "parentNode": null
-    },
-    {
-      "key": "chapter.plants",
-      "icon": "mistyrain:mr_snow_velvet",
-      "parentNode": null
-    },
-    {
-      "key": "chapter.plants",
-      "icon": "mistyrain:mr_snow_velvet",
-      "parentNode": null
-    },
-    {
-      "key": "chapter.plants",
-      "icon": "mistyrain:mr_snow_velvet",
-      "parentNode": null
-    },
-    {
-      "key": "chapter.plants",
-      "icon": "mistyrain:mr_snow_velvet",
-      "parentNode": null
-    },
-    {
-      "key": "chapter.plants",
-      "icon": "mistyrain:mr_snow_velvet",
-      "parentNode": null
-    },
-    {
-      "key": "chapter.plants",
-      "icon": "mistyrain:mr_snow_velvet",
-      "parentNode": null
-    },
-    {
-      "key": "chapter.plants",
-      "icon": "mistyrain:mr_snow_velvet",
-      "parentNode": null
-    },
-    {
-      "key": "chapter.plants",
-      "icon": "mistyrain:mr_snow_velvet",
-      "parentNode": null
-    },
-    {
-      "key": "chapter.plants",
-      "icon": "mistyrain:mr_snow_velvet",
-      "parentNode": null
-    },
-    {
-      "key": "chapter.plants",
-      "icon": "mistyrain:mr_snow_velvet",
+      "key": "chapter.tools",
+      "icon": "mistyrain:mr_wooden_pot",
       "parentNode": null
     }
   ],
@@ -106,122 +16,16 @@
     {
       "key": "content.snow_velvet",
       "parentNode": "chapter.plants",
-      "itemIcon": "mistyrain:mr_snow_velvet",
-      "texts": [
-          "content.snow_velvet.1"
-      ]
+      "itemIcon": "mistyrain:mr_snow_velvet"
     },
     {
-      "key": "content.snow_velvet",
-      "parentNode": "chapter.plants",
-      "itemIcon": "mistyrain:mr_snow_velvet",
-      "texts": [
-        "content.snow_velvet.1"
-      ]
-    },
-    {
-      "key": "content.snow_velvet",
-      "parentNode": "chapter.plants",
-      "itemIcon": "mistyrain:mr_snow_velvet",
-      "texts": [
-        "content.snow_velvet.1"
-      ]
-    },
-    {
-      "key": "content.snow_velvet",
-      "parentNode": "chapter.plants",
-      "itemIcon": "mistyrain:mr_snow_velvet",
-      "texts": [
-        "content.snow_velvet.1"
-      ]
-    },
-    {
-      "key": "content.snow_velvet",
-      "parentNode": "chapter.plants",
-      "itemIcon": "mistyrain:mr_snow_velvet",
-      "texts": [
-        "content.snow_velvet.1"
-      ]
-    },
-    {
-      "key": "content.snow_velvet",
-      "parentNode": "chapter.plants",
-      "itemIcon": "mistyrain:mr_snow_velvet",
-      "texts": [
-        "content.snow_velvet.1"
-      ]
-    },
-    {
-      "key": "content.snow_velvet",
-      "parentNode": "chapter.plants",
-      "itemIcon": "mistyrain:mr_snow_velvet",
-      "texts": [
-        "content.snow_velvet.1"
-      ]
-    },
-    {
-      "key": "content.snow_velvet",
-      "parentNode": "chapter.plants",
-      "itemIcon": "mistyrain:mr_snow_velvet",
-      "texts": [
-        "content.snow_velvet.1"
-      ]
-    },
-    {
-      "key": "content.snow_velvet",
-      "parentNode": "chapter.plants",
-      "itemIcon": "mistyrain:mr_snow_velvet",
-      "texts": [
-        "content.snow_velvet.1"
-      ]
-    },
-    {
-      "key": "content.snow_velvet",
-      "parentNode": "chapter.plants",
-      "itemIcon": "mistyrain:mr_snow_velvet",
-      "texts": [
-        "content.snow_velvet.1"
-      ]
-    },
-    {
-      "key": "content.snow_velvet",
-      "parentNode": "chapter.plants",
-      "itemIcon": "mistyrain:mr_snow_velvet",
-      "texts": [
-        "content.snow_velvet.1"
-      ]
-    },
-    {
-      "key": "content.snow_velvet",
-      "parentNode": "chapter.plants",
-      "itemIcon": "mistyrain:mr_snow_velvet",
-      "texts": [
-        "content.snow_velvet.1"
-      ]
-    },
-    {
-      "key": "content.snow_velvet",
-      "parentNode": "chapter.plants",
-      "itemIcon": "mistyrain:mr_snow_velvet",
-      "texts": [
-        "content.snow_velvet.1"
-      ]
-    },
-    {
-      "key": "content.snow_velvet",
-      "parentNode": "chapter.plants",
-      "itemIcon": "mistyrain:mr_snow_velvet",
-      "texts": [
-        "content.snow_velvet.1"
-      ]
-    },
-    {
-      "key": "content.snow_velvet",
-      "parentNode": "chapter.plants",
-      "itemIcon": "mistyrain:mr_snow_velvet",
-      "texts": [
-        "content.snow_velvet.1"
-      ]
+      "key": "content.wooden_pot",
+      "parentNode": "chapter.tools",
+      "itemIcon": "mistyrain:mr_wooden_pot"
+    },{
+      "key": "content.clay_pot",
+      "parentNode": "chapter.tools",
+      "itemIcon": "mistyrain:mr_clay_pot"
     }
   ]
 }

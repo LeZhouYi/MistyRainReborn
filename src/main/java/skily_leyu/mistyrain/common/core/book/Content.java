@@ -1,6 +1,5 @@
 package skily_leyu.mistyrain.common.core.book;
 
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -25,15 +24,6 @@ public class Content {
 
     public boolean isParentNode(String chapterKey) {
         return this.parentNode != null && !chapterKey.isEmpty() && this.parentNode.equals(chapterKey);
-    }
-
-    public int getPage(FontRenderer fontRenderer, BookProperty bookProperty) {
-        if(fontRenderer==null||bookProperty==null){
-            return 0;
-        }
-        TranslationTextComponent textComponent = this.getText();
-        int heightMax = fontRenderer.wordWrapHeight(textComponent.getString(),bookProperty.getTextWidth())+bookProperty.getTextOffset();
-        return (int) Math.ceil(heightMax/(double)bookProperty.getTextHeight());
     }
 
     public TranslationTextComponent getName() {

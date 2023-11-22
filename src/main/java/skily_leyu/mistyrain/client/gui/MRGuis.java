@@ -15,6 +15,7 @@ public class MRGuis{
                 MRSetting.getHerbalsBook(),
                 new BookProperty().setColor(MRData.BOOK_COLOR).setTextWidth(MRData.TEXT_WIDTH)
                         .setTextHeight(MRData.TEXT_HEIGHT).setTextOffset(MRData.TEXT_OFFSET)
+                        .setLineHeight(MRData.LINE_HEIGHT)
         ));
     }
 

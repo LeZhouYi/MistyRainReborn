@@ -1,29 +1,32 @@
 {
-    "map":{
-        "DIRT":[
-            "minecraft:dirt",
-            "minecraft:farmland",
-            "minecraft:podzol",
-            "minecraft:grass_block",
-            "minecraft:coarse_dirt"
-        ],
-        "WATER":[
-            "minecraft:water"
-        ],
-        "SAND":[
-            "minecraft:sand",
-            "minecraft:red_sand",
-            "minecraft:gravel"
-        ],
-        "HUMUS":[
-            "minecraft:podzol"
-        ],
-        "COBBLE":[
-            "minecraft:cobblestone",
-            "minecraft:gravel"
-        ],
-        "LAVA":[
-            "minecraft:lava"
-        ]
-    }
+  "map": {
+    "DIRT": [
+      "minecraft:dirt",
+      "minecraft:farmland",
+      "minecraft:podzol",
+      "minecraft:grass_block",
+      "minecraft:coarse_dirt"
+    ],
+    "WATER": [
+      "minecraft:water"
+    ],
+    "SAND": [
+      "minecraft:sand",
+      "minecraft:red_sand",
+      "minecraft:gravel"
+    ],
+    "HUMUS": [
+      "minecraft:podzol"
+    ],
+    "COBBLE": [
+      "minecraft:cobblestone",
+      "minecraft:gravel"
+    ],
+    "LAVA": [
+      "minecraft:lava"
+    ],
+    "SNOW": [
+      "minecraft:snow_block"
+    ]
+  }
 }

@@ -7,16 +7,17 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import skily_leyu.mistyrain.common.block.MRBlocks;
-import skily_leyu.mistyrain.data.MRConfig;
-import skily_leyu.mistyrain.data.MRSetting;
-import skily_leyu.mistyrain.common.item.MRItems;
-import skily_leyu.mistyrain.common.tileentity.MRTiles;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import skily_leyu.mistyrain.client.render.MRTilesRender;
+import skily_leyu.mistyrain.common.block.MRBlocks;
+import skily_leyu.mistyrain.common.item.MRItems;
+import skily_leyu.mistyrain.common.tileentity.MRTiles;
+import skily_leyu.mistyrain.data.MRConfig;
+import skily_leyu.mistyrain.data.MRSetting;
 
 
 @Mod(MistyRain.MOD_ID)
@@ -28,8 +29,9 @@ public class MistyRain {
     public MistyRain() {
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
         modBus.addListener(this::setup);
-        modBus.addGenericListener(Block.class,MRBlocks::registerBlocks);
-        modBus.addGenericListener(Item.class,MRItems::registerItems);
+        modBus.addGenericListener(Block.class, MRBlocks::registerBlocks);
+        modBus.addGenericListener(Item.class, MRItems::registerItems);
+        modBus.addListener(this::doClientStuff);
 
         MinecraftForge.EVENT_BUS.register(this);
         MRTiles.TILEENTITY_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
@@ -37,11 +39,15 @@ public class MistyRain {
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, MRConfig.CLIENT_CONFIG);
     }
 
-    private void setup(final FMLCommonSetupEvent event){
+    private void doClientStuff(FMLClientSetupEvent event) {
+        MRTilesRender.onClientEvent(event);
+    }
+
+    private void setup(final FMLCommonSetupEvent event) {
         MRSetting.load();
     }
 
-    public static Logger getLogger(){
+    public static Logger getLogger() {
         return LOGGER;
     }
 

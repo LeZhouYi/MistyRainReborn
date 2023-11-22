@@ -15,6 +15,7 @@
   "mr_month.9.name": "子春",
   "mr_month.10.name": "葭月",
   "mr_month.11.name": "腊月",
+
   "mr_solar_term.0.name": "立春",
   "mr_solar_term.1.name": "雨水",
   "mr_solar_term.2.name": "惊蛰",
@@ -51,6 +52,7 @@
   "day.8": "八",
   "day.9": "九",
   "day.10": "十",
+
   "block.mistyrain.mr_snow_velvet": "雪绒菊",
   "block.mistyrain.mr_green_wisteria": "青萝藤",
   "block.mistyrain.mr_candle_rush": "烛芯草",
@@ -61,13 +63,26 @@
   "block.mistyrain.mr_clay_pot": "粘土盆",
   "itemGroup.misty_main_group": "烟雨",
   "item.mistyrain.mr_herbals_book": "百草书",
+
   "herbals_book.name": "百草书",
   "herbals_book.author": "——乐语",
   "herbals_book.description": "绿染桃红，风迟日慢，江南烟雨中。",
+
   "chapter.plants.name": "草木",
   "chapter.plants.description": "晴川历历，芳草萋萋。",
   "content.snow_velvet.name": "雪绒花",
   "content.snow_velvet.property": "属性：植物、冰",
   "content.snow_velvet.description": "雪花飘飘，北风萧萧。",
-  "content.snow_velvet.text": "雪崩的时候，没有一片雪花是无辜的。\n雪崩的时候，没有一片雪花是无辜的。\n雪崩的时候，没有一片雪花是无辜的。\n雪崩的时候，没有一片雪花是无辜的。\n雪崩的时候，没有一片雪花是无辜的。\n雪崩的时候，没有一片雪花是无辜的。\n雪崩的时候，没有一片雪花是无辜的。\n雪崩的时候，没有一片雪花是无辜的。\n雪崩的时候，没有一片雪花是无辜的。\n雪崩的时候，没有一片雪花是无辜的。\n雪崩的时候，没有一片雪花是无辜的。\n雪崩的时候，没有一片雪花是无辜的。\n雪崩的时候，没有一片雪花是无辜的。\n雪崩的时候，没有一片雪花是无辜的。\n雪崩的时候，没有一片雪花是无辜的。\n雪崩的时候，没有一片雪花是无辜的。\n雪崩的时候，没有一片雪花是无辜的。\n雪崩的时候，没有一片雪花是无辜的。\n雪崩的时候，没有一片雪花是无辜的。\n雪崩的时候，没有一片雪花是无辜的。\n雪崩的时候，没有一片雪花是无辜的。\n雪崩的时候，没有一片雪花是无辜的。\n雪崩的时候，没有一片雪花是无辜的。\n雪崩的时候，没有一片雪花是无辜的。\n雪崩的时候，没有一片雪花是无辜的。\n雪崩的时候，没有一片雪花是无辜的。"
+  "content.snow_velvet.text": "盆栽植物，喜欢雪。\n花开烂漫时可以使用剪刀收获。",
+
+  "chapter.tools.name": "工具",
+  "chapter.tools.description": "天工，开物。",
+  "content.wooden_pot.name": "木盆",
+  "content.wooden_pot.property": "属性：工具、木",
+  "content.wooden_pot.description": "一个简单的木制花盆。",
+  "content.wooden_pot.text": "使用常见的木板制作的花盆，适合装泥土/沙砾/沙子/雪等方块，并可以在上述方块种植喜欢该方块的植物。\n使用铲子/锄头可以移除植物/土壤并有对应掉落。\n使用骨粉可以催熟植物。\n使用剪刀可以采收植物，前提是该植物到达了收获期。",
+  "content.clay_pot.name": "粘土盆",
+  "content.clay_pot.property": "属性：工具、土",
+  "content.clay_pot.description": "手工捏造的粘土花盆。",
+  "content.clay_pot.text": "使用粘土制作的花盆，适合装一些流体（但不适合岩浆），并可以在上述方块种植喜欢该流体的植物。\n使用桶移除液体时会消耗该液体，没有返回。\n其余用法与木盆一样。"
 }

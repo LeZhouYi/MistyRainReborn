@@ -1,11 +1,13 @@
 package skily_leyu.mistyrain.common.core.book;
 
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.util.IReorderingProcessor;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Book {
     private String key; //关键字
@@ -46,17 +48,19 @@ public class Book {
         return rootChapter;
     }
 
-    public List<Content> getContents(int chapterIndex) {
-        List<Content> teContents = new ArrayList<>();
+    public List<Integer> getContentIndexSet(int chapterIndex) {
+        List<Integer> indexSet = new ArrayList<>();
         if (chapterIndex >= 0 && chapterIndex < this.chapters.size()) {
             String chapterKey = this.chapters.get(chapterIndex).getKey();
+            int index = 0;
             for (Content c : this.contents) {
                 if (c.isParentNode(chapterKey)) {
-                    teContents.add(c);
+                    indexSet.add(index);
                 }
+                index += 1;
             }
         }
-        return teContents;
+        return indexSet;
     }
 
     public List<Chapter> getChapters(Chapter chapter) {
@@ -89,7 +93,9 @@ public class Book {
             return false;
         } else {
             Content content = this.getContent(pageStage.getIndex());
-            return content != null && content.getPage(fontRenderer,bookProperty) + 2 > pageStage.getPage();
+            List<IReorderingProcessor> texts = fontRenderer.split(Objects.requireNonNull(content).getText(), bookProperty.getTextWidth());
+            int lineIndexStart = bookProperty.getLineIndex(pageStage.getPage() + 2);
+            return lineIndexStart < texts.size();
         }
     }
 

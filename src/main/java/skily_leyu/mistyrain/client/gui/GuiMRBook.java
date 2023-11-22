@@ -12,7 +12,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.apache.logging.log4j.Level;
 import skily_leyu.mistyrain.common.MistyRain;
 import skily_leyu.mistyrain.common.core.RenderUtils;
 import skily_leyu.mistyrain.common.core.book.*;
@@ -70,7 +69,6 @@ public class GuiMRBook extends Screen {
         );
         this.nextPageBtn = this.addButton(new ImageButton(x + 123, y + 153, 16, 16, 32, 240, -16, BOOK_GUI_TEXTURES, button -> {
             if (this.book.hasNext(this.pageStage, this.font, bookProperty)) {
-                MistyRain.getLogger().log(Level.DEBUG,"test");
                 this.pageStage.addPage(2);
                 this.updateChapter();
             }
@@ -78,6 +76,9 @@ public class GuiMRBook extends Screen {
         this.updateChapter();
     }
 
+    /**
+     * 更新根目录
+     */
     protected void updateRootChapter() {
         if (!this.pageStage.isRoot()) {
             return;//非法
@@ -91,7 +92,7 @@ public class GuiMRBook extends Screen {
             int xOffset = (tePage % 2 == 0) ? 12 : 124;
             if (tePage > 0) {
                 for (int i = 0; i < 16; i++) {
-                    int chapterIndex = (tePage-1) * 16 + i;
+                    int chapterIndex = (tePage - 1) * 16 + i;
                     if (chapterIndex < rootChapter.size()) {
                         //数量满足，添加按钮
                         int tempX = i % 4;
@@ -110,23 +111,31 @@ public class GuiMRBook extends Screen {
         }
     }
 
+    /**
+     * 更新子目录
+     */
     protected void updateChildChapter() {
         if (this.pageStage.isRoot()) {
             return; //非法
         }
         int index = this.pageStage.getIndex();
-        List<Content> contents = this.book.getContents(index);
-        if (contents.isEmpty()) {
+        List<Integer> indexSet = this.book.getContentIndexSet(index);
+        if (indexSet.isEmpty()) {
             return;
         }
         int page = this.pageStage.getPage();
         for (int tePage : new int[]{page, page + 1}) {
             int xOffset = (tePage % 2 == 0) ? 14 : 126;
             for (int i = 0; i < 8; i++) {
-                int contentIndex = tePage * 8 + i;
-                if (contentIndex < contents.size()) {
+                int teIndex = tePage * 8 + i;
+                if (teIndex < indexSet.size()) {
+                    int contentIndex = indexSet.get(teIndex);
+                    Content content = this.book.getContent(contentIndex);
+                    if(content==null){
+                        continue;
+                    }
                     ButtonContent buttonContent = this.addButton(
-                            new ButtonContent(x + xOffset, y + i * 17, 45, 16, contents.get(contentIndex), button -> {
+                            new ButtonContent(x + xOffset, y + i * 17, 45, 16, content, button -> {
                                 this.historiesPage.add(this.pageStage);
                                 this.pageStage = new PageStage(false, false, 0, contentIndex);
                                 this.updateChapter();
@@ -138,18 +147,24 @@ public class GuiMRBook extends Screen {
         }
     }
 
+    /**
+     * 更新/清除/添加目录相关控件
+     */
     protected void updateChapter() {
         if (this.buttonChapters == null) {
             this.buttonChapters = new ArrayList<>();
         }
         if (!this.buttonChapters.isEmpty()) {
             this.buttons.removeAll(this.buttonChapters);
+            for (Button button : this.buttonChapters) {
+                button.active = false;
+            }
             this.buttonChapters.clear();
         }
-        if(this.pageStage.isChapter()){
-            if(this.pageStage.isRoot()){
+        if (this.pageStage.isChapter()) {
+            if (this.pageStage.isRoot()) {
                 this.updateRootChapter();
-            }else{
+            } else {
                 this.updateChildChapter();
             }
         }
@@ -157,7 +172,7 @@ public class GuiMRBook extends Screen {
 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        if(!RenderSystem.isOnGameThread()){
+        if (!RenderSystem.isOnGameThread()) {
             return;
         }
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -175,38 +190,44 @@ public class GuiMRBook extends Screen {
         super.render(matrixStack, mouseX, mouseY, partialTicks);
     }
 
-    public void renderHeader(MatrixStack matrixStack){
+    /**
+     * 渲染书页内容的标题部分
+     */
+    public void renderHeader(MatrixStack matrixStack) {
         int index = this.pageStage.getIndex();
         Content content = this.book.getContent(index);
-        int page = this.pageStage.getPage();
-        if (page == 0) {
-            ItemStack itemStack = Objects.requireNonNull(content).getItemStack();
+        if (this.pageStage.getPage() == 0&&content!=null) {
+            ItemStack itemStack = content.getItemStack();
             ItemRenderer itemRenderer = Objects.requireNonNull(this.minecraft).getItemRenderer();
             if (!itemStack.isEmpty()) {
-                RenderSystem.scalef(2.0F, 2.0F, 2.0F);
-                itemRenderer.renderGuiItem(itemStack, (this.x + 76) / 2, (this.y - 4) / 2);
-                RenderSystem.scalef(0.5F, 0.5F, 0.5F);
+                RenderSystem.scalef(1.6F, 1.6F, 1.6F);
+                itemRenderer.renderGuiItem(itemStack, (int) ((this.x + 76) / 1.6), (int) ((this.y - 2) / 1.6));
+                RenderSystem.scalef(0.625F, 0.625F, 0.625F);
             }
             this.font.draw(matrixStack, content.getName(), this.x + 12F, this.y + 4F, this.bookProperty.getColor());
-            this.font.draw(matrixStack, content.getProperty(), this.x + 12F, this.y + 16F, this.bookProperty.getColor());
+            this.font.draw(matrixStack, content.getProperty(), this.x + 12F, this.y + 14F, this.bookProperty.getColor());
 
         }
     }
 
+    /**
+     * 渲染书页内容
+     */
     public void renderContent(MatrixStack matrixStack) {
         Content content = this.book.getContent(this.pageStage.getIndex());
         int page = this.pageStage.getPage();
         List<IReorderingProcessor> texts = this.font.split(Objects.requireNonNull(content).getText(), this.bookProperty.getTextWidth());
-        int unit = this.bookProperty.getTextHeight() / this.font.lineHeight;
         for (int tePage : new int[]{page, page + 1}) {
             int xOffset = (tePage % 2 == 0) ? 12 : 124;
-            int yOffset = (tePage == 0) ? 28 : 4;
+            int yOffset = (tePage == 0) ? this.bookProperty.getTextOffset() : 4;
+            int unit = this.bookProperty.getUnit(tePage);
+            int lineIndexStart = this.bookProperty.getLineIndex(tePage);
             for (int i = 0; i < unit; i++) {
-                int lineIndex = unit * tePage + i;
+                int lineIndex = lineIndexStart + i;
                 if (lineIndex < texts.size()) {
                     this.font.draw(matrixStack, texts.get(lineIndex),
                             this.x + (float) xOffset,
-                            this.y + (float) yOffset + i * 9,
+                            this.y + (float) yOffset + i * bookProperty.getLineHeight(),
                             this.bookProperty.getColor());
                 }
             }
@@ -225,6 +246,9 @@ public class GuiMRBook extends Screen {
         this.blit(matrixStack, x, y - 10, 0, 0, 230, 160);
     }
 
+    /**
+     * 渲染封面的内容
+     */
     public void renderCover(MatrixStack matrixStack) {
         if (pageStage.isRoot() && pageStage.getPage() == 0) {
             float scale = 2.0F;
@@ -237,6 +261,9 @@ public class GuiMRBook extends Screen {
         }
     }
 
+    /**
+     * 计算渲染中心位置
+     */
     private void updateXY() {
         this.x = (this.width - 230) / 2;
         this.y = (this.height - 160) / 2;

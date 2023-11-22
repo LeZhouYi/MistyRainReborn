@@ -1,16 +1,15 @@
 package skily_leyu.mistyrain.common.tileentity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Nonnull;
-
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-import skily_leyu.mistyrain.common.core.action.Action;
-import skily_leyu.mistyrain.common.core.action.ActionType;
 import skily_leyu.mistyrain.common.core.FluidUtils;
 import skily_leyu.mistyrain.common.core.ItemUtils;
+import skily_leyu.mistyrain.common.core.action.Action;
+import skily_leyu.mistyrain.common.core.action.ActionType;
+
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TileClayPot extends TilePotBase {
 
@@ -34,6 +33,15 @@ public class TileClayPot extends TilePotBase {
         }
         return Action.EMPTY;
     }
+
+//
+//    @Override
+//    public boolean isRemoveTools(ItemStack itemStack) {
+//        if(!this.potHandler.isEmpty()){
+//            return super.isRemoveTools(itemStack);
+//        }
+//        return itemStack.getItem()== Items.BUCKET || itemStack.getItem() instanceof IFluidHandlerItem;
+//    }
 
     /**
      * 返还土壤时直接清空，没有额外返还

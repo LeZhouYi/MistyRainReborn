@@ -48,8 +48,8 @@
                     "harvests":{}
                 }
             ],
-            "likeSoils": ["minecraft:farmland"],
-            "suitSoilTypes": ["DIRT","HUMUS"]
+            "likeSoils": ["minecraft:snow_block"],
+            "suitSoilTypes": ["SNOW"]
         },
         "mistyrain:mr_green_wisteria":{
             "name":"mistyrain:mr_green_wisteria",
