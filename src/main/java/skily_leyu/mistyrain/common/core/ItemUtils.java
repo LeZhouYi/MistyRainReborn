@@ -15,6 +15,26 @@ public class ItemUtils {
 
     private ItemUtils(){}
 
+    /**
+     * 判断物品栏是否有空的位置
+     * @param handler
+     * @return
+     */
+    public static boolean isHandlerNotFull(ItemStackHandler handler){
+        if(handler!=null){
+            for(int i = 0;i<handler.getSlots();i++){
+                ItemStack itemStack = handler.getStackInSlot(i);
+                if(itemStack.isEmpty()){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 判断物品栏是否全空
+     */
     public static boolean isHandlerEmpty(ItemStackHandler handler){
         if(handler!=null){
             for(int i = 0;i<handler.getSlots();i++){

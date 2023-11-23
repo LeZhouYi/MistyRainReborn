@@ -1,21 +1,18 @@
 package skily_leyu.mistyrain.common.core.pot;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraftforge.common.util.Constants;
+import org.apache.logging.log4j.Level;
+import skily_leyu.mistyrain.common.MistyRain;
 import skily_leyu.mistyrain.common.core.plant.Plant;
 import skily_leyu.mistyrain.common.tileentity.TilePotBase;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.*;
 
 public class PotHandler {
 
@@ -89,7 +86,7 @@ public class PotHandler {
         try{
             this.stageMap.remove(i);
         }catch (NullPointerException e){
-            //pass
+            MistyRain.getLogger().log(Level.ERROR,e.getStackTrace());
         }
 
     }

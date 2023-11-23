@@ -43,18 +43,17 @@ public class TileClayPot extends TilePotBase {
 //        return itemStack.getItem()== Items.BUCKET || itemStack.getItem() instanceof IFluidHandlerItem;
 //    }
 
-    /**
-     * 返还土壤时直接清空，没有额外返还
-     */
-    @Override
-    @Nonnull
-    public Action onRemoveSoil() {
-        Action action = super.onRemoveSoil();
-        if (!action.isEmpty()) {
-            action.setReturnStacks(new ArrayList<>());
-        }
-        return action;
-    }
+//    /**
+//     * 返还土壤时直接清空，没有额外返还
+//     */
+//    @Nonnull
+//    public Action onRemoveSoil() {
+//        Action action = super.onRemoveSoil();
+//        if (!action.isEmpty()) {
+//            action.setReturnStacks(new ArrayList<>());
+//        }
+//        return action;
+//    }
 
     /**
      * 获取掉落物，排除土壤

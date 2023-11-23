@@ -57,6 +57,8 @@ public abstract class BlockPotBase extends Block {
                 case ADD_FLUID:
                     onAddFluid(world,playerEntity,itemStack,action);
                     break;
+                case REMOVE_FLUID:
+                    break;
                 case REMOVE_SOIL:
                     world.playSound(null, playerEntity.blockPosition(), SoundEvents.GRAVEL_PLACE,
                             SoundCategory.NEUTRAL, 1.0F, 1.0F);

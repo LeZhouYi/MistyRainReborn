@@ -29,6 +29,21 @@
       "itemIcon": "mistyrain:mr_homing_plum"
     },
     {
+      "key": "content.candle_rush",
+      "parentNode": "chapter.plants",
+      "itemIcon": "mistyrain:mr_candle_rush"
+    },
+    {
+      "key": "content.green_wisteria",
+      "parentNode": "chapter.plants",
+      "itemIcon": "mistyrain:mr_green_wisteria"
+    },
+    {
+      "key": "content.breeze_rattan",
+      "parentNode": "chapter.plants",
+      "itemIcon": "mistyrain:mr_breeze_rattan"
+    },
+    {
       "key": "content.wooden_pot",
       "parentNode": "chapter.tools",
       "itemIcon": "mistyrain:mr_wooden_pot"

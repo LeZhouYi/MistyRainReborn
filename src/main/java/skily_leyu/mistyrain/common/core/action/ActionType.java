@@ -12,7 +12,6 @@ public enum ActionType {
     ADD_FLUID, // 添加流体
     ADD_PLANT, // 添加植物
     HARVEST, // 收获
-
-    ADD_FERTI //添加肥料
-
+    ADD_FERTI, //添加肥料
+    REMOVE_FLUID //移除流体
 }

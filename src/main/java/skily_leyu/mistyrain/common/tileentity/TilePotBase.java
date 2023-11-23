@@ -7,16 +7,17 @@ import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.items.ItemStackHandler;
+import skily_leyu.mistyrain.common.core.FluidUtils;
+import skily_leyu.mistyrain.common.core.ItemUtils;
 import skily_leyu.mistyrain.common.core.action.Action;
 import skily_leyu.mistyrain.common.core.action.ActionType;
 import skily_leyu.mistyrain.common.core.plant.Plant;
 import skily_leyu.mistyrain.common.core.pot.Pot;
 import skily_leyu.mistyrain.common.core.pot.PotHandler;
-import skily_leyu.mistyrain.common.core.FluidUtils;
-import skily_leyu.mistyrain.common.core.ItemUtils;
-import skily_leyu.mistyrain.data.MRSetting;
 import skily_leyu.mistyrain.data.MRConfig;
+import skily_leyu.mistyrain.data.MRSetting;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -65,7 +66,7 @@ public abstract class TilePotBase extends TileBase implements ITickableTileEntit
             if (tickCount < 1) {
                 tickCount = getTickRate();
                 this.potHandler.tick(this); //检查植物生长
-                syncToTrackingClients();
+                this.syncToTrackingClients();
             }
         }
     }
@@ -75,7 +76,7 @@ public abstract class TilePotBase extends TileBase implements ITickableTileEntit
     public CompoundNBT save(CompoundNBT nbt) {
         nbt.put("DirtInv", this.dirtInv.serializeNBT());
         nbt.put("PlantInv", this.plantInv.serializeNBT());
-        nbt.put("PotHandler",this.potHandler.serializeNBT());
+        nbt.put("PotHandler", this.potHandler.serializeNBT());
         nbt.putInt("TickCount", tickCount);
         return super.save(nbt);
     }
@@ -109,48 +110,36 @@ public abstract class TilePotBase extends TileBase implements ITickableTileEntit
     @Nonnull
     public Action onItemInteract(ItemStack itemStack) {
         Action action = Action.EMPTY;
-        if (!itemStack.isEmpty()) {
-            // 移除泥土/植物
-            if (this.isRemoveTools(itemStack)) {
-                action = this.onRemovePlant();
-                if (action.isEmpty()) {
-                    action = this.onRemoveSoil();
-                }
-            }
-            // 收获产品
-            else if (this.isHarvestTools(itemStack)) {
-                action = this.onHarvest(itemStack);
-            }
-            // 添加土壤
-            else if (!isSoilFull() && this.getPot().isSuitSoil(itemStack)) {
-                action = this.onFluidAdd(itemStack); //添加流体类土壤
-                if(action.isEmpty()){
-                    action = this.onSoilAdd(itemStack); //添加方块类土壤
-                }
-            }
-            //添加植物
-            else if (!isSoilEmpty()){
-                action = this.onPlantAdd(itemStack);
-            }
-            else if (canUseFerti(itemStack)){
-                action = this.onFertiAdd(itemStack);
-            }
+        if (this.isRemoveTools(itemStack)) {
+            action = this.onRemoveBlock();
+        } else if (this.isFluidContainer(itemStack)) {
+            action = this.onFluidUse(itemStack);
+        } else if (this.isHarvestTools(itemStack)) {
+            action = this.onHarvest();
+        } else if (ItemUtils.isHandlerNotFull(this.dirtInv) && this.getPot().isSuitSoil(itemStack)) {
+            action = this.onSoilAdd(itemStack); //添加方块类土壤
+        } else if (!ItemUtils.isHandlerEmpty(this.dirtInv)) {
+            action = this.onPlantAdd(itemStack); //添加植物
+        } else if (canUseFerti(itemStack)) {
+            action = this.onFertiAdd();
         }
         if (!action.isEmpty()) {
-            syncToTrackingClients();
+            this.syncToTrackingClients();
         }
         return action;
     }
 
-    public Action onFertiAdd(ItemStack itemStack) {
-        if(!itemStack.isEmpty()){
-            this.potHandler.tick(this);
-            return new Action(ActionType.ADD_FERTI,1);
-        }
-        return Action.EMPTY;
+    protected boolean isFluidContainer(ItemStack itemStack) {
+        return itemStack.getItem() == Items.BUCKET || itemStack.getItem() instanceof IFluidHandlerItem;
     }
 
-    public Action onFluidAdd(ItemStack itemStack) {
+    protected Action onFertiAdd() {
+        this.potHandler.tick(this);
+        return new Action(ActionType.ADD_FERTI, 1);
+    }
+
+    protected Action onFluidUse(ItemStack itemStack) {
+        //添加流体
         FluidStack fluidStack = FluidUtils.getFluidStack(itemStack);
         if (!fluidStack.isEmpty()
                 && fluidStack.getAmount() >= 1000) {
@@ -159,31 +148,35 @@ public abstract class TilePotBase extends TileBase implements ITickableTileEntit
                 return new Action(ActionType.ADD_FLUID, 1000);
             }
         }
-        return Action.EMPTY;
-    }
-
-    /**
-     * 判断土壤栏是否全部存在土壤
-     */
-    public boolean isSoilFull() {
-        for (int i = 0; i < this.dirtInv.getSlots(); i++) {
-            if (this.dirtInv.getStackInSlot(i).isEmpty()) {
-                return false;
+        //移除流体
+        for (int i = this.dirtInv.getSlots() - 1; i >= 0; i--) {
+            ItemStack dirtStack = this.dirtInv.getStackInSlot(i);
+            if(!fluidStack.isEmpty()&&fluidStack.isFluidEqual(dirtStack)){
             }
         }
-        return true;
+        return Action.EMPTY;
     }
 
     /**
      * 移除植物
      */
     @Nonnull
-    public Action onRemovePlant() {
+    protected Action onRemoveBlock() {
         // 清空植物
-        for (int i = this.plantInv.getSlots() - 1; i >= 0; i--) {
-            ItemStack plantStack = ItemUtils.clearStackInHandler(plantInv, i);
-            if (!plantStack.isEmpty()) {
-                return new Action(ActionType.REMOVE_PLANT, 1, plantStack);
+        if (!this.potHandler.isEmpty()) {
+            for (int i = this.plantInv.getSlots() - 1; i >= 0; i--) {
+                ItemStack plantStack = ItemUtils.clearStackInHandler(plantInv, i);
+                if (!plantStack.isEmpty()) {
+                    this.potHandler.removePlant(i); //移除植物
+                    return new Action(ActionType.REMOVE_PLANT, 1, plantStack);
+                }
+            }
+        }
+        // 清空土壤
+        for (int i = this.dirtInv.getSlots() - 1; i >= 0; i--) {
+            ItemStack dirtStack = ItemUtils.clearStackInHandler(dirtInv, i);
+            if (!dirtStack.isEmpty()) {
+                return new Action(ActionType.REMOVE_SOIL, 1, dirtStack);
             }
         }
         return Action.EMPTY;
@@ -193,7 +186,7 @@ public abstract class TilePotBase extends TileBase implements ITickableTileEntit
      * 添加土壤
      */
     @Nonnull
-    public Action onSoilAdd(ItemStack itemStack) {
+    protected Action onSoilAdd(ItemStack itemStack) {
         int amount = ItemUtils.addItemInHandler(this.dirtInv, itemStack, true);
         if (amount > 0) {
             return new Action(ActionType.ADD_SOIL, amount);
@@ -205,27 +198,20 @@ public abstract class TilePotBase extends TileBase implements ITickableTileEntit
      * 执行收获的操作
      */
     @Nonnull
-    public Action onHarvest(ItemStack itemStack) {
+    protected Action onHarvest() {
         World world = this.getLevel();
         if (world != null) {
-            List<ItemStack> results = new ArrayList<>();
+            List<ItemStack> results = new ArrayList<>(this.potHandler.getHarvest(world.getRandom()));
             return new Action(ActionType.HARVEST, 1, results);
         }
         return Action.EMPTY;
     }
 
     /**
-     * 判断当前工具是否为移除工具
-     */
-    public boolean isRemoveTools(ItemStack itemStack) {
-        return itemStack.getItem() instanceof ShovelItem || itemStack.getItem() instanceof HoeItem;
-    }
-
-    /**
      * 1.若为植物，则在植物栏放置一次植物并设置该植物状态为0(一般为SeepDrop)
      */
     @Nonnull
-    public Action onPlantAdd(ItemStack itemStackIn) {
+    protected Action onPlantAdd(ItemStack itemStackIn) {
         Plant potPlant = MRSetting.getPlantMap().isPlantSeed(itemStackIn);
         if (potPlant != null) {
             for (int i = 0; i < this.dirtInv.getSlots(); i++) {
@@ -241,32 +227,29 @@ public abstract class TilePotBase extends TileBase implements ITickableTileEntit
         return Action.EMPTY;
     }
 
-
     /**
-     * 清空土壤，返回该物品
+     * 获取掉落物
      */
     @Nonnull
-    public Action onRemoveSoil() {
-        // 若清空土壤
-        for (int i = this.dirtInv.getSlots() - 1; i >= 0; i--) {
-            ItemStack dirtStack = ItemUtils.clearStackInHandler(dirtInv, i);
-            if (!dirtStack.isEmpty()) {
-                return new Action(ActionType.REMOVE_SOIL, 1, dirtStack);
-            }
-        }
-        return Action.EMPTY;
+    public List<ItemStack> getDrops() {
+        List<ItemStack> drops = new ArrayList<>();
+        drops.addAll(ItemUtils.getHandlerItem(this.dirtInv, false));
+        drops.addAll(ItemUtils.getHandlerItem(this.plantInv, false));
+        return drops;
     }
 
     /**
-     * 判断土壤栏是否为空
+     * 是否可以使用骨粉
      */
-    public boolean isSoilEmpty() {
-        for (int i = 0; i < this.dirtInv.getSlots(); i++) {
-            if (!this.dirtInv.getStackInSlot(i).isEmpty()) {
-                return false;
-            }
-        }
-        return true;
+    public boolean canUseFerti(ItemStack itemStack) {
+        return itemStack.getItem() == Items.BONE_MEAL && !potHandler.isEmpty();
+    }
+
+    /**
+     * 判断当前工具是否为移除工具
+     */
+    protected boolean isRemoveTools(ItemStack itemStack) {
+        return itemStack.getItem() instanceof ShovelItem || itemStack.getItem() instanceof HoeItem;
     }
 
     /**
@@ -288,24 +271,6 @@ public abstract class TilePotBase extends TileBase implements ITickableTileEntit
             return this.dirtInv.getStackInSlot(slot);
         }
         return ItemStack.EMPTY;
-    }
-
-    /**
-     * 获取掉落物
-     */
-    @Nonnull
-    public List<ItemStack> getDrops() {
-        List<ItemStack> drops = new ArrayList<>();
-        drops.addAll(ItemUtils.getHandlerItem(this.dirtInv, false));
-        drops.addAll(ItemUtils.getHandlerItem(this.plantInv, false));
-        return drops;
-    }
-
-    /**
-     * 是否可以使用骨粉
-     */
-    public boolean canUseFerti(ItemStack itemStack){
-        return itemStack.getItem()==Items.BONE_MEAL && !potHandler.isEmpty();
     }
 
 }
