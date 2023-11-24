@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "   ",
+    "#w#",
+    "#-#"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:clay"
+    },
+    "-": {
+      "item": "minecraft:clay_ball"
+    },
+    "w": {
+      "item": "minecraft:water_bucket"
+    }
+  },
+  "result": {
+    "item": "mistyrain:mr_clay_pot",
+    "count": 1
+  }
+}

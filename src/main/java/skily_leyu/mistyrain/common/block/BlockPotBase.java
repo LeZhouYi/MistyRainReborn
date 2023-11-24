@@ -10,13 +10,16 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
-import skily_leyu.mistyrain.common.core.action.Action;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import skily_leyu.mistyrain.common.core.FluidUtils;
 import skily_leyu.mistyrain.common.core.ItemUtils;
-import skily_leyu.mistyrain.data.MRConfig;
+import skily_leyu.mistyrain.common.core.action.Action;
 import skily_leyu.mistyrain.common.tileentity.TilePotBase;
+import skily_leyu.mistyrain.data.MRConfig;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -55,27 +58,28 @@ public abstract class BlockPotBase extends Block {
                     ItemUtils.shrinkItem(playerEntity, itemStack, action.getAmount());
                     break;
                 case ADD_FLUID:
-                    onAddFluid(world,playerEntity,itemStack,action);
+                    onAddFluid(world, playerEntity, itemStack, action);
                     break;
                 case REMOVE_FLUID:
+                    onRemoveFluid(world, playerEntity, itemStack, action);
                     break;
                 case REMOVE_SOIL:
                     world.playSound(null, playerEntity.blockPosition(), SoundEvents.GRAVEL_PLACE,
                             SoundCategory.NEUTRAL, 1.0F, 1.0F);
                     ItemUtils.hurtItem((ServerPlayerEntity) playerEntity, itemStack, action.getAmount());// 消耗耐久
-                    ItemUtils.addItemToPlayer(action.getReturnStack(), playerEntity);// 获得物品返还
+                    ItemUtils.addItemToPlayer(action.getReturnStacks(), playerEntity);// 获得物品返还
                     break;
                 case REMOVE_PLANT:
                     world.playSound(null, playerEntity.blockPosition(), SoundEvents.CROP_BREAK,
                             SoundCategory.NEUTRAL, 1.0F, 1.0F);
                     ItemUtils.hurtItem((ServerPlayerEntity) playerEntity, itemStack, action.getAmount());// 消耗耐久
-                    ItemUtils.addItemToPlayer(action.getReturnStack(), playerEntity);// 获得物品返还
+                    ItemUtils.addItemToPlayer(action.getReturnStacks(), playerEntity);// 获得物品返还
                     break;
                 case HARVEST:
                     world.playSound(null, playerEntity.blockPosition(), SoundEvents.SHEEP_SHEAR,
                             SoundCategory.NEUTRAL, 1.0F, 1.0F);
                     ItemUtils.hurtItem((ServerPlayerEntity) playerEntity, itemStack, action.getAmount());// 消耗耐久
-                    ItemUtils.addItemToPlayer(action.getReturnStack(), playerEntity);// 获得物品返还
+                    ItemUtils.addItemToPlayer(action.getReturnStacks(), playerEntity);// 获得物品返还
                     break;
                 case ADD_FERTI:
                     ItemUtils.shrinkItem(playerEntity, itemStack, action.getAmount());
@@ -83,12 +87,12 @@ public abstract class BlockPotBase extends Block {
                 default:
             }
         } else if (tileEntity.canUseFerti(itemStack)) {
-            renderBoneParticle(world,blockPos);
+            renderBoneParticle(world, blockPos);
         }
         return ActionResultType.SUCCESS;
     }
 
-    protected void onAddFluid(World world, PlayerEntity playerEntity, ItemStack itemStack, Action action){
+    protected void onAddFluid(World world, PlayerEntity playerEntity, ItemStack itemStack, Action action) {
         Optional<FluidStack> fluidStackOp = FluidUtil.getFluidContained(itemStack);
         if (fluidStackOp.isPresent()) {
             FluidStack fluidStack = fluidStackOp.get();
@@ -99,10 +103,25 @@ public abstract class BlockPotBase extends Block {
         }
     }
 
+    protected void onRemoveFluid(World world, PlayerEntity playerEntity, ItemStack itemStack, Action action) {
+        LazyOptional<IFluidHandlerItem> dirtStackOp = FluidUtil.getFluidHandler(action.getReturnStacks().get(0));
+        if (dirtStackOp.isPresent()) {
+            Optional<IFluidHandlerItem> handlerItem = dirtStackOp.resolve();
+            if(handlerItem.isPresent()){
+                IFluidHandlerItem handler = handlerItem.get();
+                SoundEvent soundFluid = FluidUtils.getEmptyFluidSound(handler);
+                FluidActionResult result = FluidUtil.tryFillContainer(itemStack, handler, 1000, playerEntity, true);
+                if (result.isSuccess()) {
+                    world.playSound(null, playerEntity.blockPosition(), soundFluid, SoundCategory.NEUTRAL, 1.0F, 1.0F);
+                }
+            }
+        }
+    }
+
     /**
      * 渲染骨粉特效
      */
-    protected void renderBoneParticle(World world,BlockPos blockPos){
+    protected void renderBoneParticle(World world, BlockPos blockPos) {
         Random rand = world.getRandom();
         for (int particleCount = 0; particleCount < MRConfig.Client.PARTICLE_AMOUNT
                 .get(); particleCount++) {

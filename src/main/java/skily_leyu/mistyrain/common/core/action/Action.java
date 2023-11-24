@@ -1,11 +1,10 @@
 package skily_leyu.mistyrain.common.core.action;
 
-import java.util.ArrayList;
-import java.util.List;
+import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
-
-import net.minecraft.item.ItemStack;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 执行操作的结果记录
@@ -48,11 +47,18 @@ public class Action {
         this.returnStacks = (returnStacks != null) ? returnStacks : new ArrayList<>();
     }
 
+    public ItemStack getReturnStack(int index){
+        if(index>=0&&index<this.returnStacks.size()){
+            return this.returnStacks.get(index);
+        }
+        return ItemStack.EMPTY;
+    }
+
     /**
      * 获得操作后返还的物品
      */
     @Nonnull
-    public List<ItemStack> getReturnStack() {
+    public List<ItemStack> getReturnStacks() {
         return this.returnStacks;
     }
 

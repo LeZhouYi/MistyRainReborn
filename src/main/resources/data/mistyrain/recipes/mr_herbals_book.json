@@ -1,0 +1,45 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:book"
+    },
+    [
+      {
+        "tag": "forge:crops"
+      },
+      {
+        "tag": "minecraft:saplings"
+      },
+      {
+        "tag": "minecraft:flowers"
+      }
+    ],
+    [
+      {
+        "tag": "forge:crops"
+      },
+      {
+        "tag": "minecraft:saplings"
+      },
+      {
+        "tag": "minecraft:flowers"
+      }
+    ],
+    [
+      {
+        "tag": "forge:crops"
+      },
+      {
+        "tag": "minecraft:saplings"
+      },
+      {
+        "tag": "minecraft:flowers"
+      }
+    ]
+  ],
+  "result": {
+    "item": "mistyrain:mr_herbals_book",
+    "count": 1
+  }
+}

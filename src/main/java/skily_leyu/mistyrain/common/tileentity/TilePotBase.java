@@ -6,7 +6,10 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.items.ItemStackHandler;
 import skily_leyu.mistyrain.common.core.FluidUtils;
@@ -23,6 +26,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public abstract class TilePotBase extends TileBase implements ITickableTileEntity {
 
@@ -129,10 +133,16 @@ public abstract class TilePotBase extends TileBase implements ITickableTileEntit
         return action;
     }
 
+    /**
+     * 是否是流体容器
+     */
     protected boolean isFluidContainer(ItemStack itemStack) {
         return itemStack.getItem() == Items.BUCKET || itemStack.getItem() instanceof IFluidHandlerItem;
     }
 
+    /**
+     * 处理骨粉使用事件
+     */
     protected Action onFertiAdd() {
         this.potHandler.tick(this);
         return new Action(ActionType.ADD_FERTI, 1);
@@ -151,7 +161,17 @@ public abstract class TilePotBase extends TileBase implements ITickableTileEntit
         //移除流体
         for (int i = this.dirtInv.getSlots() - 1; i >= 0; i--) {
             ItemStack dirtStack = this.dirtInv.getStackInSlot(i);
-            if(!fluidStack.isEmpty()&&fluidStack.isFluidEqual(dirtStack)){
+            LazyOptional<IFluidHandlerItem> sourceItem = FluidUtil.getFluidHandler(dirtStack);
+            if(sourceItem.isPresent()){
+                Optional<IFluidHandlerItem> soureceItemOp = sourceItem.resolve();
+                if(soureceItemOp.isPresent()){
+                    IFluidHandlerItem handlerItem = soureceItemOp.get();
+                    FluidActionResult result = FluidUtil.tryFillContainer(itemStack,handlerItem,1000,null,false );
+                    if(result.isSuccess()){
+                        dirtStack = ItemUtils.clearStackInHandler(this.dirtInv,i);
+                        return new Action(ActionType.REMOVE_FLUID,100,dirtStack);
+                    }
+                }
             }
         }
         return Action.EMPTY;

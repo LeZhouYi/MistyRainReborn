@@ -172,7 +172,7 @@ public class GuiMRBook extends Screen {
 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        if (!RenderSystem.isOnGameThread()) {
+        if (!RenderSystem.isOnGameThread()||this.getMinecraft()==null) {
             return;
         }
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
