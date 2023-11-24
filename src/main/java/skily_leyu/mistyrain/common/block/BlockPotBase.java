@@ -10,11 +10,10 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.fluids.capability.wrappers.FluidBucketWrapper;
 import skily_leyu.mistyrain.common.core.FluidUtils;
 import skily_leyu.mistyrain.common.core.ItemUtils;
 import skily_leyu.mistyrain.common.core.action.Action;
@@ -61,7 +60,7 @@ public abstract class BlockPotBase extends Block {
                     onAddFluid(world, playerEntity, itemStack, action);
                     break;
                 case REMOVE_FLUID:
-                    onRemoveFluid(world, playerEntity, itemStack, action);
+                    onRemoveFluid(world, playerEntity, hand, itemStack, action);
                     break;
                 case REMOVE_SOIL:
                     world.playSound(null, playerEntity.blockPosition(), SoundEvents.GRAVEL_PLACE,
@@ -96,24 +95,21 @@ public abstract class BlockPotBase extends Block {
         Optional<FluidStack> fluidStackOp = FluidUtil.getFluidContained(itemStack);
         if (fluidStackOp.isPresent()) {
             FluidStack fluidStack = fluidStackOp.get();
-            SoundEvent soundFluid = FluidUtils.getEmptyFluidSound(fluidStack);
+            SoundEvent soundFluid = fluidStack.getFluid().getAttributes().getEmptySound();
             world.playSound(null, playerEntity.blockPosition(), soundFluid, SoundCategory.NEUTRAL, 1.0F,
                     1.0F);
             FluidUtils.shrink(playerEntity, fluidStack, action.getAmount());
         }
     }
 
-    protected void onRemoveFluid(World world, PlayerEntity playerEntity, ItemStack itemStack, Action action) {
-        LazyOptional<IFluidHandlerItem> dirtStackOp = FluidUtil.getFluidHandler(action.getReturnStacks().get(0));
-        if (dirtStackOp.isPresent()) {
-            Optional<IFluidHandlerItem> handlerItem = dirtStackOp.resolve();
-            if(handlerItem.isPresent()){
-                IFluidHandlerItem handler = handlerItem.get();
-                SoundEvent soundFluid = FluidUtils.getEmptyFluidSound(handler);
-                FluidActionResult result = FluidUtil.tryFillContainer(itemStack, handler, 1000, playerEntity, true);
-                if (result.isSuccess()) {
-                    world.playSound(null, playerEntity.blockPosition(), soundFluid, SoundCategory.NEUTRAL, 1.0F, 1.0F);
-                }
+    protected void onRemoveFluid(World world, PlayerEntity playerEntity, Hand hand, ItemStack itemStack, Action action) {
+        FluidBucketWrapper bucketWrapper = new FluidBucketWrapper(action.getReturnStacks().get(0));
+        if (!bucketWrapper.getFluid().isEmpty()) {
+            SoundEvent sound = bucketWrapper.getFluid().getFluid().getAttributes().getFillSound();
+            FluidActionResult result = FluidUtil.tryFillContainer(itemStack, bucketWrapper, action.getAmount(), playerEntity, true);
+            if (result.isSuccess()) {
+                ItemUtils.replaceHandItem(playerEntity, hand, result.getResult());
+                world.playSound(null, playerEntity.blockPosition(), sound, SoundCategory.NEUTRAL, 1.0F, 1.0F);
             }
         }
     }

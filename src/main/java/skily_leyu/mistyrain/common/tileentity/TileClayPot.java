@@ -34,26 +34,14 @@ public class TileClayPot extends TilePotBase {
         return Action.EMPTY;
     }
 
-//
-//    @Override
-//    public boolean isRemoveTools(ItemStack itemStack) {
-//        if(!this.potHandler.isEmpty()){
-//            return super.isRemoveTools(itemStack);
-//        }
-//        return itemStack.getItem()== Items.BUCKET || itemStack.getItem() instanceof IFluidHandlerItem;
-//    }
 
-//    /**
-//     * 返还土壤时直接清空，没有额外返还
-//     */
-//    @Nonnull
-//    public Action onRemoveSoil() {
-//        Action action = super.onRemoveSoil();
-//        if (!action.isEmpty()) {
-//            action.setReturnStacks(new ArrayList<>());
-//        }
-//        return action;
-//    }
+    @Override
+    public boolean isRemoveTools(ItemStack itemStack) {
+        if (!this.potHandler.isEmpty()) {
+            return super.isRemoveTools(itemStack);
+        }
+        return false;
+    }
 
     /**
      * 获取掉落物，排除土壤
