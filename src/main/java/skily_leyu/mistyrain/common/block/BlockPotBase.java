@@ -2,9 +2,12 @@ package skily_leyu.mistyrain.common.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.SoundType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
@@ -13,6 +16,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.minecraftforge.fluids.capability.wrappers.FluidBucketWrapper;
 import skily_leyu.mistyrain.common.core.FluidUtils;
 import skily_leyu.mistyrain.common.core.ItemUtils;
@@ -22,7 +26,6 @@ import skily_leyu.mistyrain.data.MRConfig;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.Optional;
 import java.util.Random;
 
 @ParametersAreNonnullByDefault
@@ -47,9 +50,13 @@ public abstract class BlockPotBase extends Block {
             Action action = tileEntity.onItemInteract(itemStack);
             switch (action.getActionType()) {
                 case ADD_SOIL:
-                    world.playSound(null, playerEntity.blockPosition(), SoundEvents.GRASS_PLACE,
-                            SoundCategory.NEUTRAL, 1.0F, 1.0F);
-                    ItemUtils.shrinkItem(playerEntity, itemStack, action.getAmount());
+                    if (itemStack.getItem() instanceof BlockItem) {
+                        Block block = ((BlockItem) itemStack.getItem()).getBlock();
+                        SoundType soundType = block.getSoundType(block.defaultBlockState(), world, null, null);
+                        world.playSound(null, playerEntity.blockPosition(), soundType.getPlaceSound(),
+                                SoundCategory.NEUTRAL, 1.0F, 1.0F);
+                        ItemUtils.shrinkItem(playerEntity, itemStack, action.getAmount());
+                    }
                     break;
                 case ADD_PLANT:
                     world.playSound(null, playerEntity.blockPosition(), SoundEvents.CROP_PLANTED,
@@ -57,7 +64,7 @@ public abstract class BlockPotBase extends Block {
                     ItemUtils.shrinkItem(playerEntity, itemStack, action.getAmount());
                     break;
                 case ADD_FLUID:
-                    onAddFluid(world, playerEntity, itemStack, action);
+                    onAddFluid(world, playerEntity, hand, itemStack, action);
                     break;
                 case REMOVE_FLUID:
                     onRemoveFluid(world, playerEntity, hand, itemStack, action);
@@ -91,14 +98,18 @@ public abstract class BlockPotBase extends Block {
         return ActionResultType.SUCCESS;
     }
 
-    protected void onAddFluid(World world, PlayerEntity playerEntity, ItemStack itemStack, Action action) {
-        Optional<FluidStack> fluidStackOp = FluidUtil.getFluidContained(itemStack);
-        if (fluidStackOp.isPresent()) {
-            FluidStack fluidStack = fluidStackOp.get();
-            SoundEvent soundFluid = fluidStack.getFluid().getAttributes().getEmptySound();
-            world.playSound(null, playerEntity.blockPosition(), soundFluid, SoundCategory.NEUTRAL, 1.0F,
-                    1.0F);
-            FluidUtils.shrink(playerEntity, fluidStack, action.getAmount());
+    protected void onAddFluid(World world, PlayerEntity playerEntity, Hand hand, ItemStack itemStack, Action action) {
+        FluidStack fluidStack = FluidUtils.getFluidStack(itemStack);
+        if (!fluidStack.isEmpty()) {
+            int amount = action.getAmount();
+            FluidActionResult result = FluidUtil.tryEmptyContainer(itemStack, new FluidHandlerItemStack(new ItemStack(Items.BUCKET), amount), amount, playerEntity, true);
+            if (result.isSuccess()) {
+                SoundEvent soundFluid = fluidStack.getFluid().getAttributes().getEmptySound();
+                world.playSound(null, playerEntity.blockPosition(), soundFluid, SoundCategory.NEUTRAL, 1.0F,
+                        1.0F);
+                ItemUtils.replaceHandItem(playerEntity, hand, result.getResult());
+            }
+
         }
     }
 

@@ -1,26 +1,17 @@
 package skily_leyu.mistyrain.common.core;
 
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.wrappers.FluidBucketWrapper;
+import net.minecraftforge.fluids.FluidUtil;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Optional;
 
 public class FluidUtils {
 
     private FluidUtils() {
-    }
-
-    /**
-     * 减少物品中储存的流体
-     */
-    public static void shrink(PlayerEntity playerEntity, FluidStack fluidStack, int amount) {
-        if (playerEntity != null && !playerEntity.isCreative() && fluidStack != null && !fluidStack.isEmpty()) {
-            fluidStack.shrink(amount);
-        }
     }
 
     /**
@@ -29,8 +20,10 @@ public class FluidUtils {
     @Nonnull
     public static FluidStack getFluidStack(ItemStack itemStack) {
         if (itemStack != null) {
-            FluidBucketWrapper wrapper = new FluidBucketWrapper(itemStack);
-            return wrapper.getFluid();
+            Optional<FluidStack> fluidStackOp = FluidUtil.getFluidContained(itemStack);
+            if(fluidStackOp.isPresent()){
+                return fluidStackOp.get();
+            }
         }
         return new FluidStack(FluidStack.EMPTY, 0);
     }

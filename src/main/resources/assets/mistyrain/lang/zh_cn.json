@@ -100,7 +100,7 @@
   "content.wooden_pot.name": "木盆",
   "content.wooden_pot.property": "属性：工具、木",
   "content.wooden_pot.description": "一个简单的木制花盆。",
-  "content.wooden_pot.text": "使用常见的木板制作的花盆，适合装泥土/沙砾/沙子/雪等方块，并可以在上述方块种植喜欢该方块的植物。\n使用铲子/锄头可以移除植物/土壤并有对应掉落。\n使用骨粉可以催熟植物。\n使用剪刀可以采收植物，前提是该植物到达了收获期。",
+  "content.wooden_pot.text": "使用常见的木板制作的花盆，适合装泥土、灰化土、沙子、雪等方块，并可以在上述方块种植喜欢该方块的植物。\n使用铲子或锄头可以移除植物和土壤并有对应掉落。\n使用骨粉可以催熟植物，但效果可能不会太明显。\n使用剪刀可以采收植物，前提是该植物到达了收获期。",
   "content.clay_pot.name": "粘土盆",
   "content.clay_pot.property": "属性：工具、土",
   "content.clay_pot.description": "手工捏造的粘土花盆。",

@@ -45,7 +45,11 @@
                     "nextStages":{
                         "VERDANT":1
                     },
-                    "harvests":{}
+                    "harvests":{
+                        "VERDANT": {
+                            "mistyrain:mr_snow_velvet": 2
+                        }
+                    }
                 }
             ],
             "likeSoils": ["minecraft:snow_block"],
@@ -72,11 +76,15 @@
                 {
                     "nowStage":"VERDANT",
                     "nextStages":{},
-                    "harvests":{}
+                    "harvests":{
+                        "SPROUT": {
+                            "mistyrain:mr_green_wisteria": 2
+                        }
+                    }
                 }
             ],
             "likeSoils":["minecraft:podzol"],
-            "suitSoilTypes":["DIRT","HUMUS"]
+            "suitSoilTypes":["HUMUS"]
         },
         "mistyrain:mr_candle_rush":{
             "name":"mistyrain:mr_candle_rush",
@@ -116,11 +124,15 @@
                     "nextStages":{
                         "VERDANT":1
                     },
-                    "harvests":{}
+                    "harvests":{
+                        "ROOT_DEPTH": {
+                            "mistyrain:mr_candle_rush": 2
+                        }
+                    }
                 }
             ],
             "likeSoils":["minecraft:sand"],
-            "suitSoilTypes":["SAND","DIRT","HUMUS"]
+            "suitSoilTypes":["SAND"]
         },
         "mistyrain:mr_homing_plum":{
             "name":"mistyrain:mr_homing_plum",
@@ -167,11 +179,15 @@
                     "nextStages":{
                         "VERDANT":1
                     },
-                    "harvests":{}
+                    "harvests":{
+                        "VERDANT": {
+                            "mistyrain:mr_homing_plum": 2
+                        }
+                    }
                 }
             ],
-            "likeSoils":["minecraft:gravel"],
-            "suitSoilTypes":["DIRT","HUMUS"]
+            "likeSoils":["minecraft:grass_block"],
+            "suitSoilTypes":["DIRT"]
         },
         "mistyrain:mr_breeze_rattan":{
             "name":"mistyrain:mr_breeze_rattan",
@@ -211,11 +227,15 @@
                     "nextStages":{
                         "VERDANT":1
                     },
-                    "harvests":{}
+                    "harvests":{
+                        "VERDANT": {
+                            "mistyrain:mr_breeze_rattan": 2
+                        }
+                    }
                 }
             ],
-            "likeSoils":["minecraft:cobble_stone"],
-            "suitSoilTypes":["DIRT","HUMUS"]
+            "likeSoils":["minecraft:mossy_cobblestone"],
+            "suitSoilTypes":["COBBLE"]
         },
         "mistyrain:mr_narcissus":{
             "name":"mistyrain:mr_narcissus",
@@ -262,7 +282,11 @@
                     "nextStages":{
                         "VERDANT":1
                     },
-                    "harvests":{}
+                    "harvests":{
+                        "VERDANT": {
+                            "mistyrain:mr_narcissus": 2
+                        }
+                    }
                 }
             ],
             "likeSoils": ["minecraft:water"],

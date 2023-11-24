@@ -115,6 +115,8 @@ public abstract class TilePotBase extends TileBase implements ITickableTileEntit
         Action action = Action.EMPTY;
         if (this.isRemoveTools(itemStack)) {
             action = this.onRemoveBlock();
+        } else if (canUseFerti(itemStack)) {
+            action = this.onFertiAdd();
         } else if (this.isFluidContainer(itemStack)) {
             action = this.onFluidUse(itemStack);
         } else if (this.isHarvestTools(itemStack)) {
@@ -123,8 +125,6 @@ public abstract class TilePotBase extends TileBase implements ITickableTileEntit
             action = this.onSoilAdd(itemStack); //添加方块类土壤
         } else if (!ItemUtils.isHandlerEmpty(this.dirtInv)) {
             action = this.onPlantAdd(itemStack); //添加植物
-        } else if (canUseFerti(itemStack)) {
-            action = this.onFertiAdd();
         }
         if (!action.isEmpty()) {
             this.syncToTrackingClients();
@@ -153,7 +153,7 @@ public abstract class TilePotBase extends TileBase implements ITickableTileEntit
         //添加流体
         FluidStack fluidStack = FluidUtils.getFluidStack(itemStack);
         if (!fluidStack.isEmpty()
-                && fluidStack.getAmount() >= 1000) {
+                && fluidStack.getAmount() >= 1000 && this.getPot().isSuitFluid(fluidStack)) {
             int amount = ItemUtils.addItemInHandler(this.dirtInv, itemStack, true);
             if (amount > 0) {
                 return new Action(ActionType.ADD_FLUID, 1000);
@@ -219,7 +219,9 @@ public abstract class TilePotBase extends TileBase implements ITickableTileEntit
         World world = this.getLevel();
         if (world != null) {
             List<ItemStack> results = new ArrayList<>(this.potHandler.getHarvest(world.getRandom()));
-            return new Action(ActionType.HARVEST, 1, results);
+            if (!results.isEmpty()) {
+                return new Action(ActionType.HARVEST, 1, results);
+            }
         }
         return Action.EMPTY;
     }

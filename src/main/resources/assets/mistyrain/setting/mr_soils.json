@@ -16,11 +16,18 @@
       "minecraft:gravel"
     ],
     "HUMUS": [
-      "minecraft:podzol"
+      "minecraft:podzol",
+      "minecraft:mycelium",
+      "minecraft:brown_mushroom_block",
+      "minecraft:red_mushroom_block",
+      "minecraft:mushroom_stem",
+      "minecraft:nether_wart_block",
+      "minecraft:warped_wart_block"
     ],
     "COBBLE": [
       "minecraft:cobblestone",
-      "minecraft:gravel"
+      "minecraft:gravel",
+      "minecraft:mossy_cobblestone"
     ],
     "LAVA": [
       "minecraft:lava"
