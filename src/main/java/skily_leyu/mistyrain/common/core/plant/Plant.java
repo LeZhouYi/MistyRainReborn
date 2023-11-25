@@ -1,25 +1,23 @@
 package skily_leyu.mistyrain.common.core.plant;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.tags.ITag;
+import net.minecraft.tags.ITagCollection;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
-import skily_leyu.mistyrain.common.core.soil.SoilType;
 import skily_leyu.mistyrain.common.core.FluidUtils;
 import skily_leyu.mistyrain.common.core.ItemUtils;
-import skily_leyu.mistyrain.data.MRSetting;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.*;
 
 public class Plant {
 
@@ -27,21 +25,21 @@ public class Plant {
     private List<String> seeds; // 种子或类种子物品名
     private List<PlantStage> stages; // 植物的状态转换表
     private List<String> likeSoils; // 喜欢的土壤
-    private List<SoilType> suitSoilTypes; // 适合的土壤类型
+    private List<String> suitSoilTypes; // 适合的土壤类型
 
-    public Plant(String name){
+    public Plant(String name) {
         this.name = name;
     }
 
-    public void setSeeds(List<String> seeds){
+    public void setSeeds(List<String> seeds) {
         this.seeds = seeds;
     }
 
-    public void setStages(List<PlantStage> stages){
+    public void setStages(List<PlantStage> stages) {
         this.stages = stages;
     }
 
-    public void setSoil(List<String> likeSoils,List<SoilType> suitSoilTypes){
+    public void setSoil(List<String> likeSoils, List<String> suitSoilTypes) {
         this.likeSoils = likeSoils;
         this.suitSoilTypes = suitSoilTypes;
     }
@@ -120,25 +118,24 @@ public class Plant {
         if (likeSoils.contains(dirtName)) {
             return true;
         }
-        for (SoilType soilType : suitSoilTypes) {
-            if (MRSetting.getSoilMap().contains(soilType, dirtStack)) {
-                return true;
+        if (dirtStack.getItem() instanceof BlockItem) {
+            ITagCollection<Block> allTags = BlockTags.getAllTags();
+            BlockItem blockItem = ((BlockItem) dirtStack.getItem());
+            for (String soilType : this.suitSoilTypes) {
+                ITag<Block> blockTag = allTags.getTag(new ResourceLocation(soilType));
+                if (blockTag != null && blockTag.contains(blockItem.getBlock())) {
+                    return true;
+                }
             }
         }
         FluidStack fluidStack = FluidUtils.getFluidStack(dirtStack);
-        if (fluidStack.isEmpty()) {
-            return false;
-        }
-        String fluidName = FluidUtils.getFluidName(fluidStack);
-        if (fluidName == null) {
-            return false;
-        }
-        if (likeSoils.contains(fluidName)) {
-            return true;
-        }
-        for (SoilType soilType : suitSoilTypes) {
-            if (MRSetting.getSoilMap().contains(soilType, fluidStack)) {
-                return true;
+        if(!fluidStack.isEmpty()){
+            ITagCollection<Fluid> allTags = FluidTags.getAllTags();
+            for(String soilType: this.suitSoilTypes){
+                ITag<Fluid> fluidTag = allTags.getTag(new ResourceLocation(soilType));
+                if(fluidTag!=null && fluidTag.contains(fluidStack.getFluid())){
+                    return true;
+                }
             }
         }
         return false;
@@ -150,6 +147,7 @@ public class Plant {
     public String getName() {
         return name;
     }
+
     /**
      * 获取当前状态被收获后要转换的状态
      */

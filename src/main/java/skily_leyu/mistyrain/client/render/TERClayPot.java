@@ -16,7 +16,7 @@ import net.minecraftforge.client.model.data.EmptyModelData;
 import net.minecraftforge.fluids.FluidStack;
 import skily_leyu.mistyrain.common.core.FluidUtils;
 import skily_leyu.mistyrain.common.core.RenderUtils;
-import skily_leyu.mistyrain.common.core.math.Pos3;
+import skily_leyu.mistyrain.common.core.Pos3;
 import skily_leyu.mistyrain.common.tileentity.TileClayPot;
 
 import javax.annotation.ParametersAreNonnullByDefault;

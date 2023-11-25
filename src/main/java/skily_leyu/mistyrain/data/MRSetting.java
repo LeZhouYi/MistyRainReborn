@@ -1,23 +1,21 @@
 package skily_leyu.mistyrain.data;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import org.apache.logging.log4j.Level;
+import skily_leyu.mistyrain.common.MistyRain;
+import skily_leyu.mistyrain.common.core.book.Book;
+import skily_leyu.mistyrain.common.core.plant.PlantMap;
+import skily_leyu.mistyrain.common.core.pot.PotMap;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import skily_leyu.mistyrain.common.MistyRain;
-import skily_leyu.mistyrain.common.core.book.Book;
-import skily_leyu.mistyrain.common.core.plant.PlantMap;
-import skily_leyu.mistyrain.common.core.pot.PotMap;
-import skily_leyu.mistyrain.common.core.soil.SoilMap;
-
 public class MRSetting {
 
-    private static SoilMap soilMap;
     private static PlantMap potPlants;
     private static PotMap potMap;
     private static Book herbalsBook;
@@ -26,7 +24,6 @@ public class MRSetting {
     }
 
     public static void load(){
-        soilMap = loadJson(SoilMap.class, "mr_soils");
         potPlants = loadJson(PlantMap.class, "mr_pot_plants");
         potMap = loadJson(PotMap.class, "mr_pots");
         herbalsBook = loadJson(Book.class,"mr_herbals_book");
@@ -45,15 +42,11 @@ public class MRSetting {
                 Gson gson = new GsonBuilder().create();
                 result = gson.fromJson(reader, jsonClass);
             } catch (IOException e) {
-                e.printStackTrace();
+                MistyRain.getLogger().log(Level.ERROR,e.getStackTrace());
             }
         }
 
         return result;
-    }
-
-    public static SoilMap getSoilMap() {
-        return soilMap;
     }
 
     public static PlantMap getPlantMap() {

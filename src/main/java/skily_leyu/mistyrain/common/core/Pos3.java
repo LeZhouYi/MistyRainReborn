@@ -1,10 +1,10 @@
-package skily_leyu.mistyrain.common.core.math;
+package skily_leyu.mistyrain.common.core;
 
 public class Pos3 {
 
-    private float x;
-    private float y;
-    private float z;
+    private final float x;
+    private final float y;
+    private final float z;
 
     public Pos3(float x, float y, float z) {
         this.x = x;

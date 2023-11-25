@@ -1,14 +1,24 @@
 {
-    "map":{
-        "mr_wooden_pot":{
-            "slotSize":1,
-            "suitSoils":[],
-            "suitSoilType":["DIRT","COBBLE","SAND","SNOW"]
-        },
-        "mr_clay_pot":{
-            "slotSize":1,
-            "suitSoils":["minecraft:water"],
-            "suitSoilType":["WATER"]
-        }
+  "map": {
+    "mr_wooden_pot": {
+      "name": "mr_wooden_pot",
+      "slotSize": 1,
+      "suitSoils": [],
+      "suitSoilTypes": [
+        "mistyrain:pot_soil/dirt",
+        "mistyrain:pot_soil/cobble",
+        "mistyrain:pot_soil/sand",
+        "mistyrain:pot_soil/snow",
+        "mistyrain:pot_soil/humus"
+      ]
+    },
+    "mr_clay_pot": {
+      "name": "mr_clay_pot",
+      "slotSize": 1,
+      "suitSoils": [],
+      "suitSoilTypes": [
+        "mistyrain:pot_soil/water"
+      ]
     }
+  }
 }
