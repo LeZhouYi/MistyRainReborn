@@ -12,6 +12,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import skily_leyu.mistyrain.client.particle.MRParticles;
 import skily_leyu.mistyrain.client.render.MRTilesRender;
 import skily_leyu.mistyrain.common.block.MRBlocks;
 import skily_leyu.mistyrain.common.item.MRItems;
@@ -34,9 +35,11 @@ public class MistyRain {
         modBus.addListener(this::doClientStuff);
 
         MinecraftForge.EVENT_BUS.register(this);
-        MRTiles.TILEENTITY_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
+        MRTiles.TILEENTITY_REGISTER.register(modBus);
+        MRParticles.PARTICLE_TYPES.register(modBus);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, MRConfig.COMMON_CONFIG);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, MRConfig.CLIENT_CONFIG);
+
     }
 
     private void doClientStuff(FMLClientSetupEvent event) {
